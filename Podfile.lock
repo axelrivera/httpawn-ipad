@@ -1,0 +1,32 @@
+PODS:
+  - AFNetworking (2.0.2):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.0.2):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.0.2):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.0.2)
+  - AFNetworking/Security (2.0.2)
+  - AFNetworking/Serialization (2.0.2)
+  - AFNetworking/UIKit (2.0.2):
+    - AFNetworking/NSURLConnection
+  - UIView+AutoLayout (0.9.0)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.0)
+  - UIView+AutoLayout
+
+SPEC CHECKSUMS:
+  AFNetworking: 22de50ae71ab1c4859773f61068d6fcd1d8f9a4d
+  UIView+AutoLayout: 3cc41c765991cce7cbeee8e70194f228e22eeb82
+
+COCOAPODS: 0.27.1
