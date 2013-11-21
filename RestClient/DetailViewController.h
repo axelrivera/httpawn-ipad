@@ -13,5 +13,6 @@
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) RequestHeaderView *headerView;
+@property (strong, nonatomic) UITextView *textView;
 
 @end

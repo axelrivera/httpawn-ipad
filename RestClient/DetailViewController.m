@@ -17,7 +17,7 @@
 #import "RequestInputViewController.h"
 
 @interface DetailViewController ()
-<RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate>
+<RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
@@ -53,6 +53,15 @@
     [self.view addSubview:self.headerView];
 
     [self.headerView.URLActionButton setTitle:URLActionGet forState:UIControlStateNormal];
+    
+    self.textView = [[UITextView alloc] initWithFrame:CGRectZero];
+    self.textView.backgroundColor = [UIColor whiteColor];
+    self.textView.textColor = [UIColor blackColor];
+    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.textView.font = [UIFont fontWithName:@"Courier" size:12.0];
+    self.textView.editable = NO;
+    
+    [self.view addSubview:self.textView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -60,6 +69,11 @@
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:self.topOrigin];
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
+    
+    [self.textView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.headerView];
+    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
+    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
+    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.0];
 
     [self.view layoutSubviews];
 }
@@ -133,6 +147,16 @@
 - (void)sendRequest
 {
     DLog(@"Send Request!");
+    
+    [self.view endEditing:YES];
+    
+    NSString *URLString = self.headerView.URLTextField.text;
+    NSString *method = [self.headerView.URLActionButton titleForState:UIControlStateNormal];
+    
+    RCRequest *requestObject = [[RCRequest alloc] initWithMethod:method URLString:URLString];
+    [requestObject runWithCompletion:^(RCResponse *response, NSError *error) {
+        self.textView.text = [response formattedBodyString];
+    }];
 }
 
 - (void)showPreview

@@ -11,7 +11,7 @@
 #import "UIViewController+Layout.h"
 #import <UIView+AutoLayout.h>
 
-#import "RCInputObject.h"
+#import "RCRequestOption.h"
 #import "RequestInputCell.h"
 
 @interface RequestInputViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -200,7 +200,7 @@
         }
     }
     
-    cell.inputObject = self.dataSource[indexPath.row];
+    cell.requestOption = self.dataSource[indexPath.row];
 
     return cell;
 }
@@ -221,7 +221,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    RCInputObject *inputObject = self.dataSource[fromIndexPath.row];
+    RCRequestOption *inputObject = self.dataSource[fromIndexPath.row];
     [self.dataSource removeObjectAtIndex:fromIndexPath.row];
     [self.dataSource insertObject:inputObject atIndex:toIndexPath.row];
 }
@@ -248,13 +248,13 @@
         return;
     }
 
-    RCInputObject *inputObject = [[RCInputObject alloc] init];
+    RCRequestOption *option = [[RCRequestOption alloc] init];
 
     if (self.dataSource == nil) {
         self.dataSource = [@[] mutableCopy];
     }
 
-    [self.dataSource addObject:inputObject];
+    [self.dataSource addObject:option];
     [self.tableView reloadData];
 }
 

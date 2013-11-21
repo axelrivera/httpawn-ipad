@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RCGroupObject.h"
+#import "RCGroup.h"
 
 typedef NS_ENUM(NSInteger, GroupEditType) {
     GroupEditTypeCreate,
@@ -24,9 +24,9 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 @property (strong, nonatomic) UITextField *nameTextField;
 
 @property (assign, nonatomic) GroupEditType editType;
-@property (strong, nonatomic) RCGroupObject *groupObject;
+@property (strong, nonatomic) RCGroup *groupObject;
 
-- (id)initWithGroupObject:(RCGroupObject *)groupObject;
+- (id)initWithGroupObject:(RCGroup *)groupObject;
 
 @end
 
@@ -35,6 +35,6 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 - (void)groupEditViewControllerDidCancel:(GroupEditViewController *)controller;
 - (void)groupEditViewController:(GroupEditViewController *)controller
               didFinishWithType:(GroupEditType)editType
-                         object:(RCGroupObject *)groupObject;
+                         object:(RCGroup *)groupObject;
 
 @end

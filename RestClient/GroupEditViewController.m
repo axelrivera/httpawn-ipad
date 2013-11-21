@@ -25,7 +25,7 @@
     return self;
 }
 
-- (id)initWithGroupObject:(RCGroupObject *)groupObject
+- (id)initWithGroupObject:(RCGroup *)groupObject
 {
     self = [self init];
     if (self) {
@@ -77,7 +77,7 @@
     [self.view endEditing:YES];
 
     if (self.editType == GroupEditTypeCreate) {
-        self.groupObject = [[RCGroupObject alloc] init];
+        self.groupObject = [[RCGroup alloc] init];
     }
 
     self.groupObject.name = self.nameTextField.text;

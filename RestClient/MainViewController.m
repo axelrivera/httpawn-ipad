@@ -134,7 +134,7 @@
 
 - (void)groupEditViewController:(GroupEditViewController *)controller
               didFinishWithType:(GroupEditType)editType
-                         object:(RCGroupObject *)groupObject
+                         object:(RCGroup *)groupObject
 {
     if (editType == GroupEditTypeCreate) {
         [self.groups addObject:groupObject];
@@ -183,7 +183,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    RCGroupObject *groupObject = self.groups[indexPath.row];
+    RCGroup *groupObject = self.groups[indexPath.row];
     GroupEditViewController *controller = [[GroupEditViewController alloc] initWithGroupObject:groupObject];
     controller.delegate = self;
 

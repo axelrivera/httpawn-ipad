@@ -9,6 +9,12 @@
 #ifndef RestClient_Cosntants_h
 #define RestClient_Cosntants_h
 
+#define kDefaultTimeout 10
+#define kTimeoutMaxValue 180
+#define kTimeoutMinValue 2
+#define kTimeoutIncrementValue 1
+#define kDefaultCancelOnFailure YES
+
 // Helper Macro Functions
 
 #define NSStringFromBOOL(value) value ? @"YES" : @"NO"

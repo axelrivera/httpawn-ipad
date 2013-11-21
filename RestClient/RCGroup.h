@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RCGroupObject : NSObject
+@interface RCGroup : NSObject <NSCoding>
 
 @property (copy, nonatomic) NSString *name;
+@property (strong, nonatomic) NSMutableArray *requests;
 
 @end

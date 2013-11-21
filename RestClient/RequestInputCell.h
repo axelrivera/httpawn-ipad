@@ -8,15 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RCInputObject.h"
-
 @interface RequestInputCell : UITableViewCell
 
 @property (strong, nonatomic) UITextField *nameTextField;
 @property (strong, nonatomic) UITextField *valueTextField;
 @property (strong, nonatomic) UISwitch *activeSwitch;
 
-@property (strong, nonatomic) RCInputObject *inputObject;
+@property (strong, nonatomic) RCRequestOption *requestOption;
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 

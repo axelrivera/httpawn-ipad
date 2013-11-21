@@ -83,12 +83,12 @@
 
 #pragma mark - Public Methods
 
-- (void)setInputObject:(RCInputObject *)inputObject
+- (void)setRequestOption:(RCRequestOption *)requestOption
 {
-    _inputObject = inputObject;
-    self.nameTextField.text = inputObject.name;
-    self.valueTextField.text = inputObject.value;
-    self.activeSwitch.on = inputObject.isActive;
+    _requestOption = requestOption;
+    self.nameTextField.text = requestOption.objectName;
+    self.valueTextField.text = requestOption.objectValue;
+    self.activeSwitch.on = requestOption.isOn;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -102,8 +102,8 @@
 
 - (void)activeAction:(UISwitch *)aSwitch
 {
-    if (self.inputObject) {
-        self.inputObject.active = aSwitch.on;
+    if (self.requestOption) {
+        self.requestOption.on = aSwitch.on;
     }
 }
 
@@ -124,11 +124,11 @@
         }
     }
 
-    if (self.inputObject) {
+    if (self.requestOption) {
         if (textField == self.nameTextField) {
-            self.inputObject.name = resultStr;
+            self.requestOption.objectName = resultStr;
         } else if (textField == self.valueTextField) {
-            self.inputObject.value = resultStr;
+            self.requestOption.objectValue = resultStr;
         }
     }
 
@@ -143,11 +143,11 @@
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
-    if (self.inputObject) {
+    if (self.requestOption) {
         if (textField == self.nameTextField) {
-            self.inputObject.name = @"";
+            self.requestOption.objectName = @"";
         } else if (textField == self.valueTextField) {
-            self.inputObject.value = @"";
+            self.requestOption.objectValue = @"";
         }
     }
 
