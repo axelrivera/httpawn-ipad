@@ -15,6 +15,14 @@
 #define kTimeoutIncrementValue 1
 #define kDefaultCancelOnFailure YES
 
+// File Names
+
+#define kRestClientDataFile @"RestClientData.data"
+
+// Notifications
+
+#define HistoryDidUpdateNotification @"HistoryDidUpdateNotification"
+
 // Helper Macro Functions
 
 #define NSStringFromBOOL(value) value ? @"YES" : @"NO"

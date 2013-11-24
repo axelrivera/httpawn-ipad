@@ -10,9 +10,10 @@
 
 #import "GroupEditViewController.h"
 
-@interface MainViewController () <GroupEditViewControllerDelegate>
+@interface MainViewController () <GroupEditViewControllerDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *addGroupItem;
+@property (strong, nonatomic) UIBarButtonItem *clearHistoryItem;
 
 - (NSArray *)dataSource;
 
@@ -40,13 +41,14 @@
 
     [self.navigationController setToolbarHidden:NO animated:NO];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                          target:self
-                                                                                          action:@selector(modifyAction:)];
-
     self.addGroupItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                       target:self
                                                                       action:@selector(addGroupAction:)];
+    
+    self.clearHistoryItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear All"
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(clearHistoryAction:)];
 
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Groups", @"History" ]];
     [self.segmentedControl setWidth:120.0 forSegmentAtIndex:MainViewTypeGroup];
@@ -63,21 +65,47 @@
     UIBarButtonItem *segmentedItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
 
     self.toolbarItems = @[ flexibleItem, segmentedItem, flexibleItem ];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(historyUpdated:)
+                                                 name:HistoryDidUpdateNotification
+                                               object:nil];
+
+    self.groups = [RestClientData sharedData].groups;
+    self.history = [RestClientData sharedData].history;
+    
+    self.segmentedControl.selectedSegmentIndex = MainViewTypeGroup;
+    [self segmentedControlChanged:self.segmentedControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (self.segmentedControl.selectedSegmentIndex == UISegmentedControlNoSegment) {
-        self.segmentedControl.selectedSegmentIndex = MainViewTypeGroup;
-        [self segmentedControlChanged:self.segmentedControl];
-    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:HistoryDidUpdateNotification];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:animated];
+    
+    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+        if (editing) {
+            self.navigationItem.rightBarButtonItem = nil;
+        } else {
+            self.navigationItem.rightBarButtonItem = self.addGroupItem;
+        }
+    }
 }
 
 #pragma mark - Private Methods
@@ -100,9 +128,11 @@
 {
     if (segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
         self.title = @"Groups";
+        self.navigationItem.leftBarButtonItem = [self editButtonItem];
         self.navigationItem.rightBarButtonItem = self.addGroupItem;
     } else {
         self.title = @"History";
+        self.navigationItem.leftBarButtonItem = self.clearHistoryItem;
         self.navigationItem.rightBarButtonItem = nil;
     }
 
@@ -120,9 +150,23 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)modifyAction:(id)sender
+- (void)clearHistoryAction:(id)sender
 {
-    
+    NSString *title = @"Are you sure you want to remove all the requests available in history?";
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:@"Clear All"
+                                                    otherButtonTitles:nil];
+    [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+}
+
+- (void)historyUpdated:(NSNotification *)notification
+{
+    self.history = [RestClientData sharedData].history;
+    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeHistory) {
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - UIViewControllerDelegate Methods
@@ -155,22 +199,38 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    id object = [self dataSource][indexPath.row];
+    static NSString *GroupIdentifier = @"GroupCell";
+    static NSString *HistoryIdentifier = @"HistoryCell";
 
     if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:GroupIdentifier];
+        }
+
+        id object = [self dataSource][indexPath.row];
+
+        cell.textLabel.text = [object name];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        return cell;
     }
 
-    cell.textLabel.text = [object name];
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:HistoryIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:HistoryIdentifier];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:13.0];
+        cell.detailTextLabel.numberOfLines = 2;
+    }
+
+    RCRequest *request = [self dataSource][indexPath.row];
+
+    cell.textLabel.text = request.requestMethod;
+    cell.detailTextLabel.text = [request fullURLString];
+
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    cell.accessoryType = UITableViewCellAccessoryNone;
+
     return cell;
 }
 
@@ -179,6 +239,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+
+    } else {
+        RCRequest *request = [[self dataSource] objectAtIndex:indexPath.row];
+        [self.delegate shouldUpdateRequest:request];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
@@ -191,6 +258,35 @@
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+            [self.groups removeObjectAtIndex:indexPath.row];
+        } else {
+            [self.history removeObjectAtIndex:indexPath.row];
+        }
+        
+        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+#pragma mark - UIActionSheetDelegate Methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self.history removeAllObjects];
+        [self.tableView reloadData];
+    }
 }
 
 @end

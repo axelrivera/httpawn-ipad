@@ -44,15 +44,20 @@
         _URLTextField = [[UITextField alloc] initWithFrame:CGRectZero];
         _URLTextField.borderStyle = UITextBorderStyleRoundedRect;
         _URLTextField.translatesAutoresizingMaskIntoConstraints = NO;
-        _URLTextField.placeholder = @"Enter URL Here";
-        _URLTextField.text = @"";
+        _URLTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _URLTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _URLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _URLTextField.placeholder = @"http://example.com";
+        _URLTextField.text = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
+        _URLTextField.keyboardType = UIKeyboardTypeURL;
 
         [self addSubview:_URLTextField];
 
         _URLActionButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _URLActionButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_URLActionButton setTitle:@"GET" forState:UIControlStateNormal];
+        [_URLActionButton setTitle:RCRequestMethodGet forState:UIControlStateNormal];
         _URLActionButton.tag = RequestHeaderViewButtonTypeURLAction;
+        _URLActionButton.contentHorizontalAlignment = UIViewContentModeLeft;
         [_URLActionButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_URLActionButton];
@@ -81,6 +86,14 @@
         [_sendButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_sendButton];
+        
+        _saveButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _saveButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
+        _saveButton.tag = RequestHeaderViewButtonTypeSave;
+        [_saveButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self addSubview:_saveButton];
 
         _previewButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _previewButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -112,35 +125,36 @@
 
 - (void)updateConstraints
 {
-    [self autoSetDimension:ALDimensionHeight toSize:20.0 + 37.0 + 20.0 + 37.0 + 20.0];
-
+    [self autoSetDimension:ALDimensionHeight toSize:[[self class] viewHeight]];
     [self.bottomLine autoSetDimension:ALDimensionHeight toSize:0.5];
     [self.bottomLine autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.bottomLine autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
     [self.bottomLine autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.5];
 
     [self.URLTextField autoSetDimension:ALDimensionHeight toSize:37.0];
-    [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0];
+    [self.URLTextField autoSetDimension:ALDimensionWidth toSize:400.0];
+    [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15.0];
     [self.URLTextField autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
     [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.0];
 
-    [self.headersButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0];
+    [self.URLActionButton autoSetDimension:ALDimensionWidth toSize:80.0];
+    [self.URLActionButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.URLTextField withOffset:10.0];
+    [self.URLActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
+
+    [self.headersButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15.0];
     [self.headersButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
     [self.parametersButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
 
     [self.parametersButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.headersButton withOffset:-15.0];
     [self.parametersButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
 
-    [self.URLActionButton autoSetDimension:ALDimensionWidth toSize:80.0];
-    [self.URLActionButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.parametersButton withOffset:-15.0];
-    [self.URLActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
-
-    [self.URLTextField autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.URLActionButton withOffset:-10.0];
-
     [self.sendButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.URLTextField withOffset:24.0];
     [self.sendButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.URLTextField withOffset:0.0];
+    
+    [self.saveButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.sendButton withOffset:20.0];
+    [self.saveButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
 
-    [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.sendButton withOffset:20.0];
+    [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.saveButton withOffset:20.0];
     [self.previewButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
 
     [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];
@@ -152,11 +166,21 @@
     [super updateConstraints];
 }
 
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake([[self class] viewHeight], UIViewNoIntrinsicMetric);
+}
+
 #pragma mark - Selector Methods
 
 - (void)buttonAction:(id)sender
 {
     [self.delegate requestHeaderView:self didSelectButtonType:[sender tag]];
+}
+
++ (CGFloat)viewHeight
+{
+    return 15.0 + 37.0 + 15.0 + 37.0 + 15.0;
 }
 
 @end

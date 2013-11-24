@@ -41,6 +41,9 @@
 		16A4E77518331C4B0037E810 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A4E77318331C4B0037E810 /* MainViewController.m */; };
 		16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16A4E77418331C4B0037E810 /* MainViewController.xib */; };
 		16B635BB183DC58A00176848 /* RestClientData.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B635BA183DC58A00176848 /* RestClientData.m */; };
+		16D9AB5E1840506D009D5EDF /* PreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D9AB5C1840506D009D5EDF /* PreviewViewController.m */; };
+		16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16D9AB5D1840506D009D5EDF /* PreviewViewController.xib */; };
+		16DE719D1840EC2D0060FCA4 /* FileHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DE719C1840EC2D0060FCA4 /* FileHelpers.m */; };
 		7D8235B19D2E442593CB5441 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD2BCD4AA32D43639C7EC073 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		046C0FB9138A47B68786F9EF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		164591A4183F7D930094DAC1 /* RequestDetailDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailDelegate.h; sourceTree = "<group>"; };
 		16520280183B124400FB4D37 /* RCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequest.h; sourceTree = "<group>"; };
 		16520281183B124400FB4D37 /* RCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRequest.m; sourceTree = "<group>"; };
 		16520282183B124400FB4D37 /* RCRequestOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequestOption.h; sourceTree = "<group>"; };
@@ -113,6 +117,11 @@
 		16A4E77418331C4B0037E810 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		16B635B9183DC58A00176848 /* RestClientData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestClientData.h; sourceTree = "<group>"; };
 		16B635BA183DC58A00176848 /* RestClientData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestClientData.m; sourceTree = "<group>"; };
+		16D9AB5B1840506D009D5EDF /* PreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewViewController.h; sourceTree = "<group>"; };
+		16D9AB5C1840506D009D5EDF /* PreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewViewController.m; sourceTree = "<group>"; };
+		16D9AB5D1840506D009D5EDF /* PreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewViewController.xib; sourceTree = "<group>"; };
+		16DE719B1840EC2D0060FCA4 /* FileHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHelpers.h; sourceTree = "<group>"; };
+		16DE719C1840EC2D0060FCA4 /* FileHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHelpers.m; sourceTree = "<group>"; };
 		AD2BCD4AA32D43639C7EC073 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -245,6 +254,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				16D9AB5D1840506D009D5EDF /* PreviewViewController.xib */,
 				1670F249183ADCA4000CC10D /* GroupEditViewController.xib */,
 				16A4E77418331C4B0037E810 /* MainViewController.xib */,
 				16A4E75D1832FA1A0037E810 /* DetailViewController.xib */,
@@ -267,6 +277,8 @@
 				1670F23018379A5E000CC10D /* URLActionsViewController.m */,
 				1670F247183ADCA4000CC10D /* GroupEditViewController.h */,
 				1670F248183ADCA4000CC10D /* GroupEditViewController.m */,
+				16D9AB5B1840506D009D5EDF /* PreviewViewController.h */,
+				16D9AB5C1840506D009D5EDF /* PreviewViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -304,6 +316,8 @@
 		16A4E76E183309020037E810 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				16DE719B1840EC2D0060FCA4 /* FileHelpers.h */,
+				16DE719C1840EC2D0060FCA4 /* FileHelpers.m */,
 				16520289183B16D500FB4D37 /* NSArray+RestClient.h */,
 				1652028A183B16D500FB4D37 /* NSArray+RestClient.m */,
 				1652028B183B16D500FB4D37 /* NSData+RestClient.h */,
@@ -314,6 +328,7 @@
 				16520290183B16D500FB4D37 /* NSString+RestClient.m */,
 				16A4E76F183309350037E810 /* UIViewController+Layout.h */,
 				16A4E770183309350037E810 /* UIViewController+Layout.m */,
+				164591A4183F7D930094DAC1 /* RequestDetailDelegate.h */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -398,6 +413,7 @@
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
+				16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */,
 				1670F24B183ADCA4000CC10D /* GroupEditViewController.xib in Resources */,
 				16A4E7271832F6900037E810 /* InfoPlist.strings in Resources */,
 				16A4E72F1832F6900037E810 /* Images.xcassets in Resources */,
@@ -453,6 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16DE719D1840EC2D0060FCA4 /* FileHelpers.m in Sources */,
 				16520291183B16D500FB4D37 /* NSArray+RestClient.m in Sources */,
 				1670F22818379144000CC10D /* RequestInputViewController.m in Sources */,
 				16A4E72D1832F6900037E810 /* AppDelegate.m in Sources */,
@@ -460,6 +477,7 @@
 				16520293183B16D500FB4D37 /* NSDictionary+Request.m in Sources */,
 				16520292183B16D500FB4D37 /* NSData+RestClient.m in Sources */,
 				16A4E7291832F6900037E810 /* main.m in Sources */,
+				16D9AB5E1840506D009D5EDF /* PreviewViewController.m in Sources */,
 				16520287183B124400FB4D37 /* RCRequestOption.m in Sources */,
 				1670F23218379A5E000CC10D /* URLActionsViewController.m in Sources */,
 				16520286183B124400FB4D37 /* RCRequest.m in Sources */,

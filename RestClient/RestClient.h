@@ -9,9 +9,11 @@
 #ifndef RestClient_RestClient_h
 #define RestClient_RestClient_h
 
+#import "FileHelpers.h"
 #import "NSDictionary+Request.h"
 #import "NSArray+RestClient.h"
 #import "NSString+RestClient.h"
 #import "RCRequest.h"
+#import "RestClientData.h"
 
 #endif

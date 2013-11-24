@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RCRequestOption : NSObject <NSCoding>
+@interface RCRequestOption : NSObject <NSCoding, NSCopying>
 
 @property (copy, nonatomic) NSString *objectName;
 @property (copy, nonatomic) NSString *objectValue;
-@property (copy, nonatomic) NSString *temporaryValue;
 @property (assign, nonatomic, getter = isOn) BOOL on;
 
-- (BOOL)isRegex;
 - (NSString *)stringValue;
+
+- (BOOL)isEqualToRequestOption:(RCRequestOption *)requestOption;
 
 @end

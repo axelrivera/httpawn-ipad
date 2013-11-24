@@ -8,13 +8,7 @@
 
 #import "RCRequestOption.h"
 
-#define kParameterRegex @"\\d+.(\\w.|\\[\\d+\\].)+"
-
-static NSRegularExpression *_regex;
-
 @interface RCRequestOption ()
-
-+ (NSRegularExpression *)regex;
 
 @end
 
@@ -26,7 +20,6 @@ static NSRegularExpression *_regex;
     if (self) {
         _objectName = [@"" copy];
         _objectValue = [@"" copy];
-        _temporaryValue = nil;
         _on = YES;
     }
     return self;
@@ -41,7 +34,6 @@ static NSRegularExpression *_regex;
         _objectName = [[coder decodeObjectForKey:@"RCRequestOptionObjectName"] copy];
         _objectValue = [[coder decodeObjectForKey:@"RCRequestOptionObjectValue"] copy];
         _on = [coder decodeBoolForKey:@"RCRequestOptionOn"];
-        _temporaryValue = nil;
     }
     return self;
 }
@@ -53,27 +45,40 @@ static NSRegularExpression *_regex;
     [coder encodeBool:self.isOn forKey:@"RCRequestOptionOn"];
 }
 
-- (BOOL)isRegex
+- (id)copyWithZone:(NSZone *)zone
 {
-    NSRange range = [[RCRequestOption regex] rangeOfFirstMatchInString:self.objectValue
-                                                             options:0
-                                                               range:NSMakeRange(0, [self.objectValue length])];
-    return range.location == NSNotFound ? NO : YES;
+    RCRequestOption *myOption = [[RCRequestOption alloc] init];
+    myOption.objectName = self.objectName;
+    myOption.objectValue = self.objectValue;
+    myOption.on = self.isOn;
+
+    return myOption;
 }
 
 - (NSString *)stringValue
 {
-    return [self isRegex] && !IsEmpty(self.temporaryValue) ? self.temporaryValue : self.objectValue;
+    return self.objectValue;
 }
 
-+ (NSRegularExpression *)regex
+- (BOOL)isEqualToRequestOption:(RCRequestOption *)requestOption
 {
-    if (_regex == nil) {
-        _regex = [NSRegularExpression regularExpressionWithPattern:kParameterRegex
-                                                           options:0
-                                                             error:nil];
-    }
-    return _regex;
+    BOOL isNameEqual = NO;
+    BOOL isValueEqual = NO;
+    BOOL isOnEqual = NO;
+
+    NSString *myName = [self objectName];
+    NSString *theirName = [requestOption objectName];
+    isNameEqual = myName && theirName ? [myName isEqualToString:theirName] : NO;
+
+    NSString *myValue = [self objectValue];
+    NSString *theirValue = [requestOption objectValue];
+    isValueEqual = myValue && theirValue ? [myValue isEqualToString:theirValue] : NO;
+
+    BOOL myOn = [self isOn];
+    BOOL theirOn = [requestOption isOn];
+    isOnEqual = myOn == theirOn;
+
+	return isNameEqual && isValueEqual && isOnEqual ? YES : NO;
 }
 
 @end

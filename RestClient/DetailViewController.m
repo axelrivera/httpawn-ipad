@@ -15,12 +15,15 @@
 
 #import "URLActionsViewController.h"
 #import "RequestInputViewController.h"
+#import "PreviewViewController.h"
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
+@property (assign, nonatomic) CGFloat topInset;
+@property (assign, nonatomic) CGFloat bottomInset;
 
 - (void)showURLActions;
 - (void)showParameters;
@@ -29,6 +32,8 @@
 - (void)showPreview;
 - (void)addToGroup;
 - (void)resetRequest;
+
+- (NSArray *)detailToolBarItems;
 
 @end
 
@@ -39,6 +44,9 @@
     self = [super initWithNibName:@"DetailViewController" bundle:nil];
     if (self) {
         self.title = @"Request Details";
+        _request = nil;
+        _headers = @[];
+        _parameters = @[];
     }
     return self;
 }
@@ -47,13 +55,8 @@
 {
     [super viewDidLoad];
 
-    self.headerView = [[RequestHeaderView alloc] initWithFrame:CGRectZero];
-    self.headerView.delegate = self;
+    [self setToolbarItems:[self detailToolBarItems] animated:NO];
 
-    [self.view addSubview:self.headerView];
-
-    [self.headerView.URLActionButton setTitle:URLActionGet forState:UIControlStateNormal];
-    
     self.textView = [[UITextView alloc] initWithFrame:CGRectZero];
     self.textView.backgroundColor = [UIColor whiteColor];
     self.textView.textColor = [UIColor blackColor];
@@ -62,6 +65,13 @@
     self.textView.editable = NO;
     
     [self.view addSubview:self.textView];
+
+    self.headerView = [[RequestHeaderView alloc] initWithFrame:CGRectZero];
+    self.headerView.delegate = self;
+
+    [self.view addSubview:self.headerView];
+
+    [self.headerView.URLActionButton setTitle:URLActionGet forState:UIControlStateNormal];
 }
 
 - (void)viewDidLayoutSubviews
@@ -69,11 +79,22 @@
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:self.topOrigin];
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
-    
-    [self.textView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.headerView];
+
+    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0.0];
     [self.textView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.textView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
     [self.textView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.0];
+
+    self.topInset = self.topOrigin + [RequestHeaderView viewHeight];
+
+    UIEdgeInsets contentInset = self.textView.contentInset;
+    contentInset.top = self.topInset;
+
+    UIEdgeInsets scrollInset = self.textView.scrollIndicatorInsets;
+    scrollInset.top = self.topInset;
+
+    self.textView.contentInset = contentInset;
+    self.textView.scrollIndicatorInsets = scrollInset;
 
     [self.view layoutSubviews];
 }
@@ -123,7 +144,7 @@
 - (void)showParameters
 {
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeParameters
-                                                                                   dataSource:@[]];
+                                                                                   dataSource:self.parameters];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -135,7 +156,7 @@
 - (void)showHeaders
 {
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeHeaders
-                                                                                   dataSource:@[]];
+                                                                                   dataSource:self.headers];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -153,15 +174,28 @@
     NSString *URLString = self.headerView.URLTextField.text;
     NSString *method = [self.headerView.URLActionButton titleForState:UIControlStateNormal];
     
-    RCRequest *requestObject = [[RCRequest alloc] initWithMethod:method URLString:URLString];
-    [requestObject runWithCompletion:^(RCResponse *response, NSError *error) {
-        self.textView.text = [response formattedBodyString];
+    self.request = [[RCRequest alloc] initWithMethod:method URLString:URLString];
+    self.request.headers = self.headers;
+    self.request.parameters = self.parameters;
+
+    [[RestClientData sharedData] addRequestToHistory:self.request];
+
+    [self.request runWithCompletion:^(RCResponse *response, NSError *error) {
+        self.segmentedControl.selectedSegmentIndex = RequestSegmentIndexBody;
+        [self segmentedControlChanged:self.segmentedControl];
     }];
 }
 
 - (void)showPreview
 {
-    DLog(@"Show Preview!");
+    PreviewViewController *controller = [[PreviewViewController alloc] initWithURLString:self.headerView.URLTextField.text
+                                                                                 headers:self.headers
+                                                                              parameters:self.parameters];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)addToGroup
@@ -171,7 +205,51 @@
 
 - (void)resetRequest
 {
-    DLog(@"Reset Request!");
+    [self.view endEditing:YES];
+    self.headerView.URLTextField.text = @"";
+    [self.headerView.URLActionButton setTitle:RCRequestMethodGet forState:UIControlStateNormal];
+    self.textView.text = @"";
+
+    self.headers = @[];
+    self.parameters = @[];
+    self.request = nil;
+}
+
+- (NSArray *)detailToolBarItems
+{
+    UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                  target:nil
+                                                                                  action:nil];
+
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Body", @"Headers", @"Raw" ]];
+    self.segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.segmentedControl setWidth:100.0 forSegmentAtIndex:RequestSegmentIndexBody];
+    [self.segmentedControl setWidth:100.0 forSegmentAtIndex:RequestSegmentIndexHeaders];
+    [self.segmentedControl setWidth:100.0 forSegmentAtIndex:RequestSegmentIndexRaw];
+    [self.segmentedControl addTarget:self action:@selector(segmentedControlChanged:) forControlEvents:UIControlEventValueChanged];
+
+    UIBarButtonItem *segmentedItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
+
+    return @[ flexibleItem, segmentedItem, flexibleItem ];
+}
+
+#pragma mark - Selector Methods
+
+- (void)segmentedControlChanged:(UISegmentedControl *)segmentedControl
+{
+    if (self.request.response) {
+        NSString *text = nil;
+        if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody) {
+            text = [self.request.response formattedBodyString];
+        } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexHeaders) {
+            text = [self.request.response headerString];
+        } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexRaw) {
+            text = [self.request.response rawString];
+        }
+
+        self.textView.text = text;
+        [self.textView setContentOffset:CGPointMake(0.0, -self.topInset) animated:NO];
+    }
 }
 
 #pragma mark - RequestHeaderViewDelegate Methods
@@ -217,9 +295,32 @@
             didFinishWithInputType:(RequestInputType)inputType
                            objects:(NSArray *)objects
 {
-    DLog(@"Objects: %@", objects);
     [controller.view endEditing:YES];
+
+    if (inputType == RequestInputTypeHeaders) {
+        self.headers = objects;
+    } else {
+        self.parameters = objects;
+    }
+
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)shouldUpdateRequest:(RCRequest *)request
+{
+    [self resetRequest];
+    self.headerView.URLTextField.text = request.URLString;
+    [self.headerView.URLActionButton setTitle:request.requestMethod forState:UIControlStateNormal];
+
+    NSArray *headers = IsEmpty(request.headers) ? @[] : request.headers;
+    NSArray *parameters = IsEmpty(request.parameters) ? @[] : request.parameters;
+
+    self.headers = headers;
+    self.parameters = parameters;
+
+    self.request = request;
+    
+    [self.masterPopoverController dismissPopoverAnimated:YES];
 }
 
 #pragma mark - SplitViewDelegate Methods
@@ -229,7 +330,7 @@
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
        forPopoverController:(UIPopoverController *)popoverController
 {
-    barButtonItem.title = @"Main";
+    barButtonItem.title = @"Rest Client";
     [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
     self.masterPopoverController = popoverController;
 }

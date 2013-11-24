@@ -11,17 +11,24 @@
 #import "MainViewController.h"
 #import "DetailViewController.h"
 
+@interface AppDelegate ()
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[RestClientData sharedData] loadData];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    MainViewController *mainController = [[MainViewController alloc] init];
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mainController];
 
     DetailViewController *detailController = [[DetailViewController alloc] init];
     UINavigationController *detailNavController = [[UINavigationController alloc] initWithRootViewController:detailController];
+
+    MainViewController *mainController = [[MainViewController alloc] init];
+    mainController.delegate = detailController;
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mainController];
 
     self.splitViewController = [[UISplitViewController alloc] init];
     self.splitViewController.viewControllers = @[ self.navigationController, detailNavController ];
@@ -43,6 +50,7 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [[RestClientData sharedData] saveData];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -58,6 +66,15 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[RestClientData sharedData] saveData];;
+}
+
+#pragma mark - Private Methods
+
+- (void)archiveRestClientData
+{
+    [NSKeyedArchiver archiveRootObject:[RestClientData sharedData]
+                                toFile:pathInDocumentDirectory(kRestClientDataFile)];
 }
 
 @end

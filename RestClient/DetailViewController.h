@@ -8,11 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+#import "RequestDetailDelegate.h"
+
 @class RequestHeaderView;
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
+typedef NS_ENUM(NSInteger, RequestSegmentIndex) {
+    RequestSegmentIndexNone = -1,
+    RequestSegmentIndexBody,
+    RequestSegmentIndexHeaders,
+    RequestSegmentIndexRaw
+};
+
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate, RequestDetailDelegate>
 
 @property (strong, nonatomic) RequestHeaderView *headerView;
 @property (strong, nonatomic) UITextView *textView;
+@property (strong, nonatomic) UISegmentedControl *segmentedControl;
+
+@property (copy, nonatomic) RCRequest *request;
+@property (strong, nonatomic) NSArray *headers;
+@property (strong, nonatomic) NSArray *parameters;
 
 @end

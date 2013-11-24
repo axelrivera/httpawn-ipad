@@ -13,6 +13,8 @@
 @property (assign, nonatomic) NSInteger statusCode;
 @property (copy, nonatomic) NSString *statusCodeString;
 
+@property (assign, nonatomic) NSTimeInterval responseTime;
+
 @property (strong, nonatomic) NSDictionary *headersDictionary;
 
 @property (strong, nonatomic) NSString *requestURLString;

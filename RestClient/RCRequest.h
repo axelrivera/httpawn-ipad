@@ -16,14 +16,16 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 
 @class AFHTTPRequestOperationManager;
 
-@interface RCRequest : NSObject <NSCoding>
+@interface RCRequest : NSObject <NSCoding, NSCopying>
 
-@property (strong, nonatomic, readonly) AFHTTPRequestOperationManager *manager;
-@property (strong, nonatomic) NSString *method;
+@property (copy, nonatomic) NSString *requestName;
+@property (copy, nonatomic) NSString *requestDescription;
+@property (strong, nonatomic) NSString *requestMethod;
 @property (copy, nonatomic) NSString *URLString;
 @property (strong, nonatomic) NSArray *headers;
 @property (strong, nonatomic) NSArray *parameters;
 @property (strong, nonatomic) RCResponse *response;
+@property (strong, nonatomic, readonly) AFHTTPRequestOperationManager *manager;
 
 - (id)initWithMethod:(NSString *)method URLString:(NSString *)URLString;
 
@@ -33,6 +35,10 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 - (NSArray *)availableParameters;
 - (NSDictionary *)availableParametersDictionary;
 
+- (NSString *)fullURLString;
+
 - (void)runWithCompletion:(RCRequestObjectResponse)completion;
+
+- (BOOL)isEqualToRequest:(RCRequest *)request;
 
 @end

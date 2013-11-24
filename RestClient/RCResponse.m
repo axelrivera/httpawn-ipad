@@ -18,6 +18,7 @@
     if (self) {
         _statusCode = 0;
         _statusCodeString = @"";
+        _responseTime = 0.0;
         _requestURLString = @"";
         _headersDictionary = @{};
         _responseData = [NSData data];
@@ -143,7 +144,7 @@
     NSMutableString *string = [@"" mutableCopy];
     [string appendString:[self statusString]];
     if (self.headersDictionary) {
-        [string appendString:@"\n\n++++++++++++++++++++++++++++++++++++++++++++++++++\n\n"];
+        [string appendString:@"\n\n"];
         [string appendString:[self.headersDictionary stringFromHeaders]];
     }
     return string;
@@ -160,11 +161,7 @@
 
 - (NSString *)rawString
 {
-    NSMutableString *string = [@"" mutableCopy];
-    [string appendString:[self statusString]];
-    [string appendFormat:@"\n==================================================\n\n"];
-    [string appendString:[self bodyString]];
-    return string;
+    return self.bodyString;
 }
 
 @end

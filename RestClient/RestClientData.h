@@ -13,6 +13,11 @@
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) NSMutableArray *history;
 
+- (void)loadData;
+- (void)saveData;
+
+- (void)addRequestToHistory:(RCRequest *)request;
+
 + (RestClientData *)sharedData;
 
 @end
