@@ -10,10 +10,8 @@
 
 @interface PreviewViewController : UITableViewController
 
-@property (strong, nonatomic) NSString *URLString;
-@property (strong, nonatomic) NSArray *headers;
-@property (strong, nonatomic) NSArray *parameters;
+@property (strong, nonatomic) RCRequest *request;
 
-- (id)initWithURLString:(NSString *)URLString headers:(NSArray *)headers parameters:(NSArray *)parameters;
+- (id)initWithRequest:(RCRequest *)request;
 
 @end

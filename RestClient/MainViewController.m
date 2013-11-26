@@ -51,8 +51,8 @@
                                                             action:@selector(clearHistoryAction:)];
 
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Groups", @"History" ]];
-    [self.segmentedControl setWidth:120.0 forSegmentAtIndex:MainViewTypeGroup];
-    [self.segmentedControl setWidth:120.0 forSegmentAtIndex:MainViewTypeHistory];
+    [self.segmentedControl setWidth:120.0 forSegmentAtIndex:RCRequestTypeGroup];
+    [self.segmentedControl setWidth:120.0 forSegmentAtIndex:RCRequestTypeHistory];
 
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChanged:)
@@ -74,7 +74,7 @@
     self.groups = [RestClientData sharedData].groups;
     self.history = [RestClientData sharedData].history;
     
-    self.segmentedControl.selectedSegmentIndex = MainViewTypeGroup;
+    self.segmentedControl.selectedSegmentIndex = RCRequestTypeGroup;
     [self segmentedControlChanged:self.segmentedControl];
 }
 
@@ -99,7 +99,7 @@
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
     
-    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
         if (editing) {
             self.navigationItem.rightBarButtonItem = nil;
         } else {
@@ -113,7 +113,7 @@
 - (NSArray *)dataSource
 {
     NSArray *array = nil;
-    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeHistory) {
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
         array = self.history;
     } else {
         array = self.groups;
@@ -126,7 +126,7 @@
 
 - (void)segmentedControlChanged:(UISegmentedControl *)segmentedControl
 {
-    if (segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+    if (segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
         self.title = @"Groups";
         self.navigationItem.leftBarButtonItem = [self editButtonItem];
         self.navigationItem.rightBarButtonItem = self.addGroupItem;
@@ -164,7 +164,7 @@
 - (void)historyUpdated:(NSNotification *)notification
 {
     self.history = [RestClientData sharedData].history;
-    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeHistory) {
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
         [self.tableView reloadData];
     }
 }
@@ -202,7 +202,7 @@
     static NSString *GroupIdentifier = @"GroupCell";
     static NSString *HistoryIdentifier = @"HistoryCell";
 
-    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:GroupIdentifier];
@@ -240,12 +240,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
-
-    } else {
-        RCRequest *request = [[self dataSource] objectAtIndex:indexPath.row];
-        [self.delegate shouldUpdateRequest:request];
-    }
+    RCRequest *request = [[self dataSource] objectAtIndex:indexPath.row];
+    [self.delegate shouldUpdateRequest:request requestType:self.segmentedControl.selectedSegmentIndex];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
@@ -269,7 +265,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        if (self.segmentedControl.selectedSegmentIndex == MainViewTypeGroup) {
+        if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
             [self.groups removeObjectAtIndex:indexPath.row];
         } else {
             [self.history removeObjectAtIndex:indexPath.row];

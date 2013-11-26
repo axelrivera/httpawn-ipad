@@ -48,7 +48,7 @@
         _URLTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _URLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _URLTextField.placeholder = @"http://example.com";
-        _URLTextField.text = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
+        _URLTextField.text = @"";
         _URLTextField.keyboardType = UIKeyboardTypeURL;
 
         [self addSubview:_URLTextField];

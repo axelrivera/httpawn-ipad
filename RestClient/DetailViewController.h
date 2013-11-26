@@ -25,8 +25,6 @@ typedef NS_ENUM(NSInteger, RequestSegmentIndex) {
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 
-@property (copy, nonatomic) RCRequest *request;
-@property (strong, nonatomic) NSArray *headers;
-@property (strong, nonatomic) NSArray *parameters;
+@property (strong, nonatomic) RCRequest *request;
 
 @end

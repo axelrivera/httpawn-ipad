@@ -23,13 +23,11 @@
     return self;
 }
 
-- (id)initWithURLString:(NSString *)URLString headers:(NSArray *)headers parameters:(NSArray *)parameters
+- (id)initWithRequest:(RCRequest *)request
 {
     self = [self init];
     if (self) {
-        _URLString = URLString;
-        _headers = headers;
-        _parameters = parameters;
+        _request = request;
     }
     return self;
 }
@@ -67,9 +65,9 @@
     if (section == 0) {
         rows = 1;
     } else if (section == 1) {
-        rows = [self.headers count];
+        rows = [self.request.headers count];
     } else {
-        rows = [self.parameters count];
+        rows = [self.request.parameters count];
     }
     
     return rows;
@@ -88,7 +86,7 @@
             cell.textLabel.font = [UIFont systemFontOfSize:13.0];
         }
         
-        cell.textLabel.text = self.URLString;
+        cell.textLabel.text = self.request.URLString;
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -98,9 +96,9 @@
     RCRequestOption *option = nil;
     
     if (indexPath.section == 1) {
-        option = self.headers[indexPath.row];
+        option = self.request.headers[indexPath.row];
     } else {
-        option = self.parameters[indexPath.row];
+        option = self.request.parameters[indexPath.row];
     }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -121,9 +119,9 @@
     NSString *title = nil;
     if (section == 0) {
         title = @"URL String";
-    } else if (section == 1 && [self.headers count] > 0) {
+    } else if (section == 1 && [self.request.headers count] > 0) {
         title = @"Headers";
-    } else if (section == 2 && [self.parameters count] > 0) {
+    } else if (section == 2 && [self.request.parameters count] > 0) {
         title = @"Parameters";
     }
     return title;

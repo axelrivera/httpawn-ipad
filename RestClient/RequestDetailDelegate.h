@@ -10,8 +10,13 @@
 
 #import "RCRequest.h"
 
+typedef NS_ENUM(NSInteger, RCRequestType) {
+    RCRequestTypeGroup = 0,
+    RCRequestTypeHistory
+};
+
 @protocol RequestDetailDelegate <NSObject>
 
-- (void)shouldUpdateRequest:(RCRequest *)request;
+- (void)shouldUpdateRequest:(RCRequest *)request requestType:(RCRequestType)requestType;
 
 @end

@@ -44,9 +44,7 @@
     self = [super initWithNibName:@"DetailViewController" bundle:nil];
     if (self) {
         self.title = @"Request Details";
-        _request = nil;
-        _headers = @[];
-        _parameters = @[];
+        _request = [[RCRequest alloc] init];
     }
     return self;
 }
@@ -67,11 +65,13 @@
     [self.view addSubview:self.textView];
 
     self.headerView = [[RequestHeaderView alloc] initWithFrame:CGRectZero];
+    self.headerView.URLTextField.delegate = self;
     self.headerView.delegate = self;
 
     [self.view addSubview:self.headerView];
-
-    [self.headerView.URLActionButton setTitle:URLActionGet forState:UIControlStateNormal];
+    
+    self.headerView.URLTextField.text = self.request.URLString;
+    [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
 }
 
 - (void)viewDidLayoutSubviews
@@ -144,7 +144,7 @@
 - (void)showParameters
 {
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeParameters
-                                                                                   dataSource:self.parameters];
+                                                                                   dataSource:self.request.parameters];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -156,7 +156,7 @@
 - (void)showHeaders
 {
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeHeaders
-                                                                                   dataSource:self.headers];
+                                                                                   dataSource:self.request.headers];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -171,13 +171,21 @@
     
     [self.view endEditing:YES];
     
-    NSString *URLString = self.headerView.URLTextField.text;
-    NSString *method = [self.headerView.URLActionButton titleForState:UIControlStateNormal];
+    NSString *URLString = [self.request.URLString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    self.request = [[RCRequest alloc] initWithMethod:method URLString:URLString];
-    self.request.headers = self.headers;
-    self.request.parameters = self.parameters;
-
+    if (IsEmpty(URLString)) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"HTTPawn"
+                                                            message:@"Invalid URL"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
+    
+    self.request.URLString = self.headerView.URLTextField.text;
+    self.request.requestMethod = [self.headerView.URLActionButton titleForState:UIControlStateNormal];
+    
     [[RestClientData sharedData] addRequestToHistory:self.request];
 
     [self.request runWithCompletion:^(RCResponse *response, NSError *error) {
@@ -188,9 +196,7 @@
 
 - (void)showPreview
 {
-    PreviewViewController *controller = [[PreviewViewController alloc] initWithURLString:self.headerView.URLTextField.text
-                                                                                 headers:self.headers
-                                                                              parameters:self.parameters];
+    PreviewViewController *controller = [[PreviewViewController alloc] initWithRequest:self.request];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -206,13 +212,12 @@
 - (void)resetRequest
 {
     [self.view endEditing:YES];
-    self.headerView.URLTextField.text = @"";
-    [self.headerView.URLActionButton setTitle:RCRequestMethodGet forState:UIControlStateNormal];
+    
+    self.request = [[RCRequest alloc] init];
+    
+    self.headerView.URLTextField.text = self.request.URLString;
+    [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
     self.textView.text = @"";
-
-    self.headers = @[];
-    self.parameters = @[];
-    self.request = nil;
 }
 
 - (NSArray *)detailToolBarItems
@@ -298,27 +303,27 @@
     [controller.view endEditing:YES];
 
     if (inputType == RequestInputTypeHeaders) {
-        self.headers = objects;
+        self.request.headers = objects;
     } else {
-        self.parameters = objects;
+        self.request.parameters = objects;
     }
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)shouldUpdateRequest:(RCRequest *)request
+- (void)shouldUpdateRequest:(RCRequest *)request requestType:(RCRequestType)requestType
 {
-    [self resetRequest];
-    self.headerView.URLTextField.text = request.URLString;
-    [self.headerView.URLActionButton setTitle:request.requestMethod forState:UIControlStateNormal];
-
-    NSArray *headers = IsEmpty(request.headers) ? @[] : request.headers;
-    NSArray *parameters = IsEmpty(request.parameters) ? @[] : request.parameters;
-
-    self.headers = headers;
-    self.parameters = parameters;
-
-    self.request = request;
+    if (requestType == RCRequestTypeGroup) {
+        self.request = request;
+    } else if (requestType == RCRequestTypeHistory) {
+        self.request = [request copy];
+    } else {
+        self.request = [[RCRequest alloc] init];
+    }
+    
+    self.headerView.URLTextField.text = self.request.URLString;
+    [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
+    self.textView.text = @"";
     
     [self.masterPopoverController dismissPopoverAnimated:YES];
 }
@@ -344,5 +349,13 @@
     self.masterPopoverController = nil;
 }
 
+#pragma mark - UITextFieldDelegate Methods
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.headerView.URLTextField) {
+        self.request.URLString = textField.text;
+    }
+}
 
 @end

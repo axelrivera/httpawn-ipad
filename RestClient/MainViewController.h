@@ -10,11 +10,6 @@
 
 #import "RequestDetailDelegate.h"
 
-typedef NS_ENUM(NSInteger, MainViewType) {
-    MainViewTypeGroup = 0,
-    MainViewTypeHistory
-};
-
 @interface MainViewController : UITableViewController
 
 @property (weak, nonatomic) id <RequestDetailDelegate> delegate;

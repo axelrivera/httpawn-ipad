@@ -87,7 +87,7 @@
 		1670F247183ADCA4000CC10D /* GroupEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupEditViewController.h; sourceTree = "<group>"; };
 		1670F248183ADCA4000CC10D /* GroupEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupEditViewController.m; sourceTree = "<group>"; };
 		1670F249183ADCA4000CC10D /* GroupEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupEditViewController.xib; sourceTree = "<group>"; };
-		16A4E7191832F68F0037E810 /* RestClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		16A4E7191832F68F0037E810 /* HTTPawn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPawn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16A4E71C1832F68F0037E810 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		16A4E71E1832F68F0037E810 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16A4E7201832F68F0037E810 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -188,7 +188,7 @@
 		16A4E71A1832F68F0037E810 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				16A4E7191832F68F0037E810 /* RestClient.app */,
+				16A4E7191832F68F0037E810 /* HTTPawn.app */,
 				16A4E7341832F6900037E810 /* RestClientTests.xctest */,
 			);
 			name = Products;
@@ -352,7 +352,7 @@
 			);
 			name = RestClient;
 			productName = RestClient;
-			productReference = 16A4E7191832F68F0037E810 /* RestClient.app */;
+			productReference = 16A4E7191832F68F0037E810 /* HTTPawn.app */;
 			productType = "com.apple.product-type.application";
 		};
 		16A4E7331832F6900037E810 /* RestClientTests */ = {
@@ -614,7 +614,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestClient/RestClient-Prefix.pch";
 				INFOPLIST_FILE = "RestClient/RestClient-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HTTPawn;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -628,7 +628,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestClient/RestClient-Prefix.pch";
 				INFOPLIST_FILE = "RestClient/RestClient-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HTTPawn;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

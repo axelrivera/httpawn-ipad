@@ -20,10 +20,12 @@
 {
     self = [super init];
     if (self) {
+        NSString *URLString = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
+        
         _requestName = nil;
         _requestDescription = nil;
         _requestMethod = RCRequestMethodGet;
-        _URLString = [@"" copy];
+        _URLString = [URLString copy];
         _headers = @[];
         _parameters = @[];
         _response = nil;
