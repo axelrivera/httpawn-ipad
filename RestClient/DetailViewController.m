@@ -16,6 +16,7 @@
 #import "URLActionsViewController.h"
 #import "RequestInputViewController.h"
 #import "PreviewViewController.h"
+#import "GroupAddViewController.h"
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate, UITextFieldDelegate>
@@ -72,6 +73,7 @@
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
+    self.headerView.saveButton.enabled = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -206,7 +208,12 @@
 
 - (void)addToGroup
 {
-    DLog(@"Add To Group!");
+    GroupAddViewController *controller = [[GroupAddViewController alloc] init];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)resetRequest
@@ -217,6 +224,7 @@
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
+    self.headerView.saveButton.enabled = NO;
     self.textView.text = @"";
 }
 
@@ -314,10 +322,13 @@
 - (void)shouldUpdateRequest:(RCRequest *)request requestType:(RCRequestType)requestType
 {
     if (requestType == RCRequestTypeGroup) {
+        self.headerView.saveButton.enabled = YES;
         self.request = request;
     } else if (requestType == RCRequestTypeHistory) {
+        self.headerView.saveButton.enabled = NO;
         self.request = [request copy];
     } else {
+        self.headerView.saveButton.enabled = NO;
         self.request = [[RCRequest alloc] init];
     }
     

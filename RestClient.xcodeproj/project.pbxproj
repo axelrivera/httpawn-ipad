@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1600A04E18443EC70089CA98 /* GroupAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1600A04C18443EC70089CA98 /* GroupAddViewController.m */; };
+		1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1600A04D18443EC70089CA98 /* GroupAddViewController.xib */; };
 		16520286183B124400FB4D37 /* RCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520281183B124400FB4D37 /* RCRequest.m */; };
 		16520287183B124400FB4D37 /* RCRequestOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520283183B124400FB4D37 /* RCRequestOption.m */; };
 		16520288183B124400FB4D37 /* RCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520285183B124400FB4D37 /* RCResponse.m */; };
@@ -59,6 +61,9 @@
 
 /* Begin PBXFileReference section */
 		046C0FB9138A47B68786F9EF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		1600A04B18443EC70089CA98 /* GroupAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupAddViewController.h; sourceTree = "<group>"; };
+		1600A04C18443EC70089CA98 /* GroupAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupAddViewController.m; sourceTree = "<group>"; };
+		1600A04D18443EC70089CA98 /* GroupAddViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupAddViewController.xib; sourceTree = "<group>"; };
 		164591A4183F7D930094DAC1 /* RequestDetailDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailDelegate.h; sourceTree = "<group>"; };
 		16520280183B124400FB4D37 /* RCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequest.h; sourceTree = "<group>"; };
 		16520281183B124400FB4D37 /* RCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRequest.m; sourceTree = "<group>"; };
@@ -254,6 +259,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				1600A04D18443EC70089CA98 /* GroupAddViewController.xib */,
 				16D9AB5D1840506D009D5EDF /* PreviewViewController.xib */,
 				1670F249183ADCA4000CC10D /* GroupEditViewController.xib */,
 				16A4E77418331C4B0037E810 /* MainViewController.xib */,
@@ -279,6 +285,8 @@
 				1670F248183ADCA4000CC10D /* GroupEditViewController.m */,
 				16D9AB5B1840506D009D5EDF /* PreviewViewController.h */,
 				16D9AB5C1840506D009D5EDF /* PreviewViewController.m */,
+				1600A04B18443EC70089CA98 /* GroupAddViewController.h */,
+				1600A04C18443EC70089CA98 /* GroupAddViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -412,6 +420,7 @@
 			files = (
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
+				1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
 				16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */,
 				1670F24B183ADCA4000CC10D /* GroupEditViewController.xib in Resources */,
@@ -473,6 +482,7 @@
 				16520291183B16D500FB4D37 /* NSArray+RestClient.m in Sources */,
 				1670F22818379144000CC10D /* RequestInputViewController.m in Sources */,
 				16A4E72D1832F6900037E810 /* AppDelegate.m in Sources */,
+				1600A04E18443EC70089CA98 /* GroupAddViewController.m in Sources */,
 				1670F23918395D26000CC10D /* RequestInputCell.m in Sources */,
 				16520293183B16D500FB4D37 /* NSDictionary+Request.m in Sources */,
 				16520292183B16D500FB4D37 /* NSData+RestClient.m in Sources */,
