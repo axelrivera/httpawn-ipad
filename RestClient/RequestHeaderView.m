@@ -86,14 +86,6 @@
         [_sendButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_sendButton];
-        
-        _saveButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        _saveButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
-        _saveButton.tag = RequestHeaderViewButtonTypeSave;
-        [_saveButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self addSubview:_saveButton];
 
         _previewButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _previewButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -150,11 +142,8 @@
 
     [self.sendButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.URLTextField withOffset:24.0];
     [self.sendButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.URLTextField withOffset:0.0];
-    
-    [self.saveButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.sendButton withOffset:20.0];
-    [self.saveButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
 
-    [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.saveButton withOffset:20.0];
+    [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.sendButton withOffset:20.0];
     [self.previewButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
 
     [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];

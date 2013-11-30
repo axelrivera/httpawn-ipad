@@ -13,7 +13,6 @@ typedef NS_ENUM(NSInteger, RequestHeaderViewButtonType) {
     RequestHeaderViewButtonTypeParameters,
     RequestHeaderViewButtonTypeHeaders,
     RequestHeaderViewButtonTypeSend,
-    RequestHeaderViewButtonTypeSave,
     RequestHeaderViewButtonTypePreview,
     RequestHeaderViewButtonTypeGroup,
     RequestHeaderViewButtonTypeReset
@@ -30,7 +29,6 @@ typedef NS_ENUM(NSInteger, RequestHeaderViewButtonType) {
 @property (strong, nonatomic, readonly) UIButton *parametersButton;
 @property (strong, nonatomic, readonly) UIButton *headersButton;
 @property (strong, nonatomic, readonly) UIButton *sendButton;
-@property (strong, nonatomic, readonly) UIButton *saveButton;
 @property (strong, nonatomic, readonly) UIButton *previewButton;
 @property (strong, nonatomic, readonly) UIButton *groupButton;
 @property (strong, nonatomic, readonly) UIButton *resetButton;

@@ -74,7 +74,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
-    self.headerView.saveButton.enabled = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -226,7 +225,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
-    self.headerView.saveButton.enabled = NO;
     self.textView.text = @"";
 }
 
@@ -364,13 +362,10 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)shouldUpdateRequest:(RCRequest *)request requestType:(RCRequestType)requestType
 {
     if (requestType == RCRequestTypeGroup) {
-        self.headerView.saveButton.enabled = YES;
         self.request = request;
     } else if (requestType == RCRequestTypeHistory) {
-        self.headerView.saveButton.enabled = NO;
         self.request = [request copy];
     } else {
-        self.headerView.saveButton.enabled = NO;
         self.request = [[RCRequest alloc] init];
     }
         
