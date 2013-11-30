@@ -106,7 +106,6 @@
     NSDictionary *dictionary = @{};
     if ([self isJSON]) {
         id object = [self.responseData JSONObject];
-        DLog(@"Object %@", object);
         if ([object isKindOfClass:[NSDictionary class]]) {
             dictionary = object;
         }

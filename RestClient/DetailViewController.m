@@ -19,7 +19,8 @@
 #import "GroupAddViewController.h"
 
 @interface DetailViewController ()
-<RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate, UITextFieldDelegate>
+<RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate,
+GroupAddViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
@@ -209,6 +210,7 @@
 - (void)addToGroup
 {
     GroupAddViewController *controller = [[GroupAddViewController alloc] init];
+    controller.delegate = self;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -304,6 +306,46 @@
     [self.URLActionsController dismissPopoverAnimated:YES];
 }
 
+- (void)groupAddViewController:(GroupAddViewController *)controller
+            didFinishWithGroup:(RCGroup *)group
+                   requestName:(NSString *)requestName
+            requestDescription:(NSString *)requestDesription
+{
+    if (group) {
+        if (!IsEmpty(requestName)) {
+            self.request.requestName = requestName;
+        }
+        
+        if (!IsEmpty(requestDesription)) {
+            self.request.requestDescription = requestDesription;
+        }
+        
+        RCRequest *request = [self.request copy];
+        [group addRequest:request];
+        self.request = request;
+        
+        if (![[RestClientData sharedData] containsGroup:group]) {
+            [[RestClientData sharedData].groups addObject:group];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GroupDidUpdateNotification
+                                                                object:nil
+                                                              userInfo:@{ kRCGroupKey : group }];
+        }
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupShouldUpdateRequestsNotification
+                                                            object:nil
+                                                          userInfo:@{ kRCGroupKey : group }];
+    }
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)groupAddViewControllerDidCancel:(GroupAddViewController *)controller
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)requestInputViewController:(RequestInputViewController *)controller
             didFinishWithInputType:(RequestInputType)inputType
                            objects:(NSArray *)objects
@@ -331,7 +373,7 @@
         self.headerView.saveButton.enabled = NO;
         self.request = [[RCRequest alloc] init];
     }
-    
+        
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
     self.textView.text = @"";
@@ -346,7 +388,7 @@
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
        forPopoverController:(UIPopoverController *)popoverController
 {
-    barButtonItem.title = @"Rest Client";
+    barButtonItem.title = @"HTTPawn";
     [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
     self.masterPopoverController = popoverController;
 }

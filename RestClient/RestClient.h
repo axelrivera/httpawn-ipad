@@ -13,6 +13,8 @@
 #import "NSDictionary+Request.h"
 #import "NSArray+RestClient.h"
 #import "NSString+RestClient.h"
+#import "RCSelect.h"
+#import "RCGroup.h"
 #import "RCRequest.h"
 #import "RestClientData.h"
 

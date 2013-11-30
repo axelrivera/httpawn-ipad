@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "RCGroup.h"
 #import "RCRequest.h"
 #import "RCResponse.h"
 #import "RCRequestOption.h"
@@ -18,6 +19,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 
 @interface RCRequest : NSObject <NSCoding, NSCopying>
 
+@property (weak, nonatomic) RCGroup *parentGroup;
 @property (copy, nonatomic) NSString *requestName;
 @property (copy, nonatomic) NSString *requestDescription;
 @property (strong, nonatomic) NSString *requestMethod;
@@ -40,5 +42,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 - (void)runWithCompletion:(RCRequestObjectResponse)completion;
 
 - (BOOL)isEqualToRequest:(RCRequest *)request;
+
+- (void)sanitize;
 
 @end

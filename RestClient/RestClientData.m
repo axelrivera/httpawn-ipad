@@ -52,6 +52,36 @@
     [NSKeyedArchiver archiveRootObject:self toFile:pathInDocumentDirectory(kRestClientDataFile)];
 }
 
+- (NSArray *)groupSelectObjectsWithSelectedGroup:(RCGroup *)selectedGroup
+{
+    NSMutableArray *groups = [@[] mutableCopy];
+    for (RCGroup *group in self.groups) {
+        RCSelect *select = [[RCSelect alloc] initWithName:group.groupName value:group.identifier];
+        if ([select isEqual:selectedGroup]) {
+            select.selected = YES;
+        }
+        [groups addObject:select];
+    }
+    return groups;
+}
+
+- (RCGroup *)groupWithIdentifier:(NSString *)identifier
+{
+    RCGroup *group = nil;
+    for (RCGroup *tmpGroup in self.groups) {
+        if ([tmpGroup.identifier isEqualToString:identifier]) {
+            group = tmpGroup;
+            break;
+        }
+    }
+    return group;
+}
+
+- (BOOL)containsGroup:(RCGroup *)group
+{
+    return [self.groups containsObject:group];
+}
+
 - (void)addRequestToHistory:(RCRequest *)request
 {
     if (self.history == nil || [self.history isEqual:[NSNull null]]) {
@@ -66,8 +96,13 @@
     }
 
     RCRequest *tmpRequest = [request copy];
+    [tmpRequest sanitize];
+    
     [self.history insertObject:tmpRequest atIndex:0];
-    [[NSNotificationCenter defaultCenter] postNotificationName:HistoryDidUpdateNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:HistoryDidUpdateNotification
+                                                        object:nil
+                                                      userInfo:@{ kRCRequestKey: tmpRequest }];
 }
 
 #pragma mark - Singleton Methods

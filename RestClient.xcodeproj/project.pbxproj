@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		1600A04E18443EC70089CA98 /* GroupAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1600A04C18443EC70089CA98 /* GroupAddViewController.m */; };
 		1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1600A04D18443EC70089CA98 /* GroupAddViewController.xib */; };
+		1645FAED1848D97400D19990 /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAEC1848D97400D19990 /* NSString+UUID.m */; };
+		1645FAF11848EDEE00D19990 /* GroupRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAEF1848EDEE00D19990 /* GroupRequestsViewController.m */; };
+		1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1645FAF01848EDEE00D19990 /* GroupRequestsViewController.xib */; };
+		1645FAF61848F15E00D19990 /* RequestViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAF51848F15E00D19990 /* RequestViewCell.m */; };
+		1645FAF91848F27C00D19990 /* RequestMethodView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAF81848F27C00D19990 /* RequestMethodView.m */; };
+		1645FAFC1849016700D19990 /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAFB1849016700D19990 /* UIImage+Tint.m */; };
+		1645FB0218491AE000D19990 /* RCSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0118491AE000D19990 /* RCSelect.m */; };
+		1645FB0618491BB500D19990 /* SelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0418491BB500D19990 /* SelectViewController.m */; };
+		1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1645FB0518491BB500D19990 /* SelectViewController.xib */; };
 		16520286183B124400FB4D37 /* RCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520281183B124400FB4D37 /* RCRequest.m */; };
 		16520287183B124400FB4D37 /* RCRequestOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520283183B124400FB4D37 /* RCRequestOption.m */; };
 		16520288183B124400FB4D37 /* RCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520285183B124400FB4D37 /* RCResponse.m */; };
@@ -65,6 +74,22 @@
 		1600A04C18443EC70089CA98 /* GroupAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupAddViewController.m; sourceTree = "<group>"; };
 		1600A04D18443EC70089CA98 /* GroupAddViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupAddViewController.xib; sourceTree = "<group>"; };
 		164591A4183F7D930094DAC1 /* RequestDetailDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailDelegate.h; sourceTree = "<group>"; };
+		1645FAEB1848D97400D19990 /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
+		1645FAEC1848D97400D19990 /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
+		1645FAEE1848EDEE00D19990 /* GroupRequestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRequestsViewController.h; sourceTree = "<group>"; };
+		1645FAEF1848EDEE00D19990 /* GroupRequestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRequestsViewController.m; sourceTree = "<group>"; };
+		1645FAF01848EDEE00D19990 /* GroupRequestsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRequestsViewController.xib; sourceTree = "<group>"; };
+		1645FAF41848F15E00D19990 /* RequestViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestViewCell.h; sourceTree = "<group>"; };
+		1645FAF51848F15E00D19990 /* RequestViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestViewCell.m; sourceTree = "<group>"; };
+		1645FAF71848F27B00D19990 /* RequestMethodView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestMethodView.h; sourceTree = "<group>"; };
+		1645FAF81848F27C00D19990 /* RequestMethodView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestMethodView.m; sourceTree = "<group>"; };
+		1645FAFA1849016700D19990 /* UIImage+Tint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Tint.h"; sourceTree = "<group>"; };
+		1645FAFB1849016700D19990 /* UIImage+Tint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Tint.m"; sourceTree = "<group>"; };
+		1645FB0018491AE000D19990 /* RCSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSelect.h; sourceTree = "<group>"; };
+		1645FB0118491AE000D19990 /* RCSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSelect.m; sourceTree = "<group>"; };
+		1645FB0318491BB500D19990 /* SelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectViewController.h; sourceTree = "<group>"; };
+		1645FB0418491BB500D19990 /* SelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectViewController.m; sourceTree = "<group>"; };
+		1645FB0518491BB500D19990 /* SelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectViewController.xib; sourceTree = "<group>"; };
 		16520280183B124400FB4D37 /* RCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequest.h; sourceTree = "<group>"; };
 		16520281183B124400FB4D37 /* RCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRequest.m; sourceTree = "<group>"; };
 		16520282183B124400FB4D37 /* RCRequestOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequestOption.h; sourceTree = "<group>"; };
@@ -155,11 +180,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1645FAF31848EDFB00D19990 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				16A4E77218331C4B0037E810 /* MainViewController.h */,
+				16A4E77318331C4B0037E810 /* MainViewController.m */,
+				1670F247183ADCA4000CC10D /* GroupEditViewController.h */,
+				1670F248183ADCA4000CC10D /* GroupEditViewController.m */,
+				1645FAEE1848EDEE00D19990 /* GroupRequestsViewController.h */,
+				1645FAEF1848EDEE00D19990 /* GroupRequestsViewController.m */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		1645FAFE18491A8F00D19990 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				16A4E75B1832FA1A0037E810 /* DetailViewController.h */,
+				16A4E75C1832FA1A0037E810 /* DetailViewController.m */,
+				1670F22518379144000CC10D /* RequestInputViewController.h */,
+				1670F22618379144000CC10D /* RequestInputViewController.m */,
+				1670F22F18379A5E000CC10D /* URLActionsViewController.h */,
+				1670F23018379A5E000CC10D /* URLActionsViewController.m */,
+				16D9AB5B1840506D009D5EDF /* PreviewViewController.h */,
+				16D9AB5C1840506D009D5EDF /* PreviewViewController.m */,
+				1600A04B18443EC70089CA98 /* GroupAddViewController.h */,
+				1600A04C18443EC70089CA98 /* GroupAddViewController.m */,
+			);
+			name = Detail;
+			sourceTree = "<group>";
+		};
+		1645FB0818491BBD00D19990 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				1645FB0318491BB500D19990 /* SelectViewController.h */,
+				1645FB0418491BB500D19990 /* SelectViewController.m */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		1670F23A18395D2C000CC10D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				1670F23718395D26000CC10D /* RequestInputCell.h */,
 				1670F23818395D26000CC10D /* RequestInputCell.m */,
+				1645FAF41848F15E00D19990 /* RequestViewCell.h */,
+				1645FAF51848F15E00D19990 /* RequestViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -175,6 +241,8 @@
 				16520285183B124400FB4D37 /* RCResponse.m */,
 				1670F244183ADB90000CC10D /* RCGroup.h */,
 				1670F245183ADB90000CC10D /* RCGroup.m */,
+				1645FB0018491AE000D19990 /* RCSelect.h */,
+				1645FB0118491AE000D19990 /* RCSelect.m */,
 			);
 			name = "Models + Data";
 			sourceTree = "<group>";
@@ -259,6 +327,8 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				1645FB0518491BB500D19990 /* SelectViewController.xib */,
+				1645FAF01848EDEE00D19990 /* GroupRequestsViewController.xib */,
 				1600A04D18443EC70089CA98 /* GroupAddViewController.xib */,
 				16D9AB5D1840506D009D5EDF /* PreviewViewController.xib */,
 				1670F249183ADCA4000CC10D /* GroupEditViewController.xib */,
@@ -273,20 +343,9 @@
 		16A4E7511832F9670037E810 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				16A4E77218331C4B0037E810 /* MainViewController.h */,
-				16A4E77318331C4B0037E810 /* MainViewController.m */,
-				16A4E75B1832FA1A0037E810 /* DetailViewController.h */,
-				16A4E75C1832FA1A0037E810 /* DetailViewController.m */,
-				1670F22518379144000CC10D /* RequestInputViewController.h */,
-				1670F22618379144000CC10D /* RequestInputViewController.m */,
-				1670F22F18379A5E000CC10D /* URLActionsViewController.h */,
-				1670F23018379A5E000CC10D /* URLActionsViewController.m */,
-				1670F247183ADCA4000CC10D /* GroupEditViewController.h */,
-				1670F248183ADCA4000CC10D /* GroupEditViewController.m */,
-				16D9AB5B1840506D009D5EDF /* PreviewViewController.h */,
-				16D9AB5C1840506D009D5EDF /* PreviewViewController.m */,
-				1600A04B18443EC70089CA98 /* GroupAddViewController.h */,
-				1600A04C18443EC70089CA98 /* GroupAddViewController.m */,
+				1645FAF31848EDFB00D19990 /* Main */,
+				1645FAFE18491A8F00D19990 /* Detail */,
+				1645FB0818491BBD00D19990 /* Shared */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -317,6 +376,8 @@
 				1670F23A18395D2C000CC10D /* Cells */,
 				16A4E76B1833042D0037E810 /* RequestHeaderView.h */,
 				16A4E76C1833042D0037E810 /* RequestHeaderView.m */,
+				1645FAF71848F27B00D19990 /* RequestMethodView.h */,
+				1645FAF81848F27C00D19990 /* RequestMethodView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -324,6 +385,10 @@
 		16A4E76E183309020037E810 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				1645FAFA1849016700D19990 /* UIImage+Tint.h */,
+				1645FAFB1849016700D19990 /* UIImage+Tint.m */,
+				1645FAEB1848D97400D19990 /* NSString+UUID.h */,
+				1645FAEC1848D97400D19990 /* NSString+UUID.m */,
 				16DE719B1840EC2D0060FCA4 /* FileHelpers.h */,
 				16DE719C1840EC2D0060FCA4 /* FileHelpers.m */,
 				16520289183B16D500FB4D37 /* NSArray+RestClient.h */,
@@ -420,9 +485,11 @@
 			files = (
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
+				1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */,
 				1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
 				16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */,
+				1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */,
 				1670F24B183ADCA4000CC10D /* GroupEditViewController.xib in Resources */,
 				16A4E7271832F6900037E810 /* InfoPlist.strings in Resources */,
 				16A4E72F1832F6900037E810 /* Images.xcassets in Resources */,
@@ -478,13 +545,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1645FAF11848EDEE00D19990 /* GroupRequestsViewController.m in Sources */,
 				16DE719D1840EC2D0060FCA4 /* FileHelpers.m in Sources */,
 				16520291183B16D500FB4D37 /* NSArray+RestClient.m in Sources */,
+				1645FAF61848F15E00D19990 /* RequestViewCell.m in Sources */,
 				1670F22818379144000CC10D /* RequestInputViewController.m in Sources */,
 				16A4E72D1832F6900037E810 /* AppDelegate.m in Sources */,
 				1600A04E18443EC70089CA98 /* GroupAddViewController.m in Sources */,
 				1670F23918395D26000CC10D /* RequestInputCell.m in Sources */,
 				16520293183B16D500FB4D37 /* NSDictionary+Request.m in Sources */,
+				1645FB0618491BB500D19990 /* SelectViewController.m in Sources */,
+				1645FAFC1849016700D19990 /* UIImage+Tint.m in Sources */,
 				16520292183B16D500FB4D37 /* NSData+RestClient.m in Sources */,
 				16A4E7291832F6900037E810 /* main.m in Sources */,
 				16D9AB5E1840506D009D5EDF /* PreviewViewController.m in Sources */,
@@ -493,10 +564,13 @@
 				16520286183B124400FB4D37 /* RCRequest.m in Sources */,
 				1670F24A183ADCA4000CC10D /* GroupEditViewController.m in Sources */,
 				16A4E77518331C4B0037E810 /* MainViewController.m in Sources */,
+				1645FB0218491AE000D19990 /* RCSelect.m in Sources */,
+				1645FAF91848F27C00D19990 /* RequestMethodView.m in Sources */,
 				1670F246183ADB90000CC10D /* RCGroup.m in Sources */,
 				16A4E771183309350037E810 /* UIViewController+Layout.m in Sources */,
 				16A4E76D1833042D0037E810 /* RequestHeaderView.m in Sources */,
 				16520294183B16D500FB4D37 /* NSString+RestClient.m in Sources */,
+				1645FAED1848D97400D19990 /* NSString+UUID.m in Sources */,
 				16520288183B124400FB4D37 /* RCResponse.m in Sources */,
 				16B635BB183DC58A00176848 /* RestClientData.m in Sources */,
 				16A4E75E1832FA1A0037E810 /* DetailViewController.m in Sources */,

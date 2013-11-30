@@ -8,9 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+@class RCRequest;
+
 @interface RCGroup : NSObject <NSCoding>
 
-@property (copy, nonatomic) NSString *name;
-@property (strong, nonatomic) NSMutableArray *requests;
+@property (copy, nonatomic, readonly) NSString *identifier;
+@property (copy, nonatomic) NSString *groupName;
+
+- (void)addRequest:(RCRequest *)request;
+- (void)insertRequest:(RCRequest *)request atIndex:(NSInteger)index;
+- (void)removeRequestAtIndex:(NSInteger)index;
+- (void)removeAllRequests;
+
+- (NSArray *)requests;
 
 @end

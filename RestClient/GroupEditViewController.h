@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 @property (assign, nonatomic) GroupEditType editType;
 @property (strong, nonatomic) RCGroup *groupObject;
 
-- (id)initWithGroupObject:(RCGroup *)groupObject;
+- (id)initWithType:(GroupEditType)type groupObject:(RCGroup *)groupObject;
 
 @end
 

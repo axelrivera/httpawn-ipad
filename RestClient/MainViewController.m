@@ -9,8 +9,11 @@
 #import "MainViewController.h"
 
 #import "GroupEditViewController.h"
+#import "GroupRequestsViewController.h"
+#import "RequestViewCell.h"
 
-@interface MainViewController () <GroupEditViewControllerDelegate, UIActionSheetDelegate>
+@interface MainViewController ()
+<GroupEditViewControllerDelegate, UIActionSheetDelegate, GroupRequestsViewControllerDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *addGroupItem;
 @property (strong, nonatomic) UIBarButtonItem *clearHistoryItem;
@@ -25,9 +28,7 @@
 {
     self = [super initWithNibName:@"MainViewController" bundle:nil];
     if (self) {
-        self.title = @"Rest Client";
-        _groups = [@[] mutableCopy];
-        _history = [@[] mutableCopy];
+        self.title = @"HTTPawn";
     }
     return self;
 }
@@ -51,8 +52,8 @@
                                                             action:@selector(clearHistoryAction:)];
 
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Groups", @"History" ]];
-    [self.segmentedControl setWidth:120.0 forSegmentAtIndex:RCRequestTypeGroup];
-    [self.segmentedControl setWidth:120.0 forSegmentAtIndex:RCRequestTypeHistory];
+    [self.segmentedControl setWidth:130.0 forSegmentAtIndex:RCRequestTypeGroup];
+    [self.segmentedControl setWidth:130.0 forSegmentAtIndex:RCRequestTypeHistory];
 
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlChanged:)
@@ -67,12 +68,14 @@
     self.toolbarItems = @[ flexibleItem, segmentedItem, flexibleItem ];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(groupUpdated:)
+                                                 name:GroupDidUpdateNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(historyUpdated:)
                                                  name:HistoryDidUpdateNotification
                                                object:nil];
-
-    self.groups = [RestClientData sharedData].groups;
-    self.history = [RestClientData sharedData].history;
     
     self.segmentedControl.selectedSegmentIndex = RCRequestTypeGroup;
     [self segmentedControlChanged:self.segmentedControl];
@@ -81,6 +84,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:NO animated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -91,6 +101,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:GroupDidUpdateNotification];
     [[NSNotificationCenter defaultCenter] removeObserver:HistoryDidUpdateNotification];
 }
 
@@ -114,9 +125,9 @@
 {
     NSArray *array = nil;
     if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
-        array = self.history;
+        array = [RestClientData sharedData].history;
     } else {
-        array = self.groups;
+        array = [RestClientData sharedData].groups;
     }
 
     return array;
@@ -161,9 +172,15 @@
     [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
 }
 
+- (void)groupUpdated:(NSNotification *)notification
+{
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
+        [self.tableView reloadData];
+    }
+}
+
 - (void)historyUpdated:(NSNotification *)notification
 {
-    self.history = [RestClientData sharedData].history;
     if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
         [self.tableView reloadData];
     }
@@ -181,13 +198,22 @@
                          object:(RCGroup *)groupObject
 {
     if (editType == GroupEditTypeCreate) {
-        [self.groups addObject:groupObject];
+        [[RestClientData sharedData].groups addObject:groupObject];
     } else {
-
+        NSInteger index = [[RestClientData sharedData].groups indexOfObject:groupObject];
+        if (index != NSNotFound) {
+            [[RestClientData sharedData].groups replaceObjectAtIndex:index withObject:groupObject];
+        }
     }
-
+    
     [self.tableView reloadData];
+    
     [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)groupRequestsViewController:(GroupRequestsViewController *)controller didSelectRequest:(RCRequest *)request
+{
+    [self.delegate shouldUpdateRequest:request requestType:RCRequestTypeGroup];
 }
 
 #pragma mark - Table view data source
@@ -210,26 +236,20 @@
 
         id object = [self dataSource][indexPath.row];
 
-        cell.textLabel.text = [object name];
+        cell.textLabel.text = [object groupName];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         
         return cell;
     }
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:HistoryIdentifier];
+    RequestViewCell *cell = [tableView dequeueReusableCellWithIdentifier:HistoryIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:HistoryIdentifier];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:13.0];
-        cell.detailTextLabel.numberOfLines = 2;
+        cell = [[RequestViewCell alloc] initWithReuseIdentifier:HistoryIdentifier];
     }
 
     RCRequest *request = [self dataSource][indexPath.row];
 
-    cell.textLabel.text = request.requestMethod;
-    cell.detailTextLabel.text = [request fullURLString];
-
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [cell setRequest:request];
 
     return cell;
 }
@@ -240,14 +260,23 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    RCRequest *request = [[self dataSource] objectAtIndex:indexPath.row];
-    [self.delegate shouldUpdateRequest:request requestType:self.segmentedControl.selectedSegmentIndex];
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
+        RCGroup *group = [self dataSource][indexPath.row];
+        GroupRequestsViewController *controller = [[GroupRequestsViewController alloc] initWithGroup:group];
+        controller.delegate = self;
+
+        [self.navigationController pushViewController:controller animated:YES];
+    } else {
+        RCRequest *request = [self dataSource][indexPath.row];
+        [self.delegate shouldUpdateRequest:request requestType:self.segmentedControl.selectedSegmentIndex];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    RCGroup *groupObject = self.groups[indexPath.row];
-    GroupEditViewController *controller = [[GroupEditViewController alloc] initWithGroupObject:groupObject];
+    RCGroup *groupObject = [self dataSource][indexPath.row];
+    GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeCreate
+                                                                            groupObject:groupObject];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -261,18 +290,29 @@
     return YES;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
-            [self.groups removeObjectAtIndex:indexPath.row];
+            [[RestClientData sharedData].groups removeObjectAtIndex:indexPath.row];
         } else {
-            [self.history removeObjectAtIndex:indexPath.row];
+            [[RestClientData sharedData].history removeObjectAtIndex:indexPath.row];
         }
         
         [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height = 44.0;
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
+        height = [RequestViewCell cellHeight];
+    }
+    return height;
 }
 
 #pragma mark - UIActionSheetDelegate Methods
@@ -280,7 +320,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        [self.history removeAllObjects];
+        [[RestClientData sharedData].history removeAllObjects];
         [self.tableView reloadData];
     }
 }

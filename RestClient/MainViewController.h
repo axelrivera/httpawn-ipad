@@ -16,7 +16,4 @@
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 
-@property (strong, nonatomic) NSMutableArray *groups;
-@property (strong, nonatomic) NSMutableArray *history;
-
 @end

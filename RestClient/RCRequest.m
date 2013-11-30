@@ -22,6 +22,7 @@
     if (self) {
         NSString *URLString = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
         
+        _parentGroup = nil;
         _requestName = nil;
         _requestDescription = nil;
         _requestMethod = RCRequestMethodGet;
@@ -52,6 +53,7 @@
 {
     self = [super init];
     if (self) {
+        _parentGroup = [coder decodeObjectForKey:@"RCRequestParentGroup"];
         _requestName = [[coder decodeObjectForKey:@"RCRequestMethodName"] copy];
         _requestDescription = [[coder decodeObjectForKey:@"RCRequestMethodDescription"] copy];
         _requestMethod = [coder decodeObjectForKey:@"RCRequestMethodMethod"];
@@ -67,12 +69,26 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
+    [coder encodeConditionalObject:self.parentGroup forKey:@"RCRequestParentGroup"];
     [coder encodeObject:self.requestName forKey:@"RCRequestMethodName"];
     [coder encodeObject:self.requestDescription forKey:@"RCRequestMethodDescription"];
     [coder encodeObject:self.requestMethod forKey:@"RCRequestMethodMethod"];
     [coder encodeObject:self.URLString forKey:@"RCRequestURLString"];
     [coder encodeObject:self.headers forKey:@"RCRequestHeaders"];
     [coder encodeObject:self.parameters forKey:@"RCRequestParameters"];
+}
+
+#pragma mark - NSCopying Methods
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    RCRequest *myRequest = [[RCRequest alloc] initWithMethod:self.requestMethod URLString:self.URLString];
+    myRequest.parentGroup = self.parentGroup;
+    myRequest.headers = [[NSArray alloc] initWithArray:self.headers copyItems:YES];
+    myRequest.parameters = [[NSArray alloc] initWithArray:self.parameters copyItems:YES];
+    myRequest.response = nil;
+    
+    return myRequest;
 }
 
 #pragma mark - Public Methods
@@ -199,16 +215,6 @@
     [operation start];
 }
 
-- (id)copyWithZone:(NSZone *)zone
-{
-    RCRequest *myRequest = [[RCRequest alloc] initWithMethod:self.requestMethod URLString:self.URLString];
-    myRequest.headers = [[NSArray alloc] initWithArray:self.headers copyItems:YES];
-    myRequest.parameters = [[NSArray alloc] initWithArray:self.parameters copyItems:YES];
-    myRequest.response = nil;
-
-    return myRequest;
-}
-
 - (BOOL)isEqualToRequest:(RCRequest *)request
 {
     BOOL isMethodEqual = NO;
@@ -252,6 +258,13 @@
     }
 
 	return isMethodEqual && isURLEqual && isParametersEqual && isHeadersEqual ? YES : NO;
+}
+
+- (void)sanitize
+{
+    self.parentGroup = nil;
+    self.requestName = nil;
+    self.requestDescription = nil;
 }
 
 @end

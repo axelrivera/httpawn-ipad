@@ -25,12 +25,14 @@
     return self;
 }
 
-- (id)initWithGroupObject:(RCGroup *)groupObject
+- (id)initWithType:(GroupEditType)type groupObject:(RCGroup *)groupObject
 {
     self = [self init];
     if (self) {
-        self.title = @"Edit Group";
-        _editType = GroupEditTypeModify;
+        if (type == GroupEditTypeModify) {
+            self.title = @"Edit Group";
+        }
+        _editType = type;
         _groupObject = groupObject;
     }
     return self;
@@ -60,7 +62,7 @@
     self.nameTextField.delegate = self;
 
     if (self.editType == GroupEditTypeModify) {
-        self.nameTextField.text = self.groupObject.name;
+        self.nameTextField.text = self.groupObject.groupName;
     }
 }
 
@@ -80,7 +82,7 @@
         self.groupObject = [[RCGroup alloc] init];
     }
 
-    self.groupObject.name = self.nameTextField.text;
+    self.groupObject.groupName = self.nameTextField.text;
 
     [self.delegate groupEditViewController:self didFinishWithType:self.editType object:self.groupObject];
 }

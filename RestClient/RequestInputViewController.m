@@ -51,12 +51,6 @@
 {
     [super viewDidLoad];
 
-    if (self.inputType == RequestInputTypeHeaders) {
-        self.navigationItem.prompt = @"Enter Request Headers";
-    } else {
-        self.navigationItem.prompt = @"Enter Request Parameters";
-    }
-
     self.navigationItem.leftBarButtonItem = [self editButtonItem];
 
     self.doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone

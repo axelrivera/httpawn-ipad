@@ -34,7 +34,7 @@
                 <constraint firstAttribute="bottom" secondItem="8" secondAttribute="bottom" id="BkW-d4-leM"/>
                 <constraint firstAttribute="trailing" secondItem="8" secondAttribute="trailing" id="PGq-bY-tkD"/>
             </constraints>
-            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>

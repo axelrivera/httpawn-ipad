@@ -8,7 +8,9 @@
 
 #import "GroupAddViewController.h"
 
-@interface GroupAddViewController ()
+#import "SelectViewController.h"
+
+@interface GroupAddViewController () <SelectViewControllerDelegate>
 
 @end
 
@@ -23,13 +25,24 @@
     return self;
 }
 
+- (id)initWithCurrentGroup:(RCGroup *)currentGroup
+{
+    self = [self init];
+    if (self) {
+        _currentGroup = currentGroup;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(dismissAction:)];
+    if ([self.delegate respondsToSelector:@selector(groupAddViewControllerDidCancel:)]) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                              target:self
+                                                                                              action:@selector(dismissAction:)];
+    }
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                            target:self
@@ -68,12 +81,54 @@
 
 - (void)dismissAction:(id)sender
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate groupAddViewControllerDidCancel:self];
 }
 
 - (void)saveAction:(id)sender
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.view endEditing:YES];
+    
+    NSCharacterSet *characterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    
+    RCGroup *group = nil;
+    NSString *groupName = [self.groupTextField.text stringByTrimmingCharactersInSet:characterSet];
+    
+    if (!IsEmpty(groupName)) {
+        group = [[RCGroup alloc] init];
+        group.groupName = groupName;
+    } else {
+        group = self.currentGroup;
+    }
+    
+    if (group == nil) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"HTTPawn"
+                                                            message:@"You must select an existing group or create a new one."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
+    
+    NSString *requestName = [self.nameTextField.text stringByTrimmingCharactersInSet:characterSet];
+    NSString *requestDescription = [self.descriptionTextView.text stringByTrimmingCharactersInSet:characterSet];
+    
+    [self.delegate groupAddViewController:self
+                       didFinishWithGroup:group
+                              requestName:requestName
+                       requestDescription:requestDescription];
+}
+
+#pragma mark - UIViewControllerDelegate Methods
+
+- (void)selectViewController:(SelectViewController *)controller didSelectObject:(RCSelect *)object
+{
+    RCGroup *group = [[RestClientData sharedData] groupWithIdentifier:object.selectValue];
+    self.currentGroup = group;
+    
+    [self.tableView reloadData];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
@@ -112,7 +167,12 @@
             }
             
             cell.textLabel.text = @"Add To Existing Group";
-            cell.detailTextLabel.text = @"Select Group";
+            
+            if (self.currentGroup == nil) {
+                cell.detailTextLabel.text = @"Select Group";
+            } else {
+                cell.detailTextLabel.text = self.currentGroup.groupName;
+            }
             
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -159,6 +219,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        NSArray *groups = [[RestClientData sharedData] groupSelectObjectsWithSelectedGroup:self.currentGroup];
+        SelectViewController *controller = [[SelectViewController alloc] initWithDataSource:groups];
+        controller.delegate = self;
+        
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

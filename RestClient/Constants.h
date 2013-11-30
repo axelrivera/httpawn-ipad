@@ -22,6 +22,13 @@
 // Notifications
 
 #define HistoryDidUpdateNotification @"HistoryDidUpdateNotification"
+#define GroupDidUpdateNotification @"GroupDidUpdateNotification"
+#define GroupShouldUpdateRequestsNotification @"GroupShouldUpdateRequestsNotification"
+
+// UserDictionary Keys
+
+#define kRCGroupKey @"group"
+#define kRCRequestKey @"request"
 
 // Helper Macro Functions
 

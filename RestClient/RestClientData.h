@@ -16,8 +16,13 @@
 - (void)loadData;
 - (void)saveData;
 
+- (NSArray *)groupSelectObjectsWithSelectedGroup:(RCGroup *)selectedGroup;
+- (RCGroup *)groupWithIdentifier:(NSString *)identifier;
+- (BOOL)containsGroup:(RCGroup *)group;
+
 - (void)addRequestToHistory:(RCRequest *)request;
 
 + (RestClientData *)sharedData;
+
 
 @end
