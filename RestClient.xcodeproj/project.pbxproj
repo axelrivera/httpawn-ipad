@@ -18,6 +18,8 @@
 		1645FB0218491AE000D19990 /* RCSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0118491AE000D19990 /* RCSelect.m */; };
 		1645FB0618491BB500D19990 /* SelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0418491BB500D19990 /* SelectViewController.m */; };
 		1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1645FB0518491BB500D19990 /* SelectViewController.xib */; };
+		164A3379184A3C9C000DCB3B /* RequestEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164A3377184A3C9C000DCB3B /* RequestEditViewController.m */; };
+		164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */; };
 		16520286183B124400FB4D37 /* RCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520281183B124400FB4D37 /* RCRequest.m */; };
 		16520287183B124400FB4D37 /* RCRequestOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520283183B124400FB4D37 /* RCRequestOption.m */; };
 		16520288183B124400FB4D37 /* RCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520285183B124400FB4D37 /* RCResponse.m */; };
@@ -90,6 +92,9 @@
 		1645FB0318491BB500D19990 /* SelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectViewController.h; sourceTree = "<group>"; };
 		1645FB0418491BB500D19990 /* SelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectViewController.m; sourceTree = "<group>"; };
 		1645FB0518491BB500D19990 /* SelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectViewController.xib; sourceTree = "<group>"; };
+		164A3376184A3C9C000DCB3B /* RequestEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestEditViewController.h; sourceTree = "<group>"; };
+		164A3377184A3C9C000DCB3B /* RequestEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEditViewController.m; sourceTree = "<group>"; };
+		164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestEditViewController.xib; sourceTree = "<group>"; };
 		16520280183B124400FB4D37 /* RCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequest.h; sourceTree = "<group>"; };
 		16520281183B124400FB4D37 /* RCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRequest.m; sourceTree = "<group>"; };
 		16520282183B124400FB4D37 /* RCRequestOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRequestOption.h; sourceTree = "<group>"; };
@@ -189,6 +194,8 @@
 				1670F248183ADCA4000CC10D /* GroupEditViewController.m */,
 				1645FAEE1848EDEE00D19990 /* GroupRequestsViewController.h */,
 				1645FAEF1848EDEE00D19990 /* GroupRequestsViewController.m */,
+				164A3376184A3C9C000DCB3B /* RequestEditViewController.h */,
+				164A3377184A3C9C000DCB3B /* RequestEditViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -327,6 +334,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */,
 				1645FB0518491BB500D19990 /* SelectViewController.xib */,
 				1645FAF01848EDEE00D19990 /* GroupRequestsViewController.xib */,
 				1600A04D18443EC70089CA98 /* GroupAddViewController.xib */,
@@ -487,6 +495,7 @@
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
 				1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */,
 				1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */,
+				164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
 				16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */,
 				1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */,
@@ -567,6 +576,7 @@
 				1645FB0218491AE000D19990 /* RCSelect.m in Sources */,
 				1645FAF91848F27C00D19990 /* RequestMethodView.m in Sources */,
 				1670F246183ADB90000CC10D /* RCGroup.m in Sources */,
+				164A3379184A3C9C000DCB3B /* RequestEditViewController.m in Sources */,
 				16A4E771183309350037E810 /* UIViewController+Layout.m in Sources */,
 				16A4E76D1833042D0037E810 /* RequestHeaderView.m in Sources */,
 				16520294183B16D500FB4D37 /* NSString+RestClient.m in Sources */,

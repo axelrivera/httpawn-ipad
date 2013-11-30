@@ -8,7 +8,7 @@
 
 #import "GroupEditViewController.h"
 
-@interface GroupEditViewController () <UITextFieldDelegate>
+@interface GroupEditViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -94,6 +94,15 @@
 
 #pragma mark - Table view data source
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger sections = 1;
+    if (self.editType == GroupEditTypeModify) {
+        sections++;
+    }
+    return sections;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;
@@ -102,6 +111,25 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    static NSString *DeleteIdentifier = @"DeleteCell";
+
+    if (self.editType == GroupEditTypeModify && indexPath.section == 1) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DeleteIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DeleteIdentifier];
+            cell.textLabel.textColor = [UIColor redColor];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.font = [UIFont systemFontOfSize:17.0];
+        }
+
+        cell.textLabel.text = @"Delete Group";
+
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        
+        return cell;
+    }
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -120,6 +148,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    if (self.editType == GroupEditTypeModify && indexPath.section == 1) {
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to delete the group \"%@\"? This action can't be undone.",
+                           self.groupObject.groupName];
+
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Delete Group"
+                                                            message:message
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Continue", nil];
+        [alertView show];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate Methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        if ([self.delegate respondsToSelector:@selector(groupEditViewController:shouldDeleteGroupObject:)]) {
+            [self.delegate groupEditViewController:self shouldDeleteGroupObject:self.groupObject];
+        }
+    }
 }
 
 @end

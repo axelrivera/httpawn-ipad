@@ -55,6 +55,7 @@
     self.groupTextField.placeholder = @"Enter New Group Name";
     self.groupTextField.contentVerticalAlignment = UIViewContentModeCenter;
     self.groupTextField.font = [UIFont systemFontOfSize:15.0];
+    self.groupTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     
     self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0,
                                                                        0.0,
@@ -63,6 +64,7 @@
     self.nameTextField.placeholder = @"Enter Request Name";
     self.nameTextField.contentVerticalAlignment = UIViewContentModeCenter;
     self.nameTextField.font = [UIFont systemFontOfSize:15.0];
+    self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     
     self.descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0.0,
                                                                             0.0,

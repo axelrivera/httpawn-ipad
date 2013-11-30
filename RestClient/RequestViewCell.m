@@ -70,10 +70,15 @@
 
 - (void)setRequest:(RCRequest *)request
 {
+    [self setRequest:request ignoreName:NO];
+}
+
+- (void)setRequest:(RCRequest *)request ignoreName:(BOOL)ignoreName
+{
     _request = request;
 
     if (request) {
-        if (IsEmpty(request.requestName)) {
+        if (ignoreName || IsEmpty(request.requestName)) {
             self.titleLabel.text = [request fullURLString];
             self.titleLabel.font = [UIFont systemFontOfSize:13.0];
             self.titleLabel.numberOfLines = 2.0;

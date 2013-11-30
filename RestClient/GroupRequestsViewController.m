@@ -8,6 +8,7 @@
 
 #import "GroupRequestsViewController.h"
 
+#import "RequestEditViewController.h"
 #import "RequestViewCell.h"
 
 @interface GroupRequestsViewController ()
@@ -84,7 +85,9 @@
     
     RCRequest *request = [self.group requests][indexPath.row];
     [cell setRequest:request];
-    
+
+    cell.accessoryType = UITableViewCellAccessoryDetailButton;
+
     return cell;
 }
 
@@ -128,6 +131,21 @@ moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [RequestViewCell cellHeight];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    RCRequest *request = [self.group requests][indexPath.row];
+    RequestEditViewController *controller = [[RequestEditViewController alloc] initWithRequest:request];
+    
+    controller.completionBlock = ^{
+        [self.tableView reloadData];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 @end

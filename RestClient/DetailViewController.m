@@ -36,6 +36,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)resetRequest;
 
 - (NSArray *)detailToolBarItems;
+- (void)notifyRequestChange:(RCGroup *)group;
 
 @end
 
@@ -246,6 +247,17 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     return @[ flexibleItem, segmentedItem, flexibleItem ];
 }
 
+- (void)notifyRequestChange:(RCGroup *)group
+{
+    NSDictionary *userInfo = nil;
+    if (group) {
+        userInfo = @{ kRCGroupKey : group };
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:GroupDidUpdateNotification
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
 #pragma mark - Selector Methods
 
 - (void)segmentedControlChanged:(UISegmentedControl *)segmentedControl
@@ -325,9 +337,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
         if (![[RestClientData sharedData] containsGroup:group]) {
             [[RestClientData sharedData].groups addObject:group];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:GroupDidUpdateNotification
-                                                                object:nil
-                                                              userInfo:@{ kRCGroupKey : group }];
+            [self notifyRequestChange:group];
         }
         
         
@@ -354,6 +364,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
         self.request.headers = objects;
     } else {
         self.request.parameters = objects;
+        [self notifyRequestChange:self.request.parentGroup];
     }
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -403,6 +414,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 {
     if (textField == self.headerView.URLTextField) {
         self.request.URLString = textField.text;
+        [self notifyRequestChange:self.request.parentGroup];
     }
 }
 

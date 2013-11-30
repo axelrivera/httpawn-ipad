@@ -13,7 +13,7 @@
 #import "RequestViewCell.h"
 
 @interface MainViewController ()
-<GroupEditViewControllerDelegate, UIActionSheetDelegate, GroupRequestsViewControllerDelegate>
+<GroupEditViewControllerDelegate, UIAlertViewDelegate, GroupRequestsViewControllerDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *addGroupItem;
 @property (strong, nonatomic) UIBarButtonItem *clearHistoryItem;
@@ -137,14 +137,16 @@
 
 - (void)segmentedControlChanged:(UISegmentedControl *)segmentedControl
 {
+    [self setEditing:NO animated:YES];
+
     if (segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
         self.title = @"Groups";
         self.navigationItem.leftBarButtonItem = [self editButtonItem];
         self.navigationItem.rightBarButtonItem = self.addGroupItem;
     } else {
         self.title = @"History";
-        self.navigationItem.leftBarButtonItem = self.clearHistoryItem;
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem = self.clearHistoryItem;
     }
 
     [self.tableView reloadData];
@@ -152,7 +154,8 @@
 
 - (void)addGroupAction:(id)sender
 {
-    GroupEditViewController *controller = [[GroupEditViewController alloc] init];
+    GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeCreate
+                                                                            groupObject:nil];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -163,13 +166,14 @@
 
 - (void)clearHistoryAction:(id)sender
 {
-    NSString *title = @"Are you sure you want to remove all the requests available in history?";
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:@"Clear All"
-                                                    otherButtonTitles:nil];
-    [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+    NSString *message = @"Are you sure you want to remove all the requests available in history?";
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Clear History"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Continue", nil];
+
+    [alertView show];
 }
 
 - (void)groupUpdated:(NSNotification *)notification
@@ -208,6 +212,19 @@
     
     [self.tableView reloadData];
     
+    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)groupEditViewController:(GroupEditViewController *)controller shouldDeleteGroupObject:(RCGroup *)object
+{
+    NSInteger index = [[RestClientData sharedData].groups indexOfObject:object];
+    if (index != NSNotFound) {
+        [[RestClientData sharedData].groups removeObjectAtIndex:index];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        [self.tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    }
+
+    [self.delegate shouldUpdateRequest:nil requestType:-1];
     [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -275,7 +292,7 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     RCGroup *groupObject = [self dataSource][indexPath.row];
-    GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeCreate
+    GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeModify
                                                                             groupObject:groupObject];
     controller.delegate = self;
 
@@ -287,22 +304,38 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    BOOL canEdit = NO;
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
+        canEdit = YES;
+    }
+    return canEdit;
 }
 
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-forRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
-            [[RestClientData sharedData].groups removeObjectAtIndex:indexPath.row];
-        } else {
-            [[RestClientData sharedData].history removeObjectAtIndex:indexPath.row];
-        }
-        
-        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    return NO;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BOOL canMove = NO;
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
+        canMove = YES;
+    }
+    return canMove;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
+        RCGroup *group = [RestClientData sharedData].groups[fromIndexPath.row];
+        [[RestClientData sharedData].groups removeObjectAtIndex:fromIndexPath.row];
+        [[RestClientData sharedData].groups insertObject:group atIndex:toIndexPath.row];
     }
 }
 
@@ -315,11 +348,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     return height;
 }
 
-#pragma mark - UIActionSheetDelegate Methods
+#pragma mark - UIAlertViewDelegate Methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 1) {
         [[RestClientData sharedData].history removeAllObjects];
         [self.tableView reloadData];
     }

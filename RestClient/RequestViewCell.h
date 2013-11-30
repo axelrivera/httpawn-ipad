@@ -19,6 +19,8 @@
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
+- (void)setRequest:(RCRequest *)request ignoreName:(BOOL)ignoreName;
+
 + (CGFloat)cellHeight;
 
 @end
