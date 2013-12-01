@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import <AFNetworkActivityIndicatorManager.h>
+
 #import "MainViewController.h"
 #import "DetailViewController.h"
 
@@ -19,6 +21,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[RestClientData sharedData] loadData];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
