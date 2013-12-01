@@ -15,8 +15,11 @@
 @interface RequestMethodView ()
 
 @property (strong, nonatomic) UIImageView *backgroundView;
-
 @property (strong, nonatomic, readwrite) UILabel *textLabel;
+
+@property (strong, nonatomic) UIColor *backgroundViewColor;
+
+@property (assign, nonatomic) BOOL isActive;
 
 @end
 
@@ -27,7 +30,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.opaque = YES;
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor clearColor];
+        self.isActive = YES;
+        self.backgroundViewColor = [UIColor blackColor];
 
         self.layer.cornerRadius = 3.0;
         self.layer.masksToBounds = YES;
@@ -36,7 +41,7 @@
 
         _backgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
         _backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-        _backgroundView.image = [UIImage backgroundTintedImageWithColor:[UIColor blackColor]];
+        _backgroundView.image = [UIImage backgroundTintedImageWithColor:self.backgroundViewColor];
 
         [self addSubview:_backgroundView];
 
@@ -61,6 +66,17 @@
     [super updateConstraints];
 }
 
+- (void)tintColorDidChange
+{
+    self.isActive = !self.isActive;
+
+    if (self.isActive) {
+        self.backgroundView.image = [UIImage backgroundTintedImageWithColor:self.backgroundViewColor];
+    } else {
+        self.backgroundView.image = [UIImage backgroundTintedImageWithColor:[UIColor lightGrayColor]];
+    }
+}
+
 #pragma mark - Public Methods
 
 - (void)setRequestMethod:(NSString *)requestMethod
@@ -79,8 +95,10 @@
         backgroundColor = [UIColor blackColor];
     }
 
+    self.backgroundViewColor = backgroundColor;
+
     self.textLabel.text = requestMethod;
-    self.backgroundView.image = [UIImage backgroundTintedImageWithColor:backgroundColor];
+    self.backgroundView.image = [UIImage backgroundTintedImageWithColor:self.backgroundViewColor];
 
     [self updateConstraintsIfNeeded];
 }

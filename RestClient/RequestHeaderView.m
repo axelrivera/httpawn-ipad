@@ -106,8 +106,8 @@
         _resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _resetButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_resetButton setTitle:@"Reset" forState:UIControlStateNormal];
-        [_resetButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         _resetButton.tag = RequestHeaderViewButtonTypeReset;
+        _resetButton.tintColor = [UIColor redColor];
         [_resetButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_resetButton];
