@@ -8,11 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const URLActionGet;
-extern NSString * const URLActionPost;
-extern NSString * const URLActionPut;
-extern NSString * const URLActionDelete;
-
 @protocol URLActionsViewControllerDelegate;
 
 @interface URLActionsViewController : UITableViewController

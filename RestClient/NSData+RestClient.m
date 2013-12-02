@@ -8,7 +8,7 @@
 
 #import "NSData+RestClient.h"
 
-@implementation NSData (Kumo)
+@implementation NSData (RestClient)
 
 - (NSString *)stringWithEncoding:(NSStringEncoding)encoding
 {
@@ -39,20 +39,32 @@
 
 - (id)JSONObject
 {
-    return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
+    id object = nil;
+    if (self) {
+        object = [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
+    }
+    return object;
 }
 
 - (NSString *)JSONStringWithEncoding:(NSStringEncoding)encoding
 {
-    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:[self JSONObject] options:0 error:nil];
-    NSString *string = [JSONData stringWithEncoding:encoding];
+    NSString *string = @"";
+    id object = [self JSONObject];
+    if (object) {
+        NSData *JSONData = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
+        string = [JSONData stringWithEncoding:encoding];
+    }
     return string;
 }
 
 - (NSString *)formattedJSONStringWithEncoding:(NSStringEncoding)encoding
 {
-    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:[self JSONObject] options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *string = [JSONData stringWithEncoding:encoding];
+    NSString *string = @"";
+    id object = [self JSONObject];
+    if (object) {
+        NSData *JSONData = [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
+        string = [JSONData stringWithEncoding:encoding];
+    }
     return string;
 }
 

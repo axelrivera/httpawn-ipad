@@ -32,6 +32,10 @@
         _response = nil;
         _manager = [AFHTTPRequestOperationManager manager];
         _manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        _followRedirects = YES;
+        _enableAuth = NO;
+        _basicAuthUsername = nil;
+        _basicAuthPassword = nil;
     }
     return self;
 }
@@ -60,6 +64,11 @@
         _URLString = [[coder decodeObjectForKey:@"RCRequestURLString"] copy];
         _headers = [coder decodeObjectForKey:@"RCRequestHeaders"];
         _parameters = [coder decodeObjectForKey:@"RCRequestParameters"];
+        _followRedirects = [coder decodeBoolForKey:@"RCRequestFollowRedirects"];
+        _enableAuth = [coder decodeBoolForKey:@"RCRequestEnableAuth"];
+        _basicAuthUsername = [coder decodeObjectForKey:@"RCRequestBasicAuthUsername"];
+        _basicAuthPassword = [coder decodeObjectForKey:@"RCRequestBasicAuthPassword"];
+
         _response = nil;
         _manager = [AFHTTPRequestOperationManager manager];
         _manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -76,6 +85,10 @@
     [coder encodeObject:self.URLString forKey:@"RCRequestURLString"];
     [coder encodeObject:self.headers forKey:@"RCRequestHeaders"];
     [coder encodeObject:self.parameters forKey:@"RCRequestParameters"];
+    [coder encodeBool:self.followRedirects forKey:@"RCRequestFollowRedirects"];
+    [coder encodeBool:self.enableAuth forKey:@"RCRequestEnableAuth"];
+    [coder encodeObject:self.basicAuthUsername forKey:@"RCRequestBasicAuthUsername"];
+    [coder encodeObject:self.basicAuthPassword forKey:@"RCRequestBasicAuthPassword"];
 }
 
 #pragma mark - NSCopying Methods
@@ -86,6 +99,10 @@
     myRequest.parentGroup = self.parentGroup;
     myRequest.headers = [[NSArray alloc] initWithArray:self.headers copyItems:YES];
     myRequest.parameters = [[NSArray alloc] initWithArray:self.parameters copyItems:YES];
+    myRequest.followRedirects = self.followRedirects;
+    myRequest.enableAuth = self.enableAuth;
+    myRequest.basicAuthUsername = self.basicAuthUsername;
+    myRequest.basicAuthPassword = self.basicAuthPassword;
     myRequest.response = nil;
     
     return myRequest;
@@ -159,7 +176,7 @@
         DLog(@"URL: %@", [operation.response.URL absoluteString]);
         
         RCResponse *myResponse = [[RCResponse alloc] init];
-        myResponse.statusCode = operation.response.statusCode;
+        myResponse.statusCode = [operation.response statusCode];
         myResponse.statusCodeString = statusString;
         myResponse.requestURLString = [operation.request.URL absoluteString];
         myResponse.headersDictionary = [operation.response allHeaderFields];
@@ -204,14 +221,38 @@
             completion(self.response, error);
         }
     };
-    
-    NSMutableURLRequest *request = [self.manager.requestSerializer requestWithMethod:self.requestMethod
-                                                                           URLString:self.URLString
-                                                                          parameters:parameters];
 
-    AFHTTPRequestOperation *operation = [self.manager HTTPRequestOperationWithRequest:request
-                                                                            success:successBlock
-                                                                            failure:failureBlock];
+    if (self.enableAuth) {
+        [self.manager.requestSerializer clearAuthorizationHeader];
+        [self.manager.requestSerializer setAuthorizationHeaderFieldWithUsername:self.basicAuthUsername
+                                                                       password:self.basicAuthPassword];
+    }
+    
+    NSMutableURLRequest *myRequest = [self.manager.requestSerializer requestWithMethod:self.requestMethod
+                                                                             URLString:self.URLString
+                                                                            parameters:parameters];
+    myRequest.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+
+    myRequest.timeoutInterval = 10.0;
+
+    AFHTTPRequestOperation *operation = [self.manager HTTPRequestOperationWithRequest:myRequest
+                                                                              success:successBlock
+                                                                              failure:failureBlock];
+
+    if (!self.followRedirects) {
+        DLog(@"Should Ignore Redirect!");
+        [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection,
+                                                            NSURLRequest *request,
+                                                            NSURLResponse *redirectResponse)
+        {
+            if (redirectResponse) {
+                return nil;
+            } else {
+                return request;
+            }
+        }];
+    }
+
     [operation start];
 }
 

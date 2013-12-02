@@ -35,6 +35,8 @@
 		1670F246183ADB90000CC10D /* RCGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1670F245183ADB90000CC10D /* RCGroup.m */; };
 		1670F24A183ADCA4000CC10D /* GroupEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1670F248183ADCA4000CC10D /* GroupEditViewController.m */; };
 		1670F24B183ADCA4000CC10D /* GroupEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1670F249183ADCA4000CC10D /* GroupEditViewController.xib */; };
+		167DDD9A184BA0E50012651D /* AdvancedRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */; };
+		167DDD9B184BA0E50012651D /* AdvancedRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */; };
 		16A4E71D1832F68F0037E810 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E71C1832F68F0037E810 /* Foundation.framework */; };
 		16A4E71F1832F68F0037E810 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E71E1832F68F0037E810 /* CoreGraphics.framework */; };
 		16A4E7211832F68F0037E810 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E7201832F68F0037E810 /* UIKit.framework */; };
@@ -122,6 +124,9 @@
 		1670F247183ADCA4000CC10D /* GroupEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupEditViewController.h; sourceTree = "<group>"; };
 		1670F248183ADCA4000CC10D /* GroupEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupEditViewController.m; sourceTree = "<group>"; };
 		1670F249183ADCA4000CC10D /* GroupEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupEditViewController.xib; sourceTree = "<group>"; };
+		167DDD97184BA0E50012651D /* AdvancedRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedRequestViewController.h; sourceTree = "<group>"; };
+		167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedRequestViewController.m; sourceTree = "<group>"; };
+		167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedRequestViewController.xib; sourceTree = "<group>"; };
 		16A4E7191832F68F0037E810 /* HTTPawn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPawn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16A4E71C1832F68F0037E810 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		16A4E71E1832F68F0037E810 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -213,6 +218,8 @@
 				16D9AB5C1840506D009D5EDF /* PreviewViewController.m */,
 				1600A04B18443EC70089CA98 /* GroupAddViewController.h */,
 				1600A04C18443EC70089CA98 /* GroupAddViewController.m */,
+				167DDD97184BA0E50012651D /* AdvancedRequestViewController.h */,
+				167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -334,6 +341,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */,
 				164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */,
 				1645FB0518491BB500D19990 /* SelectViewController.xib */,
 				1645FAF01848EDEE00D19990 /* GroupRequestsViewController.xib */,
@@ -494,6 +502,7 @@
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
 				1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */,
+				167DDD9B184BA0E50012651D /* AdvancedRequestViewController.xib in Resources */,
 				1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */,
 				164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
@@ -563,6 +572,7 @@
 				1600A04E18443EC70089CA98 /* GroupAddViewController.m in Sources */,
 				1670F23918395D26000CC10D /* RequestInputCell.m in Sources */,
 				16520293183B16D500FB4D37 /* NSDictionary+Request.m in Sources */,
+				167DDD9A184BA0E50012651D /* AdvancedRequestViewController.m in Sources */,
 				1645FB0618491BB500D19990 /* SelectViewController.m in Sources */,
 				1645FAFC1849016700D19990 /* UIImage+Tint.m in Sources */,
 				16520292183B16D500FB4D37 /* NSData+RestClient.m in Sources */,

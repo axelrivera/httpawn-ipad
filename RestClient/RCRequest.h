@@ -28,6 +28,10 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 @property (strong, nonatomic) NSArray *parameters;
 @property (strong, nonatomic) RCResponse *response;
 @property (strong, nonatomic, readonly) AFHTTPRequestOperationManager *manager;
+@property (assign, nonatomic) BOOL followRedirects;
+@property (assign, nonatomic) BOOL enableAuth;
+@property (strong, nonatomic) NSString *basicAuthUsername;
+@property (strong, nonatomic) NSString *basicAuthPassword;
 
 - (id)initWithMethod:(NSString *)method URLString:(NSString *)URLString;
 

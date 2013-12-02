@@ -17,6 +17,7 @@
 #import "RequestInputViewController.h"
 #import "PreviewViewController.h"
 #import "GroupAddViewController.h"
+#import "AdvancedRequestViewController.h"
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate,
@@ -33,6 +34,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)sendRequest;
 - (void)showPreview;
 - (void)addToGroup;
+- (void)showAdvanced;
 - (void)resetRequest;
 
 - (NSArray *)detailToolBarItems;
@@ -218,6 +220,16 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)showAdvanced
+{
+    AdvancedRequestViewController *controller = [[AdvancedRequestViewController alloc] initWithRequest:self.request];
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
+}
+
 - (void)resetRequest
 {
     [self.view endEditing:YES];
@@ -299,6 +311,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
             break;
         case RequestHeaderViewButtonTypeGroup:
             [self addToGroup];
+            break;
+        case RequestHeaderViewButtonTypeAdvanced:
+            [self showAdvanced];
             break;
         case RequestHeaderViewButtonTypeReset:
             [self resetRequest];

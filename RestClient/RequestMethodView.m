@@ -17,10 +17,6 @@
 @property (strong, nonatomic) UIImageView *backgroundView;
 @property (strong, nonatomic, readwrite) UILabel *textLabel;
 
-@property (strong, nonatomic) UIColor *backgroundViewColor;
-
-@property (assign, nonatomic) BOOL isActive;
-
 @end
 
 @implementation RequestMethodView
@@ -31,8 +27,6 @@
     if (self) {
         self.opaque = YES;
         self.backgroundColor = [UIColor clearColor];
-        self.isActive = YES;
-        self.backgroundViewColor = [UIColor blackColor];
 
         self.layer.cornerRadius = 3.0;
         self.layer.masksToBounds = YES;
@@ -41,7 +35,7 @@
 
         _backgroundView = [[UIImageView alloc] initWithFrame:CGRectZero];
         _backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-        _backgroundView.image = [UIImage backgroundTintedImageWithColor:self.backgroundViewColor];
+        _backgroundView.image = [UIImage backgroundTemplateImage];
 
         [self addSubview:_backgroundView];
 
@@ -66,17 +60,6 @@
     [super updateConstraints];
 }
 
-- (void)tintColorDidChange
-{
-    self.isActive = !self.isActive;
-
-    if (self.isActive) {
-        self.backgroundView.image = [UIImage backgroundTintedImageWithColor:self.backgroundViewColor];
-    } else {
-        self.backgroundView.image = [UIImage backgroundTintedImageWithColor:[UIColor lightGrayColor]];
-    }
-}
-
 #pragma mark - Public Methods
 
 - (void)setRequestMethod:(NSString *)requestMethod
@@ -91,14 +74,18 @@
         backgroundColor = [UIColor purpleColor];
     } else if ([requestMethod isEqualToString:RCRequestMethodDelete]) {
         backgroundColor = [UIColor redColor];
+    } else if ([requestMethod isEqualToString:RCRequestMethodHead]) {
+        backgroundColor = [UIColor blueColor];
+    } else if ([requestMethod isEqualToString:RCRequestMethodTrace]) {
+        backgroundColor = [UIColor brownColor];
+    } else if ([requestMethod isEqualToString:RCRequestMethodPatch]) {
+        backgroundColor = [UIColor magentaColor];
     } else {
         backgroundColor = [UIColor blackColor];
     }
 
-    self.backgroundViewColor = backgroundColor;
-
     self.textLabel.text = requestMethod;
-    self.backgroundView.image = [UIImage backgroundTintedImageWithColor:self.backgroundViewColor];
+    self.backgroundView.tintColor = backgroundColor;
 
     [self updateConstraintsIfNeeded];
 }

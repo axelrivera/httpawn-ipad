@@ -35,6 +35,8 @@
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
+        SEL buttonSelector = @selector(buttonAction:);
+
         _bottomLine = [[UIView alloc] initWithFrame:CGRectZero];
         _bottomLine.translatesAutoresizingMaskIntoConstraints = NO;
         _bottomLine.backgroundColor = [UIColor lightGrayColor];
@@ -58,7 +60,7 @@
         [_URLActionButton setTitle:RCRequestMethodGet forState:UIControlStateNormal];
         _URLActionButton.tag = RequestHeaderViewButtonTypeURLAction;
         _URLActionButton.contentHorizontalAlignment = UIViewContentModeLeft;
-        [_URLActionButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_URLActionButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_URLActionButton];
 
@@ -66,7 +68,7 @@
         _parametersButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_parametersButton setTitle:@"Parameters" forState:UIControlStateNormal];
         _parametersButton.tag = RequestHeaderViewButtonTypeParameters;
-        [_parametersButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_parametersButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_parametersButton];
 
@@ -74,7 +76,7 @@
         _headersButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_headersButton setTitle:@"Headers" forState:UIControlStateNormal];
         _headersButton.tag = RequestHeaderViewButtonTypeHeaders;
-        [_headersButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_headersButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_headersButton];
 
@@ -83,7 +85,7 @@
         [_sendButton setTitle:@"Send Request" forState:UIControlStateNormal];
         _sendButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         _sendButton.tag = RequestHeaderViewButtonTypeSend;
-        [_sendButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_sendButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_sendButton];
 
@@ -91,7 +93,7 @@
         _previewButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_previewButton setTitle:@"Preview" forState:UIControlStateNormal];
         _previewButton.tag = RequestHeaderViewButtonTypePreview;
-        [_previewButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_previewButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_previewButton];
 
@@ -99,16 +101,24 @@
         _groupButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_groupButton setTitle:@"Add to Group" forState:UIControlStateNormal];
         _groupButton.tag = RequestHeaderViewButtonTypeGroup;
-        [_groupButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_groupButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_groupButton];
+
+        _advancedButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _advancedButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_advancedButton setTitle:@"Advanced" forState:UIControlStateNormal];
+        _advancedButton.tag = RequestHeaderViewButtonTypeAdvanced;
+        [_advancedButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
+
+        [self addSubview:_advancedButton];
 
         _resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _resetButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_resetButton setTitle:@"Reset" forState:UIControlStateNormal];
         _resetButton.tag = RequestHeaderViewButtonTypeReset;
         _resetButton.tintColor = [UIColor redColor];
-        [_resetButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_resetButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:_resetButton];
     }
@@ -148,6 +158,9 @@
 
     [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];
     [self.groupButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
+
+    [self.advancedButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.groupButton withOffset:20.0];
+    [self.advancedButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
 
     [self.resetButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
     [self.resetButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];

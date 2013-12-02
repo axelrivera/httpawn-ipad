@@ -16,4 +16,7 @@
 + (UIImage *)backgroundGradientImageWithColor:(UIColor *)tintColor;
 + (UIImage *)backgroundTintedImageWithColor:(UIColor *)tintColor;
 
++ (UIImage *)templateImage;
++ (UIImage *)backgroundTemplateImage;
+
 @end

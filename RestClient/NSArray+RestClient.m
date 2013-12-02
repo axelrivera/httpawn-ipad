@@ -13,12 +13,20 @@ NSString * const RCRequestMethodPost = @"POST";
 NSString * const RCRequestMethodPut = @"PUT";
 NSString * const RCRequestMethodDelete = @"DELETE";
 NSString * const RCRequestMethodHead = @"HEAD";
+NSString * const RCRequestMethodTrace = @"TRACE";
+NSString * const RCRequestMethodPatch = @"PATCH";
 
 @implementation NSArray (RestClient)
 
 + (NSArray *)availableHTTPActions
 {
-    return @[ RCRequestMethodGet, RCRequestMethodPost, RCRequestMethodPut, RCRequestMethodDelete ];
+    return @[ RCRequestMethodGet,
+              RCRequestMethodPost,
+              RCRequestMethodPut,
+              RCRequestMethodDelete,
+              RCRequestMethodHead,
+              RCRequestMethodTrace,
+              RCRequestMethodPatch ];
 }
 
 - (NSArray *)arrayOfAvailableObjects

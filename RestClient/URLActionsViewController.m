@@ -8,11 +8,6 @@
 
 #import "URLActionsViewController.h"
 
-NSString * const URLActionGet = @"GET";
-NSString * const URLActionPost = @"POST";
-NSString * const URLActionPut = @"PUT";
-NSString * const URLActionDelete = @"DELETE";
-
 @interface URLActionsViewController ()
 
 @end
@@ -34,10 +29,7 @@ NSString * const URLActionDelete = @"DELETE";
 
     self.title = @"URL Actions";
 
-    self.dataSource = @[ URLActionGet,
-                         URLActionPost,
-                         URLActionPut,
-                         URLActionDelete ];
+    self.dataSource = [NSArray availableHTTPActions];
 }
 
 - (void)didReceiveMemoryWarning

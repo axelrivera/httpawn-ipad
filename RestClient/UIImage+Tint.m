@@ -24,12 +24,13 @@
 
 + (UIImage *)backgroundGradientImageWithColor:(UIColor *)tintColor
 {
-    return [[UIImage resizableTemplateImage] tintedGradientImageWithColor:tintColor];
+    return [[UIImage backgroundTemplateImage] tintedGradientImageWithColor:tintColor];
 }
 
 + (UIImage *)backgroundTintedImageWithColor:(UIColor *)tintColor
 {
-    return [[UIImage resizableTemplateImage] tintedImageWithColor:tintColor];
+    UIImage *image = [[UIImage backgroundTemplateImage] tintedImageWithColor:tintColor];
+    return image;
 }
 
 #pragma mark - Private methods
@@ -60,15 +61,15 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    return image;
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
-+ (UIImage *)resizableTemplateImage
++ (UIImage *)backgroundTemplateImage
 {
     UIImage *image = [UIImage templateImage];
-    UIImage *resizable = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-                                                 resizingMode:UIImageResizingModeTile];
-    return resizable;
+    UIImage *resizableImage = [image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+                                                    resizingMode:UIImageResizingModeTile];
+    return [resizableImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end
