@@ -227,13 +227,20 @@
         [self.manager.requestSerializer setAuthorizationHeaderFieldWithUsername:self.basicAuthUsername
                                                                        password:self.basicAuthPassword];
     }
+
+    if ([[RCSettings defaultSettings] allowInvalidSSL]) {
+        self.manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    } else {
+        self.manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    }
     
     NSMutableURLRequest *myRequest = [self.manager.requestSerializer requestWithMethod:self.requestMethod
                                                                              URLString:self.URLString
                                                                             parameters:parameters];
     myRequest.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
-    myRequest.timeoutInterval = 10.0;
+    myRequest.HTTPShouldHandleCookies = [[RCSettings defaultSettings] enableCookies];
+    myRequest.timeoutInterval = [[RCSettings defaultSettings] timeoutInterval];
 
     AFHTTPRequestOperation *operation = [self.manager HTTPRequestOperationWithRequest:myRequest
                                                                               success:successBlock

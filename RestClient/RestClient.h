@@ -10,6 +10,7 @@
 #define RestClient_RestClient_h
 
 #import "FileHelpers.h"
+#import "RCSettings.h"
 #import "NSDictionary+Request.h"
 #import "NSArray+RestClient.h"
 #import "NSString+RestClient.h"

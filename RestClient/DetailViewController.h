@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, RequestSegmentIndex) {
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate, RequestDetailDelegate>
 
 @property (strong, nonatomic) RequestHeaderView *headerView;
-@property (strong, nonatomic) UITextView *textView;
+@property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 
 @property (strong, nonatomic) RCRequest *request;

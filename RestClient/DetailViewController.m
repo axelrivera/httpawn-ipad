@@ -18,6 +18,7 @@
 #import "PreviewViewController.h"
 #import "GroupAddViewController.h"
 #import "AdvancedRequestViewController.h"
+#import "SettingsViewController.h"
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate,
@@ -25,8 +26,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
-@property (assign, nonatomic) CGFloat topInset;
-@property (assign, nonatomic) CGFloat bottomInset;
 
 - (void)showURLActions;
 - (void)showParameters;
@@ -58,16 +57,22 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 {
     [super viewDidLoad];
 
+    self.view.backgroundColor = [UIColor whiteColor];
+
     [self setToolbarItems:[self detailToolBarItems] animated:NO];
 
-    self.textView = [[UITextView alloc] initWithFrame:CGRectZero];
-    self.textView.backgroundColor = [UIColor whiteColor];
-    self.textView.textColor = [UIColor blackColor];
-    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.textView.font = [UIFont fontWithName:@"Courier" size:12.0];
-    self.textView.editable = NO;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(settingsAction:)];
+
+
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    self.webView.scalesPageToFit = NO;
+    self.webView.backgroundColor = [UIColor whiteColor];
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self.view addSubview:self.textView];
+    [self.view addSubview:self.webView];
 
     self.headerView = [[RequestHeaderView alloc] initWithFrame:CGRectZero];
     self.headerView.URLTextField.delegate = self;
@@ -85,21 +90,10 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.headerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
 
-    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0.0];
-    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
-    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
-    [self.textView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.0];
-
-    self.topInset = self.topOrigin + [RequestHeaderView viewHeight];
-
-    UIEdgeInsets contentInset = self.textView.contentInset;
-    contentInset.top = self.topInset;
-
-    UIEdgeInsets scrollInset = self.textView.scrollIndicatorInsets;
-    scrollInset.top = self.topInset;
-
-    self.textView.contentInset = contentInset;
-    self.textView.scrollIndicatorInsets = scrollInset;
+    [self.webView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.headerView];
+    [self.webView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
+    [self.webView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
+    [self.webView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.0];
 
     [self.view layoutSubviews];
 }
@@ -238,7 +232,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
-    self.textView.text = @"";
+    [self.webView loadHTMLString:@"" baseURL:nil];
 }
 
 - (NSArray *)detailToolBarItems
@@ -276,17 +270,52 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 {
     if (self.request.response) {
         NSString *text = nil;
-        if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody) {
-            text = [self.request.response formattedBodyString];
+        if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody ) {
+            text = [self.request.response rawString];
         } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexHeaders) {
             text = [self.request.response headerString];
         } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexRaw) {
             text = [self.request.response rawString];
         }
 
-        self.textView.text = text;
-        [self.textView setContentOffset:CGPointMake(0.0, -self.topInset) animated:NO];
+        NSString *formatStr = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
+        " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
+        "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">"
+        "<head>"
+        "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />"
+        "<link href=\"prettify.css\" type=\"text/css\" rel=\"stylesheet\" />"
+        "<script type=\"text/javascript\" src=\"prettify.js\"></script>"
+        "<script type=\"text/javascript\" src=\"vkbeautify.js\"></script>"
+        "<style>"
+        "body { margin: 0; padding: 0 }"
+        "pre { margin: 0 }"
+        "</style>"
+        "<script>"
+        "function mycode() { document.getElementById(\"mycode\").innerHTML = vkbeautify.json('%@', 2); }"
+        "</script>"
+        "</head>"
+        "<body onload=\"mycode();prettyPrint()\">"
+        "<?prettify linenums=1?>"
+        "<pre style=\"border:none\" id=\"mycode\" class=\"prettyprint\">"
+        "</pre>"
+        "</body></html>";
+
+        NSString *htmlStr = [NSString stringWithFormat:formatStr, text];
+
+        DLog(@"%@", htmlStr);
+
+        [self.webView loadHTMLString:htmlStr baseURL:[[NSBundle mainBundle] resourceURL]];
     }
+}
+
+- (void)settingsAction:(id)sender
+{
+    SettingsViewController *controller = [[SettingsViewController alloc] init];
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - RequestHeaderViewDelegate Methods
@@ -394,10 +423,10 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     } else {
         self.request = [[RCRequest alloc] init];
     }
-        
+
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
-    self.textView.text = @"";
+    [self.webView loadHTMLString:@"" baseURL:nil];
     
     [self.masterPopoverController dismissPopoverAnimated:YES];
 }

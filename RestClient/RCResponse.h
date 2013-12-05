@@ -32,6 +32,7 @@
 - (NSDictionary *)responseDictionary;
 
 - (NSString *)formattedBodyString;
+- (NSAttributedString *)formattedAttributedBodyString;
 - (NSString *)bodyString;
 - (NSString *)statusString;
 - (NSString *)headerString;

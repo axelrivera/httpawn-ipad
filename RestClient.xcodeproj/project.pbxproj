@@ -37,6 +37,12 @@
 		1670F24B183ADCA4000CC10D /* GroupEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1670F249183ADCA4000CC10D /* GroupEditViewController.xib */; };
 		167DDD9A184BA0E50012651D /* AdvancedRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */; };
 		167DDD9B184BA0E50012651D /* AdvancedRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */; };
+		167DDD9F184C4CD40012651D /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 167DDD9D184C4CD40012651D /* SettingsViewController.m */; };
+		167DDDA0184C4CD40012651D /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 167DDD9E184C4CD40012651D /* SettingsViewController.xib */; };
+		16A1CD3D184D985B001F89AB /* prettify.css in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3A184D985B001F89AB /* prettify.css */; };
+		16A1CD40184D99FA001F89AB /* prettify.js in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3B184D985B001F89AB /* prettify.js */; };
+		16A1CD41184D99FA001F89AB /* vkbeautify.js in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3C184D985B001F89AB /* vkbeautify.js */; };
+		16A1CD5B184FF27A001F89AB /* RCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A1CD5A184FF27A001F89AB /* RCSettings.m */; };
 		16A4E71D1832F68F0037E810 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E71C1832F68F0037E810 /* Foundation.framework */; };
 		16A4E71F1832F68F0037E810 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E71E1832F68F0037E810 /* CoreGraphics.framework */; };
 		16A4E7211832F68F0037E810 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E7201832F68F0037E810 /* UIKit.framework */; };
@@ -127,6 +133,14 @@
 		167DDD97184BA0E50012651D /* AdvancedRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedRequestViewController.h; sourceTree = "<group>"; };
 		167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedRequestViewController.m; sourceTree = "<group>"; };
 		167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvancedRequestViewController.xib; sourceTree = "<group>"; };
+		167DDD9C184C4CD40012651D /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		167DDD9D184C4CD40012651D /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		167DDD9E184C4CD40012651D /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		16A1CD3A184D985B001F89AB /* prettify.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = prettify.css; sourceTree = "<group>"; };
+		16A1CD3B184D985B001F89AB /* prettify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = prettify.js; sourceTree = "<group>"; };
+		16A1CD3C184D985B001F89AB /* vkbeautify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vkbeautify.js; sourceTree = "<group>"; };
+		16A1CD59184FF27A001F89AB /* RCSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettings.h; sourceTree = "<group>"; };
+		16A1CD5A184FF27A001F89AB /* RCSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettings.m; sourceTree = "<group>"; };
 		16A4E7191832F68F0037E810 /* HTTPawn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPawn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16A4E71C1832F68F0037E810 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		16A4E71E1832F68F0037E810 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -220,6 +234,8 @@
 				1600A04C18443EC70089CA98 /* GroupAddViewController.m */,
 				167DDD97184BA0E50012651D /* AdvancedRequestViewController.h */,
 				167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */,
+				167DDD9C184C4CD40012651D /* SettingsViewController.h */,
+				167DDD9D184C4CD40012651D /* SettingsViewController.m */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -259,6 +275,24 @@
 				1645FB0118491AE000D19990 /* RCSelect.m */,
 			);
 			name = "Models + Data";
+			sourceTree = "<group>";
+		};
+		16A1CD38184D985B001F89AB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				16A1CD39184D985B001F89AB /* Web */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		16A1CD39184D985B001F89AB /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				16A1CD3A184D985B001F89AB /* prettify.css */,
+				16A1CD3B184D985B001F89AB /* prettify.js */,
+				16A1CD3C184D985B001F89AB /* vkbeautify.js */,
+			);
+			path = Web;
 			sourceTree = "<group>";
 		};
 		16A4E7101832F68F0037E810 = {
@@ -312,6 +346,7 @@
 		16A4E7231832F6900037E810 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				16A1CD38184D985B001F89AB /* Resources */,
 				16A4E7241832F6900037E810 /* RestClient-Info.plist */,
 				16A4E7251832F6900037E810 /* InfoPlist.strings */,
 				16A4E7281832F6900037E810 /* main.m */,
@@ -341,6 +376,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				167DDD9E184C4CD40012651D /* SettingsViewController.xib */,
 				167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */,
 				164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */,
 				1645FB0518491BB500D19990 /* SelectViewController.xib */,
@@ -373,6 +409,8 @@
 				16A4E72C1832F6900037E810 /* AppDelegate.m */,
 				16B635B9183DC58A00176848 /* RestClientData.h */,
 				16B635BA183DC58A00176848 /* RestClientData.m */,
+				16A1CD59184FF27A001F89AB /* RCSettings.h */,
+				16A1CD5A184FF27A001F89AB /* RCSettings.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -499,12 +537,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16A1CD40184D99FA001F89AB /* prettify.js in Resources */,
+				16A1CD41184D99FA001F89AB /* vkbeautify.js in Resources */,
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
 				1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */,
 				167DDD9B184BA0E50012651D /* AdvancedRequestViewController.xib in Resources */,
 				1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */,
+				167DDDA0184C4CD40012651D /* SettingsViewController.xib in Resources */,
 				164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */,
+				16A1CD3D184D985B001F89AB /* prettify.css in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
 				16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */,
 				1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */,
@@ -563,9 +605,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16A1CD5B184FF27A001F89AB /* RCSettings.m in Sources */,
 				1645FAF11848EDEE00D19990 /* GroupRequestsViewController.m in Sources */,
 				16DE719D1840EC2D0060FCA4 /* FileHelpers.m in Sources */,
 				16520291183B16D500FB4D37 /* NSArray+RestClient.m in Sources */,
+				167DDD9F184C4CD40012651D /* SettingsViewController.m in Sources */,
 				1645FAF61848F15E00D19990 /* RequestViewCell.m in Sources */,
 				1670F22818379144000CC10D /* RequestInputViewController.m in Sources */,
 				16A4E72D1832F6900037E810 /* AppDelegate.m in Sources */,
