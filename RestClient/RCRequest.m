@@ -228,11 +228,10 @@
                                                                        password:self.basicAuthPassword];
     }
 
-    if ([[RCSettings defaultSettings] allowInvalidSSL]) {
-        self.manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-    } else {
-        self.manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
-    }
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];
+    [securityPolicy setAllowInvalidCertificates:[[RCSettings defaultSettings] allowInvalidSSL]];
+
+    self.manager.securityPolicy = securityPolicy;
     
     NSMutableURLRequest *myRequest = [self.manager.requestSerializer requestWithMethod:self.requestMethod
                                                                              URLString:self.URLString
