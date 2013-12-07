@@ -25,6 +25,7 @@
     [[RestClientData sharedData] loadData];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.tintColor = [UIColor rc_defaultTintColor];
 
     DetailViewController *detailController = [[DetailViewController alloc] init];
     UINavigationController *detailNavController = [[UINavigationController alloc] initWithRootViewController:detailController];

@@ -10,18 +10,16 @@
 
 @interface RCResponse : NSObject <NSCoding>
 
+@property (copy, nonatomic) NSString *requestURLString;
+@property (strong, nonatomic) NSDictionary *headersDictionary;
 @property (assign, nonatomic) NSInteger statusCode;
 @property (copy, nonatomic) NSString *statusCodeString;
 
-@property (assign, nonatomic) NSTimeInterval responseTime;
-
-@property (strong, nonatomic) NSDictionary *headersDictionary;
-
-@property (strong, nonatomic) NSString *requestURLString;
-
-@property (strong, nonatomic) NSData *responseData;
-@property (strong, nonatomic) NSString *responseString;
+@property (copy, nonatomic) NSData *responseData;
+@property (copy, nonatomic) NSString *responseString;
 @property (assign, nonatomic) NSStringEncoding responseStringEncoding;
+
+@property (assign, nonatomic) NSTimeInterval responseTime;
 
 - (NSString *)contentType;
 

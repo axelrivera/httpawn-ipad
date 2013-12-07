@@ -19,7 +19,6 @@
 @property (strong, nonatomic, readwrite) UIButton *sendButton;
 @property (strong, nonatomic, readwrite) UIButton *previewButton;
 @property (strong, nonatomic, readwrite) UIButton *groupButton;
-@property (strong, nonatomic, readwrite) UIButton *resetButton;
 
 @property (strong, nonatomic) UIView *bottomLine;
 
@@ -113,14 +112,13 @@
 
         [self addSubview:_advancedButton];
 
-        _resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        _resetButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_resetButton setTitle:@"Reset" forState:UIControlStateNormal];
-        _resetButton.tag = RequestHeaderViewButtonTypeReset;
-        _resetButton.tintColor = [UIColor redColor];
-        [_resetButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
+        _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _statusLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _statusLabel.backgroundColor = [UIColor clearColor];
+        _statusLabel.font = [UIFont systemFontOfSize:14.0];
+        _statusLabel.textColor = [UIColor lightGrayColor];
 
-        [self addSubview:_resetButton];
+        [self addSubview:_statusLabel];
     }
     return self;
 }
@@ -136,34 +134,34 @@
     [self.URLTextField autoSetDimension:ALDimensionHeight toSize:37.0];
     [self.URLTextField autoSetDimension:ALDimensionWidth toSize:400.0];
     [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15.0];
-    [self.URLTextField autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
     [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.0];
 
     [self.URLActionButton autoSetDimension:ALDimensionWidth toSize:80.0];
     [self.URLActionButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.URLTextField withOffset:10.0];
     [self.URLActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
 
-    [self.headersButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15.0];
-    [self.headersButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
-    [self.parametersButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
+    [self.sendButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
+    [self.sendButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
 
-    [self.parametersButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.headersButton withOffset:-15.0];
-    [self.parametersButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
+    [self.headersButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.URLTextField withOffset:10.0];
+    [self.headersButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.URLTextField];
 
-    [self.sendButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.URLTextField withOffset:24.0];
-    [self.sendButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.URLTextField withOffset:0.0];
+    [self.parametersButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.headersButton withOffset:20.0];
+    [self.parametersButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
-    [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.sendButton withOffset:20.0];
-    [self.previewButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
+    [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.parametersButton withOffset:20.0];
+    [self.previewButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
     [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];
-    [self.groupButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
+    [self.groupButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
     [self.advancedButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.groupButton withOffset:20.0];
-    [self.advancedButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
+    [self.advancedButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
-    [self.resetButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
-    [self.resetButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.sendButton];
+    [self.statusLabel autoSetDimension:ALDimensionHeight toSize:18.0];
+    [self.statusLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.headersButton withOffset:4.0];
+    [self.statusLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.URLTextField];
+    [self.statusLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
 
     [super updateConstraints];
 }
@@ -182,7 +180,7 @@
 
 + (CGFloat)viewHeight
 {
-    return 15.0 + 37.0 + 15.0 + 37.0 + 15.0;
+    return 15.0 + 37.0 + 15.0 + 37.0 + 15.0 + 5.0;
 }
 
 @end

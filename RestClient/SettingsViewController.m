@@ -8,6 +8,8 @@
 
 #import "SettingsViewController.h"
 
+#import "SliderViewCell.h"
+
 @interface SettingsViewController ()
 
 @end
@@ -31,13 +33,18 @@
                                                                                            target:self
                                                                                            action:@selector(dismissAction:)];
 
-    self.timeoutStepper = [[UIStepper alloc] initWithFrame:CGRectZero];
-    self.timeoutStepper.continuous = YES;
-    self.timeoutStepper.minimumValue = kRCSettingsTimeoutIntervalMinValue;
-    self.timeoutStepper.maximumValue = kRCSettingsTimeoutIntervalMaxValue;
-    self.timeoutStepper.value = [[RCSettings defaultSettings] timeoutInterval];
-    self.timeoutStepper.stepValue = 1;
-    [self.timeoutStepper addTarget:self action:@selector(timeoutChanged:) forControlEvents:UIControlEventValueChanged];
+    CGFloat min = kRCSettingsTimeoutIntervalMinValue / kSecondSliderFactor;
+    CGFloat max = kRCSettingsTimeoutIntervalMaxValue / kSecondSliderFactor;
+    CGFloat value = (float)[[RCSettings defaultSettings] timeoutInterval] / kSecondSliderFactor;
+
+    self.timeoutSlider = [[UISlider alloc] initWithFrame:CGRectZero];
+    self.timeoutSlider.continuous = YES;
+    self.timeoutSlider.minimumTrackTintColor = [UIColor rc_defaultTintColor];
+    self.timeoutSlider.maximumTrackTintColor = [UIColor rc_defaultTintColor];
+    self.timeoutSlider.minimumValue = min;
+    self.timeoutSlider.maximumValue = max;
+    self.timeoutSlider.value = value;
+    [self.timeoutSlider addTarget:self action:@selector(timeoutChanged:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,10 +93,7 @@
 
 - (void)timeoutChanged:(UISlider *)slider
 {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
-
-    CGFloat value = slider.value;
-    cell.textLabel.text = [NSString stringWithFormat:@"Timeout interval: %.0f s", value];
+    NSInteger value = (int)(slider.value * kSecondSliderFactor);
     [[RCSettings defaultSettings] setTimeoutInterval:value];
 }
 
@@ -117,17 +121,14 @@
     static NSString *SliderIdentifier = @"SliderCell";
 
     if (indexPath.section == 0 && indexPath.row == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SliderIdentifier];
+        SliderViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SliderIdentifier];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SliderIdentifier];
-            cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-            cell.accessoryView = self.timeoutStepper;
+            cell = [[SliderViewCell alloc] initWithReuseIdentifier:SliderIdentifier];
+            cell.slider = self.timeoutSlider;
         }
 
-        CGFloat value = [[RCSettings defaultSettings] timeoutInterval];
-        cell.textLabel.text = [NSString stringWithFormat:@"Timeout interval: %.0f s", value];
-
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.minLabel.text = [NSString stringWithFormat:@"%.0f s", kRCSettingsTimeoutIntervalMinValue];
+        cell.maxLabel.text = [NSString stringWithFormat:@"%.0f s", kRCSettingsTimeoutIntervalMaxValue];
 
         return cell;
     }
@@ -153,22 +154,22 @@
     if (indexPath.section == 0) {
         mySwitch.tag = 100 + indexPath.row;
         if (indexPath.row == 0) {
-            textStr = @"Store and send cookies automatically";
+            textStr = @"Store and Send Cookies Automatically";
             isOn = [settings enableCookies];
         } else {
-            textStr = @"Allow self-signed and unverified SSL certificates";
+            textStr = @"Allow Self-Signed and Unverified SSL Certificates";
             isOn = [settings allowInvalidSSL];
         }
     } else {
         mySwitch.tag = 200 + indexPath.row;
         if (indexPath.row == 0) {
-            textStr = @"Show pretty-print response";
+            textStr = @"Show Pretty-Print Response";
             isOn = [settings usePrettyPrintResponse];
         } else if (indexPath.row == 1) {
-            textStr = @"Apply syntax highlighting";
+            textStr = @"Apply Syntax Highlighting";
             isOn = [settings applySyntaxHighlighting];
         } else {
-            textStr = @"Include line numbers";
+            textStr = @"Include Line Numbers";
             isOn = [settings includeLineNumbers];
         }
     }
@@ -193,6 +194,24 @@
         title = @"Response Output";
     }
     return title;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString *title = nil;
+    if (section == 1) {
+        title = @"Pretty Print and Syntax Highlighting are only supported for JSON and XML.";
+    }
+    return title;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height = 44;
+    if (indexPath.section == 0 && indexPath.row == 2) {
+        height = 100.0;
+    }
+    return height;
 }
 
 @end

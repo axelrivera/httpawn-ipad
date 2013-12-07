@@ -12,6 +12,7 @@
 
 #import "UIViewController+Layout.h"
 #import "RequestHeaderView.h"
+#import "TitleNavigationView.h"
 
 #import "URLActionsViewController.h"
 #import "RequestInputViewController.h"
@@ -19,13 +20,17 @@
 #import "GroupAddViewController.h"
 #import "AdvancedRequestViewController.h"
 #import "SettingsViewController.h"
+#import "RCResponse+RestClient.h"
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate,
 GroupAddViewControllerDelegate, UITextFieldDelegate>
 
+@property (strong, nonatomic) TitleNavigationView *titleView;
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
+
+- (void)updateSubtitle;
 
 - (void)showURLActions;
 - (void)showParameters;
@@ -34,7 +39,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)showPreview;
 - (void)addToGroup;
 - (void)showAdvanced;
-- (void)resetRequest;
 
 - (NSArray *)detailToolBarItems;
 - (void)notifyRequestChange:(RCGroup *)group;
@@ -57,6 +61,19 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 {
     [super viewDidLoad];
 
+    self.titleView = [[TitleNavigationView alloc] initWithFrame:CGRectZero];
+    self.titleView.frame = CGRectMake(0.0,
+                                      0.0,
+                                      self.titleView.intrinsicContentSize.width,
+                                      self.titleView.intrinsicContentSize.height);
+    
+    self.titleView.textLabel.text = self.title;
+    [self updateSubtitle];
+
+    self.navigationItem.titleView = self.titleView;
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setToolbarItems:[self detailToolBarItems] animated:NO];
@@ -77,6 +94,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     self.headerView = [[RequestHeaderView alloc] initWithFrame:CGRectZero];
     self.headerView.URLTextField.delegate = self;
     self.headerView.delegate = self;
+    self.headerView.statusLabel.text = @"Waiting to send request...";
 
     [self.view addSubview:self.headerView];
     
@@ -93,7 +111,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.webView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.headerView];
     [self.webView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.webView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
-    [self.webView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.0];
+    [self.webView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:self.navigationController.toolbar.frame.size.height];
 
     [self.view layoutSubviews];
 }
@@ -117,6 +135,24 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 }
 
 #pragma mark - Private Methods
+
+- (void)updateSubtitle
+{
+    NSString *subtitle = nil;
+    if (self.request) {
+        if (!IsEmpty(self.request.requestName)) {
+            subtitle = self.request.requestName;
+        } else if (!IsEmpty(self.request.URLString)) {
+            subtitle = self.request.URLString;
+        } else {
+            subtitle = @"Enter Your Request Information";
+        }
+    } else {
+        subtitle = @"Enter Your Request Information";
+    }
+
+    self.titleView.detailTextLabel.text = subtitle;
+}
 
 - (void)showURLActions
 {
@@ -181,6 +217,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
         [alertView show];
         return;
     }
+
+    self.headerView.statusLabel.text = @"Sending request...";
     
     self.request.URLString = self.headerView.URLTextField.text;
     self.request.requestMethod = [self.headerView.URLActionButton titleForState:UIControlStateNormal];
@@ -188,6 +226,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [[RestClientData sharedData] addRequestToHistory:self.request];
 
     [self.request runWithCompletion:^(RCResponse *response, NSError *error) {
+        self.headerView.statusLabel.text = [NSString stringWithFormat:@"Response Time: %.0f ms", response.responseTime];
         self.segmentedControl.selectedSegmentIndex = RequestSegmentIndexBody;
         [self segmentedControlChanged:self.segmentedControl];
     }];
@@ -224,7 +263,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)resetRequest
+- (void)resetRequest:(id)sender
 {
     [self.view endEditing:YES];
     
@@ -250,7 +289,13 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 
     UIBarButtonItem *segmentedItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
 
-    return @[ flexibleItem, segmentedItem, flexibleItem ];
+    UIBarButtonItem *resetItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset"
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(resetRequest:)];
+    resetItem.tintColor = [UIColor redColor];
+
+    return @[ flexibleItem, segmentedItem, flexibleItem, resetItem ];
 }
 
 - (void)notifyRequestChange:(RCGroup *)group
@@ -269,42 +314,20 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)segmentedControlChanged:(UISegmentedControl *)segmentedControl
 {
     if (self.request.response) {
-        NSString *text = nil;
-        if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody ) {
-            text = [self.request.response rawString];
-        } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexHeaders) {
-            text = [self.request.response headerString];
-        } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexRaw) {
-            text = [self.request.response rawString];
-        }
-
-        NSString *formatStr = @"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\""
-        " \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
-        "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">"
-        "<head>"
-        "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />"
-        "<link href=\"prettify.css\" type=\"text/css\" rel=\"stylesheet\" />"
-        "<script type=\"text/javascript\" src=\"prettify.js\"></script>"
-        "<script type=\"text/javascript\" src=\"vkbeautify.js\"></script>"
-        "<style>"
-        "body { margin: 0; padding: 0 }"
-        "pre { margin: 0 }"
-        "</style>"
-        "<script>"
-        "function mycode() { document.getElementById(\"mycode\").innerHTML = vkbeautify.json('%@', 2); }"
-        "</script>"
-        "</head>"
-        "<body onload=\"mycode();prettyPrint()\">"
-        "<?prettify linenums=1?>"
-        "<pre style=\"border:none\" id=\"mycode\" class=\"prettyprint\">"
-        "</pre>"
-        "</body></html>";
-
-        NSString *htmlStr = [NSString stringWithFormat:formatStr, text];
-
-        DLog(@"%@", htmlStr);
-
-        [self.webView loadHTMLString:htmlStr baseURL:[[NSBundle mainBundle] resourceURL]];
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            NSString *text = nil;
+            if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody ) {
+                text = [self.request.response formattedHTMLBodyString];
+            } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexHeaders) {
+                text = [self.request.response headerString];
+            } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexRaw) {
+                text = [self.request.response formattedRawBodyString];
+            }
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.webView loadHTMLString:text baseURL:[[NSBundle mainBundle] resourceURL]];
+            });
+        });
     }
 }
 
@@ -344,9 +367,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
         case RequestHeaderViewButtonTypeAdvanced:
             [self showAdvanced];
             break;
-        case RequestHeaderViewButtonTypeReset:
-            [self resetRequest];
-            break;
         default:
             break;
     }
@@ -383,8 +403,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
             
             [self notifyRequestChange:group];
         }
-        
-        
+
+        [self updateSubtitle];
         [[NSNotificationCenter defaultCenter] postNotificationName:GroupShouldUpdateRequestsNotification
                                                             object:nil
                                                           userInfo:@{ kRCGroupKey : group }];
@@ -424,6 +444,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
         self.request = [[RCRequest alloc] init];
     }
 
+    self.headerView.statusLabel.text = @"Waiting to send request...";;
+    [self updateSubtitle];
+
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
     [self.webView loadHTMLString:@"" baseURL:nil];
@@ -457,6 +480,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == self.headerView.URLTextField) {
+        [self updateSubtitle];
         self.request.URLString = textField.text;
         [self notifyRequestChange:self.request.parentGroup];
     }

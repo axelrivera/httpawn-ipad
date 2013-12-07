@@ -10,6 +10,6 @@
 
 @interface SettingsViewController : UITableViewController
 
-@property (strong, nonatomic) UIStepper *timeoutStepper;
+@property (strong, nonatomic) UISlider *timeoutSlider;
 
 @end
