@@ -17,17 +17,14 @@ PODS:
   - AFNetworking/Serialization (2.0.3)
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
-  - JSONSyntaxHighlight (1.0.0)
   - UIView+AutoLayout (1.0.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0)
-  - JSONSyntaxHighlight
   - UIView+AutoLayout
 
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
-  JSONSyntaxHighlight: 1c1403ab1f839b43445f3ff4c4f45167a3a34038
   UIView+AutoLayout: 1549f907bd427f7d2e516da1ed20520992b6d3b4
 
 COCOAPODS: 0.28.0
