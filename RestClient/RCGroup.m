@@ -8,8 +8,6 @@
 
 #import "RCGroup.h"
 
-#import "NSString+UUID.h"
-
 @interface RCGroup ()
 
 @property (copy, nonatomic, readwrite) NSString *identifier;

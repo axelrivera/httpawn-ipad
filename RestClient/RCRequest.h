@@ -20,6 +20,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 @interface RCRequest : NSObject <NSCoding, NSCopying>
 
 @property (weak, nonatomic) RCGroup *parentGroup;
+@property (copy, nonatomic, readonly) NSString *identifier;
 @property (copy, nonatomic) NSString *requestName;
 @property (copy, nonatomic) NSString *requestDescription;
 @property (strong, nonatomic) NSString *requestMethod;

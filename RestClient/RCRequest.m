@@ -23,6 +23,7 @@
         NSString *URLString = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
         
         _parentGroup = nil;
+        _identifier = [[NSString stringWithUUID] copy];
         _requestName = nil;
         _requestDescription = nil;
         _requestMethod = RCRequestMethodGet;
@@ -58,6 +59,7 @@
     self = [super init];
     if (self) {
         _parentGroup = [coder decodeObjectForKey:@"RCRequestParentGroup"];
+        _identifier = [[coder decodeObjectForKey:@"RCRequestIdentifier"] copy];
         _requestName = [[coder decodeObjectForKey:@"RCRequestMethodName"] copy];
         _requestDescription = [[coder decodeObjectForKey:@"RCRequestMethodDescription"] copy];
         _requestMethod = [coder decodeObjectForKey:@"RCRequestMethodMethod"];
@@ -79,6 +81,7 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
     [coder encodeConditionalObject:self.parentGroup forKey:@"RCRequestParentGroup"];
+    [coder encodeObject:self.identifier forKey:@"RCRequestIdentifier"];
     [coder encodeObject:self.requestName forKey:@"RCRequestMethodName"];
     [coder encodeObject:self.requestDescription forKey:@"RCRequestMethodDescription"];
     [coder encodeObject:self.requestMethod forKey:@"RCRequestMethodMethod"];
