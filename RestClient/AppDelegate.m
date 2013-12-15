@@ -27,6 +27,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.tintColor = [UIColor rc_defaultTintColor];
 
+    [[UISwitch appearance] setOnTintColor:[UIColor rc_defaultTintColor]];
+    [[UISwitch appearance] setTintColor:[UIColor rc_defaultTintColor]];
+
     DetailViewController *detailController = [[DetailViewController alloc] init];
     UINavigationController *detailNavController = [[UINavigationController alloc] initWithRootViewController:detailController];
 
