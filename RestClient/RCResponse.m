@@ -9,7 +9,6 @@
 #import "RCResponse.h"
 
 #import "NSData+RestClient.h"
-#import <JSONSyntaxHighlight.h>
 
 @implementation RCResponse
 
@@ -121,18 +120,6 @@
         string = [self.responseData formattedJSONStringWithEncoding:self.responseStringEncoding];
     } else {
         string = [self.responseData stringWithEncoding:self.responseStringEncoding];
-    }
-    return string;
-}
-
-- (NSAttributedString *)formattedAttributedBodyString
-{
-    NSAttributedString *string = [[NSAttributedString alloc] initWithString:@""];
-    if ([self isJSON]) {
-        JSONSyntaxHighlight *syntax = [[JSONSyntaxHighlight alloc] initWithJSON:[self.responseData JSONObject]];
-        string = [syntax highlightJSON];
-    } else {
-        string = [[NSAttributedString alloc] initWithString:[self.responseData stringWithEncoding:self.responseStringEncoding]];
     }
     return string;
 }
