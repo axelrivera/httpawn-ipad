@@ -14,9 +14,10 @@
 #import "RCRequestOption.h"
 #import "RequestInputCell.h"
 
-@interface RequestInputViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface RequestInputViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UIBarButtonItem *doneButton;
+@property (strong, nonatomic) UIBarButtonItem *clearButton;
 @property (assign, nonatomic) CGFloat tableOrigin;
 
 @end
@@ -51,11 +52,18 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    if (!IsEmpty(self.dataSource)) {
+        self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    }
 
     self.doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                     target:self
                                                                     action:@selector(dismissAction:)];
+
+    self.clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear All"
+                                                        style:UIBarButtonItemStylePlain
+                                                       target:self
+                                                       action:@selector(clearAllConfirmation:)];
 
     self.navigationItem.rightBarButtonItem = self.doneButton;
 
@@ -89,8 +97,17 @@
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
 
+    NSArray *cells = [self.tableView visibleCells];
+    for (id cell in cells) {
+        if ([cell isKindOfClass:[RequestInputCell class]]) {
+            [[cell nameTextField] setEnabled:!editing];
+            [[cell valueTextField] setEnabled:!editing];
+            [[cell activeSwitch] setEnabled:!editing];
+        }
+    }
+
     if (editing) {
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem = self.clearButton;
     } else {
         self.navigationItem.rightBarButtonItem = self.doneButton;
     }
@@ -99,6 +116,25 @@
 }
 
 #pragma mark - Selector Methods
+
+- (void)clearAllConfirmation:(id)sender
+{
+    NSString *message = @"Are you sure you want to remove all the inputs?";
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Clear Inputs"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Continue", nil];
+
+    [alertView show];
+}
+
+- (void)clearAction:(id)sender
+{
+    [self.dataSource removeAllObjects];
+    [self.tableView reloadData];
+    [self setEditing:NO animated:YES];
+}
 
 - (void)dismissAction:(id)sender
 {
@@ -199,35 +235,6 @@
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [self.dataSource removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-    RCRequestOption *inputObject = self.dataSource[fromIndexPath.row];
-    [self.dataSource removeObjectAtIndex:fromIndexPath.row];
-    [self.dataSource insertObject:inputObject atIndex:toIndexPath.row];
-}
-
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -249,7 +256,72 @@
     }
 
     [self.dataSource addObject:option];
+
+    if (!IsEmpty(self.dataSource) && self.navigationItem.leftBarButtonItem == nil) {
+        self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    }
+
     [self.tableView reloadData];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[RequestInputCell class]]) {
+        [[cell nameTextField] setEnabled:!tableView.isEditing];
+        [[cell valueTextField] setEnabled:!tableView.isEditing];
+        [[cell activeSwitch] setEnabled:!tableView.isEditing];
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView.editing) {
+        return UITableViewCellEditingStyleDelete;
+    }
+
+    return UITableViewCellEditingStyleNone;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [self.dataSource removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+
+        if (IsEmpty(self.dataSource)) {
+            self.navigationItem.leftBarButtonItem = nil;
+            [self setEditing:NO animated:YES];
+        }
+    }
+}
+
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    RCRequestOption *inputObject = self.dataSource[fromIndexPath.row];
+    [self.dataSource removeObjectAtIndex:fromIndexPath.row];
+    [self.dataSource insertObject:inputObject atIndex:toIndexPath.row];
+}
+
+#pragma mark - UIAlertViewDelegate Methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self clearAction:alertView];
+    }
 }
 
 @end

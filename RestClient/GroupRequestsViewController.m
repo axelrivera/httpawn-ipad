@@ -11,7 +11,7 @@
 #import "RequestEditViewController.h"
 #import "RequestViewCell.h"
 
-@interface GroupRequestsViewController ()
+@interface GroupRequestsViewController () <UIAlertViewDelegate>
 
 @end
 
@@ -40,6 +40,11 @@
 {
     [super viewDidLoad];
 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear All"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(clearAllConfirmation:)];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(requestsUpdated:)
                                                  name:GroupShouldUpdateRequestsNotification
@@ -58,6 +63,24 @@
 }
 
 #pragma mark - Selector Methods
+
+- (void)clearAllConfirmation:(id)sender
+{
+    NSString *message = @"Are you sure you want to remove all the requests available in this group?";
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Clear Requests"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Continue", nil];
+
+    [alertView show];
+}
+
+- (void)clearAction:(id)sender
+{
+    [self.group removeAllRequests];
+    [self.tableView reloadData];
+}
 
 - (void)requestsUpdated:(NSNotification *)notification
 {
@@ -146,6 +169,15 @@ moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - UIAlertViewDelegate Methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self clearAction:alertView];
+    }
 }
 
 @end
