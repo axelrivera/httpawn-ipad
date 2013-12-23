@@ -48,13 +48,8 @@
                                                                              target:self
                                                                              action:@selector(saveAction:)];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(dismissAction:)];
-
-    self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, 37.0)];
-    self.nameTextField.placeholder = @"Enter Name";
+    self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 37.0)];
+    self.nameTextField.placeholder = @"Enter Group Name";
     self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.nameTextField.contentVerticalAlignment = UIViewContentModeCenter;
@@ -78,6 +73,17 @@
 {
     [self.view endEditing:YES];
 
+    NSString *nameStr = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (IsEmpty(nameStr)) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Group Name"
+                                                            message:@"Name cannot be empty."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
+
     if (self.editType == GroupEditTypeCreate) {
         self.groupObject = [[RCGroup alloc] init];
     }
@@ -85,11 +91,6 @@
     self.groupObject.groupName = self.nameTextField.text;
 
     [self.delegate groupEditViewController:self didFinishWithType:self.editType object:self.groupObject];
-}
-
-- (void)dismissAction:(id)sender
-{
-    [self.delegate groupEditViewControllerDidCancel:self];
 }
 
 #pragma mark - Table view data source
@@ -135,7 +136,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
-    cell.textLabel.text = @"Group Name";
+    cell.textLabel.text = @"Name";
     cell.accessoryView = self.nameTextField;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

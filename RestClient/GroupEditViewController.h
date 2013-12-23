@@ -32,7 +32,6 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 
 @protocol GroupEditViewControllerDelegate <NSObject>
 
-- (void)groupEditViewControllerDidCancel:(GroupEditViewController *)controller;
 - (void)groupEditViewController:(GroupEditViewController *)controller
               didFinishWithType:(GroupEditType)editType
                          object:(RCGroup *)object;

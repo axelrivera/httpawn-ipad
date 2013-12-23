@@ -17,6 +17,7 @@
 
 @property (strong, nonatomic) UIBarButtonItem *addGroupItem;
 @property (strong, nonatomic) UIBarButtonItem *clearHistoryItem;
+@property (strong, nonatomic) UIPopoverController *myPopoverController;
 
 - (NSArray *)dataSource;
 
@@ -42,6 +43,8 @@
 
     [self.navigationController setToolbarHidden:NO animated:NO];
 
+    self.myPopoverController = nil;
+
     self.addGroupItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                       target:self
                                                                       action:@selector(addGroupAction:)];
@@ -50,6 +53,10 @@
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(clearHistoryAction:)];
+
+    if (!IsEmpty([RestClientData sharedData].groups)) {
+        self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    }
 
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Groups", @"History" ]];
     [self.segmentedControl setWidth:130.0 forSegmentAtIndex:RCRequestTypeGroup];
@@ -85,6 +92,12 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO animated:animated];
+
+    if (IsEmpty([RestClientData sharedData].history)) {
+        self.clearHistoryItem.enabled = NO;
+    } else {
+        self.clearHistoryItem.enabled = YES;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -141,9 +154,17 @@
 
     if (segmentedControl.selectedSegmentIndex == RCRequestTypeGroup) {
         self.title = @"Groups";
-        self.navigationItem.leftBarButtonItem = [self editButtonItem];
+        if (!IsEmpty([RestClientData sharedData].groups)) {
+            self.navigationItem.leftBarButtonItem = [self editButtonItem];
+        }
         self.navigationItem.rightBarButtonItem = self.addGroupItem;
     } else {
+        if (IsEmpty([RestClientData sharedData].history)) {
+            self.clearHistoryItem.enabled = NO;
+        } else {
+            self.clearHistoryItem.enabled = YES;
+        }
+
         self.title = @"History";
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.rightBarButtonItem = self.clearHistoryItem;
@@ -154,14 +175,22 @@
 
 - (void)addGroupAction:(id)sender
 {
+    if (self.myPopoverController) {
+        [self.myPopoverController dismissPopoverAnimated:YES];
+        self.myPopoverController = nil;
+    }
+
     GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeCreate
                                                                             groupObject:nil];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+    [self.myPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem
+                                     permittedArrowDirections:UIPopoverArrowDirectionAny
+                                                     animated:YES];
+    
 }
 
 - (void)clearHistoryAction:(id)sender
@@ -187,15 +216,16 @@
 {
     if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
         [self.tableView reloadData];
+
+        if (IsEmpty([RestClientData sharedData].history)) {
+            self.clearHistoryItem.enabled = NO;
+        } else {
+            self.clearHistoryItem.enabled = YES;
+        }
     }
 }
 
 #pragma mark - UIViewControllerDelegate Methods
-
-- (void)groupEditViewControllerDidCancel:(GroupEditViewController *)controller
-{
-    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (void)groupEditViewController:(GroupEditViewController *)controller
               didFinishWithType:(GroupEditType)editType
@@ -203,6 +233,9 @@
 {
     if (editType == GroupEditTypeCreate) {
         [[RestClientData sharedData].groups addObject:groupObject];
+        if (!IsEmpty([RestClientData sharedData].groups) && self.navigationItem.leftBarButtonItem == nil) {
+            self.navigationItem.leftBarButtonItem = [self editButtonItem];
+        }
     } else {
         NSInteger index = [[RestClientData sharedData].groups indexOfObject:groupObject];
         if (index != NSNotFound) {
@@ -212,7 +245,8 @@
     
     [self.tableView reloadData];
     
-    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.myPopoverController dismissPopoverAnimated:YES];
+    self.myPopoverController = nil;
 }
 
 - (void)groupEditViewController:(GroupEditViewController *)controller shouldDeleteGroupObject:(RCGroup *)object
@@ -222,10 +256,15 @@
         [[RestClientData sharedData].groups removeObjectAtIndex:index];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
         [self.tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+        if (IsEmpty([RestClientData sharedData].groups)) {
+            self.navigationItem.leftBarButtonItem = nil;
+        }
     }
 
     [self.delegate shouldUpdateRequest:nil requestType:-1];
-    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
+
+    [self.myPopoverController dismissPopoverAnimated:YES];
+    self.myPopoverController = nil;
 }
 
 - (void)groupRequestsViewController:(GroupRequestsViewController *)controller didSelectRequest:(RCRequest *)request
@@ -291,15 +330,25 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.myPopoverController) {
+        [self.myPopoverController dismissPopoverAnimated:YES];
+        self.myPopoverController = nil;
+    }
+
     RCGroup *groupObject = [self dataSource][indexPath.row];
     GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeModify
                                                                             groupObject:groupObject];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-    [self.navigationController presentViewController:navController animated:YES completion:nil];
+    CGRect rect = [tableView rectForRowAtIndexPath:indexPath];
+
+    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+    [self.myPopoverController presentPopoverFromRect:rect
+                                              inView:tableView
+                            permittedArrowDirections:UIPopoverArrowDirectionLeft
+                                            animated:YES];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -355,6 +404,7 @@
     if (buttonIndex == 1) {
         [[RestClientData sharedData].history removeAllObjects];
         [self.tableView reloadData];
+        self.clearHistoryItem.enabled = NO;
     }
 }
 
