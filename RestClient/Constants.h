@@ -14,6 +14,7 @@
 #define kTimeoutMinValue 2
 #define kTimeoutIncrementValue 1
 #define kDefaultCancelOnFailure YES
+#define kMaximumHistoryItems 100
 
 // File Names
 

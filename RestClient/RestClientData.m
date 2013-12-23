@@ -99,6 +99,10 @@
     [tmpRequest sanitize];
     
     [self.history insertObject:tmpRequest atIndex:0];
+    if ([self.history count] > kMaximumHistoryItems) {
+        NSInteger length = [self.history count] - kMaximumHistoryItems;
+        [self.history removeObjectsInRange:NSMakeRange(kMaximumHistoryItems, length)];
+    }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:HistoryDidUpdateNotification
                                                         object:nil
