@@ -40,6 +40,7 @@
 		167DDD9B184BA0E50012651D /* AdvancedRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */; };
 		167DDD9F184C4CD40012651D /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 167DDD9D184C4CD40012651D /* SettingsViewController.m */; };
 		167DDDA0184C4CD40012651D /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 167DDD9E184C4CD40012651D /* SettingsViewController.xib */; };
+		168DADFE185E3485001A9AA2 /* NSNumberFormatter+RestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 168DADFD185E3485001A9AA2 /* NSNumberFormatter+RestClient.m */; };
 		16A1CD3D184D985B001F89AB /* prettify.css in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3A184D985B001F89AB /* prettify.css */; };
 		16A1CD40184D99FA001F89AB /* prettify.js in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3B184D985B001F89AB /* prettify.js */; };
 		16A1CD41184D99FA001F89AB /* vkbeautify.js in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3C184D985B001F89AB /* vkbeautify.js */; };
@@ -142,6 +143,8 @@
 		167DDD9C184C4CD40012651D /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		167DDD9D184C4CD40012651D /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		167DDD9E184C4CD40012651D /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		168DADFC185E3485001A9AA2 /* NSNumberFormatter+RestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+RestClient.h"; sourceTree = "<group>"; };
+		168DADFD185E3485001A9AA2 /* NSNumberFormatter+RestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+RestClient.m"; sourceTree = "<group>"; };
 		16A1CD3A184D985B001F89AB /* prettify.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = prettify.css; sourceTree = "<group>"; };
 		16A1CD3B184D985B001F89AB /* prettify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = prettify.js; sourceTree = "<group>"; };
 		16A1CD3C184D985B001F89AB /* vkbeautify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vkbeautify.js; sourceTree = "<group>"; };
@@ -476,6 +479,8 @@
 				164591A4183F7D930094DAC1 /* RequestDetailDelegate.h */,
 				16CF225A1853A30600D09CCF /* UIColor+RestClient.h */,
 				16CF225B1853A30600D09CCF /* UIColor+RestClient.m */,
+				168DADFC185E3485001A9AA2 /* NSNumberFormatter+RestClient.h */,
+				168DADFD185E3485001A9AA2 /* NSNumberFormatter+RestClient.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -652,6 +657,7 @@
 				16A4E77518331C4B0037E810 /* MainViewController.m in Sources */,
 				1645FB0218491AE000D19990 /* RCSelect.m in Sources */,
 				1645FAF91848F27C00D19990 /* RequestMethodView.m in Sources */,
+				168DADFE185E3485001A9AA2 /* NSNumberFormatter+RestClient.m in Sources */,
 				1670F246183ADB90000CC10D /* RCGroup.m in Sources */,
 				164A3379184A3C9C000DCB3B /* RequestEditViewController.m in Sources */,
 				16A4E771183309350037E810 /* UIViewController+Layout.m in Sources */,

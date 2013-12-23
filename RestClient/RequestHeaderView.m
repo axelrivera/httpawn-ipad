@@ -112,6 +112,15 @@
 
         [self addSubview:_advancedButton];
 
+        _resetButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _resetButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_resetButton setTitle:@"Reset" forState:UIControlStateNormal];
+        _resetButton.tag = RequestHeaderViewButtonTypeReset;
+        [_resetButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
+        _resetButton.tintColor = [UIColor redColor];
+
+        [self addSubview:_resetButton];
+
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _statusLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _statusLabel.backgroundColor = [UIColor clearColor];
@@ -157,6 +166,9 @@
 
     [self.advancedButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.groupButton withOffset:20.0];
     [self.advancedButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
+
+    [self.resetButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.advancedButton withOffset:20.0];
+    [self.resetButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
     [self.statusLabel autoSetDimension:ALDimensionHeight toSize:18.0];
     [self.statusLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.headersButton withOffset:4.0];

@@ -11,5 +11,6 @@
 @interface SettingsViewController : UITableViewController
 
 @property (strong, nonatomic) UISlider *timeoutSlider;
+@property (strong, nonatomic) UISegmentedControl *fontSegmentedControl;
 
 @end

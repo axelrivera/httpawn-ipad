@@ -113,6 +113,13 @@
     return dictionary;
 }
 
+- (NSString *)responseTimeString
+{
+    NSNumber *timeNumber = [NSNumber numberWithDouble:self.responseTime];
+    NSString *timeStr = [[NSNumberFormatter responseTimeFormatter] stringFromNumber:timeNumber];
+    return [NSString stringWithFormat:@"%@ ms", timeStr];
+}
+
 - (NSString *)formattedBodyString
 {
     NSString *string = @"";

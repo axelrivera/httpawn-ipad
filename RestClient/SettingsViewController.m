@@ -45,6 +45,10 @@
     self.timeoutSlider.maximumValue = max;
     self.timeoutSlider.value = value;
     [self.timeoutSlider addTarget:self action:@selector(timeoutChanged:) forControlEvents:UIControlEventValueChanged];
+
+    self.fontSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Small", @"Medium", @"Large" ]];
+    self.fontSegmentedControl.apportionsSegmentWidthsByContent = YES;
+    
 }
 
 - (void)didReceiveMemoryWarning

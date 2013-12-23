@@ -11,6 +11,7 @@
 
 #import "FileHelpers.h"
 #import "UIColor+RestClient.h"
+#import "NSNumberFormatter+RestClient.h"
 #import "NSString+UUID.h"
 #import "RCSettings.h"
 #import "NSDictionary+Request.h"

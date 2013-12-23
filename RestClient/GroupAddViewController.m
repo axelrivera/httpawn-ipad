@@ -223,6 +223,17 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0 && indexPath.row == 0) {
         NSArray *groups = [[RestClientData sharedData] groupSelectObjectsWithSelectedGroup:self.currentGroup];
+
+        if ([groups count] == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"HTTPawn"
+                                                                message:@"There are no existing groups. Please create a new one."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            return;
+        }
+
         SelectViewController *controller = [[SelectViewController alloc] initWithDataSource:groups];
         controller.delegate = self;
         

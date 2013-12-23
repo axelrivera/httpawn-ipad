@@ -24,11 +24,12 @@
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate,
-GroupAddViewControllerDelegate, UITextFieldDelegate>
+GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) TitleNavigationView *titleView;
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
+@property (strong, nonatomic) UIBarButtonItem *actionButtonItem;
 
 - (void)updateSubtitle;
 
@@ -100,6 +101,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
+
+    [self.segmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    self.segmentedControl.enabled = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -226,9 +230,10 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [[RestClientData sharedData] addRequestToHistory:self.request];
 
     [self.request runWithCompletion:^(RCResponse *response, NSError *error) {
-        self.headerView.statusLabel.text = [NSString stringWithFormat:@"Response Time: %.0f ms", response.responseTime];
+        self.headerView.statusLabel.text = [NSString stringWithFormat:@"Response Time: %@", [response responseTimeString]];
         self.segmentedControl.selectedSegmentIndex = RequestSegmentIndexBody;
         [self segmentedControlChanged:self.segmentedControl];
+        self.segmentedControl.enabled = YES;
     }];
 }
 
@@ -263,15 +268,18 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)resetRequest:(id)sender
+- (void)resetRequest
 {
-    [self.view endEditing:YES];
-    
     self.request = [[RCRequest alloc] init];
     
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
     [self.webView loadHTMLString:@"" baseURL:nil];
+    [self updateSubtitle];
+
+    [self.segmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    self.segmentedControl.enabled = NO;
+    self.headerView.statusLabel.text = @"Waiting to send request...";
 }
 
 - (NSArray *)detailToolBarItems
@@ -289,13 +297,13 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 
     UIBarButtonItem *segmentedItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
 
-    UIBarButtonItem *resetItem = [[UIBarButtonItem alloc] initWithTitle:@"Reset"
-                                                                  style:UIBarButtonItemStylePlain
-                                                                 target:self
-                                                                 action:@selector(resetRequest:)];
-    resetItem.tintColor = [UIColor redColor];
 
-    return @[ flexibleItem, segmentedItem, flexibleItem, resetItem ];
+    self.actionButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                          target:self
+                                                                          action:@selector(responseAction:)];
+
+
+    return @[ flexibleItem, segmentedItem, flexibleItem, self.actionButtonItem ];
 }
 
 - (void)notifyRequestChange:(RCGroup *)group
@@ -341,6 +349,17 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)responseAction:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Response Actions"
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Share by E-mail", nil];
+
+    [actionSheet showFromBarButtonItem:self.actionButtonItem animated:YES];
+}
+
 #pragma mark - RequestHeaderViewDelegate Methods
 
 - (void)requestHeaderView:(RequestHeaderView *)headerView didSelectButtonType:(RequestHeaderViewButtonType)buttonType
@@ -366,6 +385,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
             break;
         case RequestHeaderViewButtonTypeAdvanced:
             [self showAdvanced];
+            break;
+        case RequestHeaderViewButtonTypeReset:
+            [self resetRequest];
             break;
         default:
             break;
@@ -452,6 +474,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
     [self.webView loadHTMLString:@"" baseURL:nil];
     
     [self.masterPopoverController dismissPopoverAnimated:YES];
+
+    [self.segmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    self.segmentedControl.enabled = NO;
 }
 
 #pragma mark - SplitViewDelegate Methods
@@ -480,9 +505,25 @@ GroupAddViewControllerDelegate, UITextFieldDelegate>
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == self.headerView.URLTextField) {
-        [self updateSubtitle];
         self.request.URLString = textField.text;
+        [self updateSubtitle];
         [self notifyRequestChange:self.request.parentGroup];
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    [self sendRequest];
+    return NO;
+}
+
+#pragma mark - UIActionSheetDelegate Methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+
     }
 }
 

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#define kRCSettingsResponseFontSizeKey @"RCSettingsResponseFontSizeKey"
 #define kRCSettingsEnableCookiesKey @"RCSettingsEnableCookiesKey"
 #define kRCSettingsTimeoutIntervalKey @"RCSettingsTimeoutIntervalKey"
 #define kRCSettingsAllowInvalidSSLKey @"RCSettingsAllowInvalidSSLKey"
@@ -25,7 +26,15 @@
 #define kRCSettingsTimeoutIntervalMinValue 2.0
 #define kRCSettingsTimeoutIntervalMaxValue 180.0
 
+FOUNDATION_EXPORT NSString * const RCSettingsResponseFontSizeSmall;
+FOUNDATION_EXPORT NSString * const RCSettingsResponseFontSizeMedium;
+FOUNDATION_EXPORT NSString * const RCSettingsResponseFontSizeLarge;
+
 @interface RCSettings : NSObject
+
+- (NSString *)responseFontSize;
+- (void)setResponseFontSize:(NSString *)fontSize;
+- (NSInteger)indexForCurrentResponseFontSize;
 
 - (BOOL)enableCookies;
 - (void)setEnableCookies:(BOOL)flag;

@@ -8,9 +8,53 @@
 
 #import "RCSettings.h"
 
+NSString * const RCSettingsResponseFontSizeSmall = @"RCSettingsResponseFontSizeSmall";
+NSString * const RCSettingsResponseFontSizeMedium = @"RCSettingsResponseFontSizeMedium";
+NSString * const RCSettingsResponseFontSizeLarge = @"RCSettingsResponseFontSizeLarge";
+
 @implementation RCSettings
 
 #pragma mark - Singleton Methods
+
+- (NSString *)responseFontSize
+{
+    NSString *sizeStr = [[self userDefaults] objectForKey:kRCSettingsResponseFontSizeKey];
+    if (sizeStr == nil) {
+        sizeStr = RCSettingsResponseFontSizeMedium;
+    }
+    return sizeStr;
+}
+
+- (void)setResponseFontSize:(NSString *)fontSize
+{
+    NSString *sizeStr = RCSettingsResponseFontSizeMedium;
+    if ([fontSize isEqualToString:RCSettingsResponseFontSizeSmall] ||
+        [fontSize isEqualToString:RCSettingsResponseFontSizeMedium] ||
+        [fontSize isEqualToString:RCSettingsResponseFontSizeLarge]) {
+        sizeStr = fontSize;
+    }
+    [[self userDefaults] setObject:sizeStr forKey:kRCSettingsResponseFontSizeKey];
+    [[self userDefaults] synchronize];
+}
+
+- (NSInteger)indexForCurrentResponseFontSize
+{
+    NSString *sizeStr = [self responseFontSize];
+    NSInteger index;
+
+    if ([sizeStr isEqualToString:RCSettingsResponseFontSizeSmall]) {
+        index = 0;
+    } else if ([sizeStr isEqualToString:RCSettingsResponseFontSizeMedium]) {
+        index = 1;
+    } else if ([sizeStr isEqualToString:RCSettingsResponseFontSizeLarge]) {
+        index = 2;
+    } else {
+        [self setResponseFontSize:RCSettingsResponseFontSizeMedium];
+        index = 1;
+    }
+
+    return index;
+}
 
 - (BOOL)enableCookies
 {

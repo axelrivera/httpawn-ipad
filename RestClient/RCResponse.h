@@ -29,6 +29,8 @@
 
 - (NSDictionary *)responseDictionary;
 
+- (NSString *)responseTimeString;
+
 - (NSString *)formattedBodyString;
 - (NSString *)bodyString;
 - (NSString *)statusString;
