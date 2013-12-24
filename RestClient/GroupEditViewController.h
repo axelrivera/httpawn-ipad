@@ -39,5 +39,6 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 @optional
 
 - (void)groupEditViewController:(GroupEditViewController *)controller shouldDeleteGroupObject:(RCGroup *)object;
+- (void)groupEditViewControllerDidCancel:(GroupEditViewController *)controller;
 
 @end

@@ -48,6 +48,12 @@
                                                                              target:self
                                                                              action:@selector(saveAction:)];
 
+    if ([self.delegate respondsToSelector:@selector(groupEditViewControllerDidCancel:)]) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                              target:self
+                                                                                              action:@selector(dismissAction:)];
+    }
+
     self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 37.0)];
     self.nameTextField.placeholder = @"Enter Group Name";
     self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
@@ -91,6 +97,11 @@
     self.groupObject.groupName = self.nameTextField.text;
 
     [self.delegate groupEditViewController:self didFinishWithType:self.editType object:self.groupObject];
+}
+
+- (void)dismissAction:(id)sender
+{
+    [self.delegate groupEditViewControllerDidCancel:self];
 }
 
 #pragma mark - Table view data source

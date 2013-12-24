@@ -267,6 +267,12 @@
     self.myPopoverController = nil;
 }
 
+- (void)groupEditViewControllerDidCancel:(GroupEditViewController *)controller
+{
+    [self.myPopoverController dismissPopoverAnimated:YES];
+    self.myPopoverController = nil;
+}
+
 - (void)groupRequestsViewController:(GroupRequestsViewController *)controller didSelectRequest:(RCRequest *)request
 {
     [self.delegate shouldUpdateRequest:request requestType:RCRequestTypeGroup];
