@@ -89,6 +89,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     self.webView.scalesPageToFit = NO;
     self.webView.backgroundColor = [UIColor whiteColor];
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.webView loadHTMLString:@"" baseURL:nil];
     
     [self.view addSubview:self.webView];
 
