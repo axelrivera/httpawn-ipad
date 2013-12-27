@@ -10,6 +10,13 @@
 		1600A04E18443EC70089CA98 /* GroupAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1600A04C18443EC70089CA98 /* GroupAddViewController.m */; };
 		1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1600A04D18443EC70089CA98 /* GroupAddViewController.xib */; };
 		162458901852982F0087DDF3 /* RCResponse+RestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1624588F1852982F0087DDF3 /* RCResponse+RestClient.m */; };
+		1628BF02186A173700C025FF /* common_request_headers.json in Resources */ = {isa = PBXBuildFile; fileRef = 1628BF01186A173700C025FF /* common_request_headers.json */; };
+		1628BF05186A20A100C025FF /* RCPredefinedHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1628BF04186A20A100C025FF /* RCPredefinedHeader.m */; };
+		1628BF08186A238000C025FF /* NSJSONSerialization+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 1628BF07186A238000C025FF /* NSJSONSerialization+File.m */; };
+		1628BF0C186A2D8A00C025FF /* HeaderSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1628BF0A186A2D8A00C025FF /* HeaderSelectViewController.m */; };
+		1628BF0D186A2D8A00C025FF /* HeaderSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1628BF0B186A2D8A00C025FF /* HeaderSelectViewController.xib */; };
+		16348D4A186DE62100A7F75B /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 16348D48186DE62100A7F75B /* iTunesArtwork */; };
+		16348D4B186DE62100A7F75B /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 16348D49186DE62100A7F75B /* iTunesArtwork@2x */; };
 		1645FAED1848D97400D19990 /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAEC1848D97400D19990 /* NSString+UUID.m */; };
 		1645FAF11848EDEE00D19990 /* GroupRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FAEF1848EDEE00D19990 /* GroupRequestsViewController.m */; };
 		1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1645FAF01848EDEE00D19990 /* GroupRequestsViewController.xib */; };
@@ -90,6 +97,16 @@
 		1600A04D18443EC70089CA98 /* GroupAddViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupAddViewController.xib; sourceTree = "<group>"; };
 		1624588E1852982F0087DDF3 /* RCResponse+RestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCResponse+RestClient.h"; sourceTree = "<group>"; };
 		1624588F1852982F0087DDF3 /* RCResponse+RestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCResponse+RestClient.m"; sourceTree = "<group>"; };
+		1628BF01186A173700C025FF /* common_request_headers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = common_request_headers.json; sourceTree = "<group>"; };
+		1628BF03186A20A100C025FF /* RCPredefinedHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPredefinedHeader.h; sourceTree = "<group>"; };
+		1628BF04186A20A100C025FF /* RCPredefinedHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPredefinedHeader.m; sourceTree = "<group>"; };
+		1628BF06186A238000C025FF /* NSJSONSerialization+File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSJSONSerialization+File.h"; sourceTree = "<group>"; };
+		1628BF07186A238000C025FF /* NSJSONSerialization+File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSJSONSerialization+File.m"; sourceTree = "<group>"; };
+		1628BF09186A2D8A00C025FF /* HeaderSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderSelectViewController.h; sourceTree = "<group>"; };
+		1628BF0A186A2D8A00C025FF /* HeaderSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderSelectViewController.m; sourceTree = "<group>"; };
+		1628BF0B186A2D8A00C025FF /* HeaderSelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderSelectViewController.xib; sourceTree = "<group>"; };
+		16348D48186DE62100A7F75B /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		16348D49186DE62100A7F75B /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		164591A4183F7D930094DAC1 /* RequestDetailDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailDelegate.h; sourceTree = "<group>"; };
 		1645FAEB1848D97400D19990 /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
 		1645FAEC1848D97400D19990 /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
@@ -219,6 +236,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1628BF00186A16FE00C025FF /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				1628BF01186A173700C025FF /* common_request_headers.json */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
 		1645FAF31848EDFB00D19990 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +276,8 @@
 				167DDD98184BA0E50012651D /* AdvancedRequestViewController.m */,
 				167DDD9C184C4CD40012651D /* SettingsViewController.h */,
 				167DDD9D184C4CD40012651D /* SettingsViewController.m */,
+				1628BF09186A2D8A00C025FF /* HeaderSelectViewController.h */,
+				1628BF0A186A2D8A00C025FF /* HeaderSelectViewController.m */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -292,6 +319,8 @@
 				1645FB0118491AE000D19990 /* RCSelect.m */,
 				1624588E1852982F0087DDF3 /* RCResponse+RestClient.h */,
 				1624588F1852982F0087DDF3 /* RCResponse+RestClient.m */,
+				1628BF03186A20A100C025FF /* RCPredefinedHeader.h */,
+				1628BF04186A20A100C025FF /* RCPredefinedHeader.m */,
 			);
 			name = "Models + Data";
 			sourceTree = "<group>";
@@ -299,6 +328,9 @@
 		16A1CD38184D985B001F89AB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				16348D48186DE62100A7F75B /* iTunesArtwork */,
+				16348D49186DE62100A7F75B /* iTunesArtwork@2x */,
+				1628BF00186A16FE00C025FF /* JSON */,
 				16A1CD39184D985B001F89AB /* Web */,
 			);
 			path = Resources;
@@ -395,6 +427,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				1628BF0B186A2D8A00C025FF /* HeaderSelectViewController.xib */,
 				167DDD9E184C4CD40012651D /* SettingsViewController.xib */,
 				167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */,
 				164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */,
@@ -481,6 +514,8 @@
 				16CF225B1853A30600D09CCF /* UIColor+RestClient.m */,
 				168DADFC185E3485001A9AA2 /* NSNumberFormatter+RestClient.h */,
 				168DADFD185E3485001A9AA2 /* NSNumberFormatter+RestClient.m */,
+				1628BF06186A238000C025FF /* NSJSONSerialization+File.h */,
+				1628BF07186A238000C025FF /* NSJSONSerialization+File.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -565,14 +600,18 @@
 				16A1CD40184D99FA001F89AB /* prettify.js in Resources */,
 				16A1CD41184D99FA001F89AB /* vkbeautify.js in Resources */,
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
+				16348D4A186DE62100A7F75B /* iTunesArtwork in Resources */,
 				16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */,
 				1645FAF21848EDEE00D19990 /* GroupRequestsViewController.xib in Resources */,
 				167DDD9B184BA0E50012651D /* AdvancedRequestViewController.xib in Resources */,
 				1600A04F18443EC70089CA98 /* GroupAddViewController.xib in Resources */,
 				167DDDA0184C4CD40012651D /* SettingsViewController.xib in Resources */,
+				16348D4B186DE62100A7F75B /* iTunesArtwork@2x in Resources */,
+				1628BF0D186A2D8A00C025FF /* HeaderSelectViewController.xib in Resources */,
 				164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */,
 				16A1CD3D184D985B001F89AB /* prettify.css in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
+				1628BF02186A173700C025FF /* common_request_headers.json in Resources */,
 				16D9AB5F1840506D009D5EDF /* PreviewViewController.xib in Resources */,
 				1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */,
 				1670F24B183ADCA4000CC10D /* GroupEditViewController.xib in Resources */,
@@ -631,6 +670,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16A1CD5B184FF27A001F89AB /* RCSettings.m in Sources */,
+				1628BF08186A238000C025FF /* NSJSONSerialization+File.m in Sources */,
 				1645FAF11848EDEE00D19990 /* GroupRequestsViewController.m in Sources */,
 				16DE719D1840EC2D0060FCA4 /* FileHelpers.m in Sources */,
 				16520291183B16D500FB4D37 /* NSArray+RestClient.m in Sources */,
@@ -651,6 +691,7 @@
 				16D9AB5E1840506D009D5EDF /* PreviewViewController.m in Sources */,
 				16520287183B124400FB4D37 /* RCRequestOption.m in Sources */,
 				16CF225918539F2B00D09CCF /* SliderViewCell.m in Sources */,
+				1628BF05186A20A100C025FF /* RCPredefinedHeader.m in Sources */,
 				1670F23218379A5E000CC10D /* URLActionsViewController.m in Sources */,
 				16520286183B124400FB4D37 /* RCRequest.m in Sources */,
 				1670F24A183ADCA4000CC10D /* GroupEditViewController.m in Sources */,
@@ -668,6 +709,7 @@
 				16520288183B124400FB4D37 /* RCResponse.m in Sources */,
 				16B635BB183DC58A00176848 /* RestClientData.m in Sources */,
 				16A4E75E1832FA1A0037E810 /* DetailViewController.m in Sources */,
+				1628BF0C186A2D8A00C025FF /* HeaderSelectViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

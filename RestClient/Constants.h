@@ -20,6 +20,9 @@
 
 #define kRestClientDataFile @"RestClientData.data"
 
+#define kRestClientPredefinedHeadersFile @"common_request_headers"
+#define kRstClientPredefinedHeadersExtension @"json"
+
 // Notifications
 
 #define HistoryDidUpdateNotification @"HistoryDidUpdateNotification"

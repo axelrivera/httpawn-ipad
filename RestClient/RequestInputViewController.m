@@ -10,14 +10,21 @@
 
 #import "UIViewController+Layout.h"
 #import <UIView+AutoLayout.h>
-
+#import "HeaderSelectViewController.h"
 #import "RCRequestOption.h"
 #import "RequestInputCell.h"
 
-@interface RequestInputViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface RequestInputViewController () <UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate>
+
+@property (strong, nonatomic) UIPopoverController *myPopoverController;
 
 @property (strong, nonatomic) UIBarButtonItem *doneButton;
+@property (strong, nonatomic) UIBarButtonItem *addButton;
 @property (strong, nonatomic) UIBarButtonItem *clearButton;
+
+@property (strong, nonatomic) NSArray *rightItems;
+@property (strong, nonatomic) NSArray *editingRightItems;
+
 @property (assign, nonatomic) CGFloat tableOrigin;
 
 @end
@@ -44,6 +51,8 @@
         } else {
             self.title = @"Parameters";
         }
+
+        _myPopoverController = nil;
     }
     return self;
 }
@@ -60,12 +69,19 @@
                                                                     target:self
                                                                     action:@selector(dismissAction:)];
 
+    self.addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                   target:self
+                                                                   action:@selector(addAction:)];
+
     self.clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear All"
                                                         style:UIBarButtonItemStylePlain
                                                        target:self
-                                                       action:@selector(clearAllConfirmation:)];
+                                                       action:@selector(clearAction:)];
 
-    self.navigationItem.rightBarButtonItem = self.doneButton;
+    self.rightItems = @[ self.doneButton, self.addButton ];
+    self.editingRightItems = @[ self.clearButton ];
+
+    [self.navigationItem setRightBarButtonItems:self.rightItems];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
@@ -100,6 +116,7 @@
     NSArray *cells = [self.tableView visibleCells];
     for (id cell in cells) {
         if ([cell isKindOfClass:[RequestInputCell class]]) {
+            [[cell inputButton] setEnabled:!editing];
             [[cell nameTextField] setEnabled:!editing];
             [[cell valueTextField] setEnabled:!editing];
             [[cell activeSwitch] setEnabled:!editing];
@@ -107,9 +124,9 @@
     }
 
     if (editing) {
-        self.navigationItem.rightBarButtonItem = self.clearButton;
+        [self.navigationItem setRightBarButtonItems:self.editingRightItems animated:YES];
     } else {
-        self.navigationItem.rightBarButtonItem = self.doneButton;
+        [self.navigationItem setRightBarButtonItems:self.rightItems animated:YES];
     }
 
     [self.tableView reloadData];
@@ -117,16 +134,21 @@
 
 #pragma mark - Selector Methods
 
-- (void)clearAllConfirmation:(id)sender
+- (void)addAction:(id)sender
 {
-    NSString *message = @"Are you sure you want to remove all the inputs?";
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Clear Inputs"
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Continue", nil];
+    RCRequestOption *option = [[RCRequestOption alloc] init];
 
-    [alertView show];
+    if (self.dataSource == nil) {
+        self.dataSource = [@[] mutableCopy];
+    }
+
+    [self.dataSource addObject:option];
+
+    if (!IsEmpty(self.dataSource) && self.navigationItem.leftBarButtonItem == nil) {
+        self.navigationItem.leftBarButtonItem = [self editButtonItem];
+    }
+
+    [self.tableView reloadData];
 }
 
 - (void)clearAction:(id)sender
@@ -139,6 +161,41 @@
 - (void)dismissAction:(id)sender
 {
     [self.delegate requestInputViewController:self didFinishWithInputType:self.inputType objects:self.dataSource];
+}
+
+- (void)headerAction:(id)sender
+{
+    if (self.myPopoverController) {
+        [self.myPopoverController dismissPopoverAnimated:YES];
+        self.myPopoverController = nil;
+    }
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[sender tag] inSection:0];
+    RequestInputCell *cell = (RequestInputCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+
+    HeaderSelectViewController *controller = [[HeaderSelectViewController alloc] init];
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+
+    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+    self.myPopoverController.delegate = self;
+
+    controller.saveBlock = ^(NSString *name, NSString *value) {
+        RCRequestOption *requestOption = self.dataSource[indexPath.row];
+
+        requestOption.objectName = cell.nameTextField.text = name;
+        requestOption.objectValue = cell.valueTextField.text = value;
+        [self.myPopoverController dismissPopoverAnimated:YES];
+    };
+
+    controller.cancelBlock = ^{
+        [self.myPopoverController dismissPopoverAnimated:YES];
+    };
+
+    [self.myPopoverController presentPopoverFromRect:cell.inputButton.frame
+                                              inView:cell
+                            permittedArrowDirections:UIPopoverArrowDirectionLeft
+                                            animated:YES];
 }
 
 - (void)keyboardDidChangeFrame:(NSNotification*)notification
@@ -167,63 +224,26 @@
 
 #pragma mark - UITableViewDataSource Methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    NSInteger sections = 0;
-    if (self.isEditing) {
-        sections = 1;
-    } else {
-        sections = 2;
-    }
-
-    return sections;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rows = 0;
-    if (self.isEditing) {
-        rows = [self.dataSource count];
-    } else {
-        if (section == 0) {
-            rows = [self.dataSource count];
-        } else {
-            rows = 1;
-        }
-    }
-    return rows;
+    return [self.dataSource count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *AddIdentifier = @"AddCell";
     static NSString *CellIdentifier = @"Cell";
 
-    if (!self.isEditing && indexPath.section == 1) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:AddIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AddIdentifier];
-        }
-
-        if (self.inputType == RequestInputTypeHeaders) {
-            cell.textLabel.text = @"Add Header";
-        } else {
-            cell.textLabel.text = @"Add Parameter";
-        }
-
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-
-        return cell;
-    }
+    RequestInputCellType cellType = self.inputType == RequestInputCellTypeHeader ? RequestInputCellTypeHeader : RequestInputCellTypeParameter;
 
     RequestInputCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[RequestInputCell alloc] initWithReuseIdentifier:CellIdentifier];
+        cell = [[RequestInputCell alloc] initWithType:cellType reuseIdentifier:CellIdentifier];
 
         if (self.inputType == RequestInputTypeHeaders) {
             cell.nameTextField.placeholder = @"Header Name";
             cell.valueTextField.placeholder = @"Header Value";
+            cell.inputButton.tag = indexPath.row;
+            [cell.inputButton addTarget:self action:@selector(headerAction:) forControlEvents:UIControlEventTouchUpInside];
         } else {
             cell.nameTextField.placeholder = @"Parameter Name";
             cell.valueTextField.placeholder = @"Parameter Value";
@@ -240,33 +260,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (self.isEditing) {
-        return;
-    }
-
-    if (indexPath.section == 0) {
-        return;
-    }
-
-    RCRequestOption *option = [[RCRequestOption alloc] init];
-
-    if (self.dataSource == nil) {
-        self.dataSource = [@[] mutableCopy];
-    }
-
-    [self.dataSource addObject:option];
-
-    if (!IsEmpty(self.dataSource) && self.navigationItem.leftBarButtonItem == nil) {
-        self.navigationItem.leftBarButtonItem = [self editButtonItem];
-    }
-
-    [self.tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell isKindOfClass:[RequestInputCell class]]) {
+        [[cell inputButton] setEnabled:!tableView.isEditing];
         [[cell nameTextField] setEnabled:!tableView.isEditing];
         [[cell valueTextField] setEnabled:!tableView.isEditing];
         [[cell activeSwitch] setEnabled:!tableView.isEditing];
@@ -315,13 +314,11 @@
     [self.dataSource insertObject:inputObject atIndex:toIndexPath.row];
 }
 
-#pragma mark - UIAlertViewDelegate Methods
+#pragma mark - UIPopoverControllerDelegate Methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    if (buttonIndex == 1) {
-        [self clearAction:alertView];
-    }
+    self.myPopoverController = nil;
 }
 
 @end

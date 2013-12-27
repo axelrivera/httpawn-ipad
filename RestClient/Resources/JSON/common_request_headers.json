@@ -1,0 +1,163 @@
+{
+    "headers": [
+        {
+            "name": "Accept",
+            "values": [
+                "application/xhtml+xml",
+                "application/atom+xml",
+                "application/json",
+                "application/x-www-form-urlencoded",
+                "text/css",
+                "text/html",
+                "text/plain"
+            ]
+        },
+        {
+            "name": "Accept-Charset",
+            "values": [
+                "utf-8",
+                "iso-8859-1"
+            ]
+        },
+        {
+            "name": "Accept-Encoding",
+            "values": [
+                "compress",
+                "gzip",
+                "deflate",
+                "sdch",
+                "identity"
+            ]
+        },
+        {
+            "name": "Accept-Language",
+            "values": [
+                "en-US",
+                "en-GB",
+                "es",
+                "fr",
+                "de"
+            ]
+        },
+        {
+            "name": "Accept-Datetime",
+            "values": []
+        },
+        {
+            "name": "Authorization",
+            "values": []
+        },
+        {
+            "name": "Cache-Control",
+            "values": [
+                "no-cache"
+            ]
+        },
+        {
+            "name": "Connection",
+            "values": [
+                "close"
+            ]
+        },
+        {
+            "name": "Cookie",
+            "values": []
+        },
+        {
+            "name": "Content-Length",
+            "values": []
+        },
+        {
+            "name": "Content-MD5",
+            "values": []
+        },
+        {
+            "name": "Content-Type",
+            "values": [
+                "application/x-www-form-urlencoded",
+                "application/json",
+                "text/plain"
+            ]
+        },
+        {
+            "name": "Date",
+            "values": []
+        },
+        {
+            "name": "Expect",
+            "values": []
+        },
+        {
+            "name": "From",
+            "values": []
+        },
+        {
+            "name": "Host",
+            "values": []
+        },
+        {
+            "name": "If-Match",
+            "values": []
+        },
+        {
+            "name": "If-Modified-Since",
+            "values": []
+        },
+        {
+            "name": "If-None-Match",
+            "values": []
+        },
+        {
+            "name": "If-Range",
+            "values": []
+        },
+        {
+            "name": "If-Unmodified-Since",
+            "values": []
+        },
+        {
+            "name": "Max-Forwards",
+            "values": []
+        },
+        {
+            "name": "Origin",
+            "values": []
+        },
+        {
+            "name": "Pragma",
+            "values": []
+        },
+        {
+            "name": "Proxy-Authorization",
+            "values": []
+        },
+        {
+            "name": "Range",
+            "values": []
+        },
+        {
+            "name": "Referer",
+            "values": []
+        },
+        {
+            "name": "TE",
+            "values": []
+        },
+        {
+            "name": "Upgrade",
+            "values": []
+        },
+        {
+            "name": "User-Agent",
+            "values": []
+        },
+        {
+            "name": "Via",
+            "values": []
+        },
+        {
+            "name": "Warning",
+            "values": []
+        }
+    ]
+}
