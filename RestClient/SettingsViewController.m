@@ -45,10 +45,6 @@
     self.timeoutSlider.maximumValue = max;
     self.timeoutSlider.value = value;
     [self.timeoutSlider addTarget:self action:@selector(timeoutChanged:) forControlEvents:UIControlEventValueChanged];
-
-    self.fontSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[ @"Small", @"Medium", @"Large" ]];
-    self.fontSegmentedControl.apportionsSegmentWidthsByContent = YES;
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -61,6 +57,9 @@
 
 - (void)dismissAction:(id)sender
 {
+    NSInteger value = (int)(self.timeoutSlider.value * kSecondSliderFactor);
+    [[RCSettings defaultSettings] setTimeoutInterval:value];
+    
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -97,8 +96,7 @@
 
 - (void)timeoutChanged:(UISlider *)slider
 {
-    NSInteger value = (int)(slider.value * kSecondSliderFactor);
-    [[RCSettings defaultSettings] setTimeoutInterval:value];
+    
 }
 
 #pragma mark - Table view data source
