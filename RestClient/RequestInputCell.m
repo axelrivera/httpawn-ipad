@@ -23,6 +23,9 @@
         self.opaque = NO;
         self.textLabel.hidden = YES;
         self.detailTextLabel.hidden = YES;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.accessoryType = UITableViewCellAccessoryNone;
+
         _inputType = inputType;
 
         _nameTextField = [[UITextField alloc] initWithFrame:CGRectZero];
