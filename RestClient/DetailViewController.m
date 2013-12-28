@@ -29,7 +29,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 @property (strong, nonatomic) TitleNavigationView *titleView;
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) UIPopoverController *URLActionsController;
-@property (strong, nonatomic) UIBarButtonItem *actionButtonItem;
 
 - (void)updateSubtitle;
 
@@ -183,6 +182,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)showParameters
 {
+    [self.view endEditing:YES];
+
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeParameters
                                                                                    dataSource:self.request.parameters];
     controller.delegate = self;
@@ -195,6 +196,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)showHeaders
 {
+    [self.view endEditing:YES];
+
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeHeaders
                                                                                    dataSource:self.request.headers];
     controller.delegate = self;
@@ -240,6 +243,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)showPreview
 {
+    [self.view endEditing:YES];
+
     PreviewViewController *controller = [[PreviewViewController alloc] initWithRequest:self.request];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -250,6 +255,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)addToGroup
 {
+    [self.view endEditing:YES];
+
     GroupAddViewController *controller = [[GroupAddViewController alloc] init];
     controller.delegate = self;
     
@@ -261,6 +268,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)showAdvanced
 {
+    [self.view endEditing:YES];
+
     AdvancedRequestViewController *controller = [[AdvancedRequestViewController alloc] initWithRequest:self.request];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -271,6 +280,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)resetRequest
 {
+    [self.view endEditing:YES];
+
     self.request = [[RCRequest alloc] init];
     
     self.headerView.URLTextField.text = self.request.URLString;
@@ -298,13 +309,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
     UIBarButtonItem *segmentedItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
 
-
-    self.actionButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                          target:self
-                                                                          action:@selector(responseAction:)];
-
-
-    return @[ flexibleItem, segmentedItem, flexibleItem, self.actionButtonItem ];
+    return @[ flexibleItem, segmentedItem, flexibleItem ];
 }
 
 - (void)notifyRequestChange:(RCGroup *)group
@@ -342,23 +347,14 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 - (void)settingsAction:(id)sender
 {
+    [self.view endEditing:YES];
+
     SettingsViewController *controller = [[SettingsViewController alloc] init];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
     [self.navigationController presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)responseAction:(id)sender
-{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Response Actions"
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Share by E-mail", nil];
-
-    [actionSheet showFromBarButtonItem:self.actionButtonItem animated:YES];
 }
 
 #pragma mark - RequestHeaderViewDelegate Methods
