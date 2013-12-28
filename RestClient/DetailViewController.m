@@ -423,7 +423,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
         
         if (![[RestClientData sharedData] containsGroup:group]) {
             [[RestClientData sharedData].groups addObject:group];
-            
             [self notifyRequestChange:group];
         }
 

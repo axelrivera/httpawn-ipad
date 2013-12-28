@@ -99,6 +99,8 @@
 - (id)copyWithZone:(NSZone *)zone
 {
     RCRequest *myRequest = [[RCRequest alloc] initWithMethod:self.requestMethod URLString:self.URLString];
+    myRequest.requestName = self.requestName;
+    myRequest.requestDescription = self.requestDescription;
     myRequest.parentGroup = self.parentGroup;
     myRequest.headers = [[NSArray alloc] initWithArray:self.headers copyItems:YES];
     myRequest.parameters = [[NSArray alloc] initWithArray:self.parameters copyItems:YES];

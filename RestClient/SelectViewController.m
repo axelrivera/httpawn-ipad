@@ -60,7 +60,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.dataSource count];
+    return [self.dataSource count] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,12 +70,21 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
-    RCSelect *select = self.dataSource[indexPath.row];
-    
-    cell.textLabel.text = select.selectName;
-    
-    if (select.isSelected) {
+
+    BOOL isSelected = NO;
+    NSString *textStr = nil;
+
+    if (indexPath.row == 0) {
+        textStr = @"None";
+    }  else {
+        RCSelect *select = self.dataSource[indexPath.row - 1];
+        textStr = select.selectName;
+        isSelected = select.isSelected;
+    }
+
+    cell.textLabel.text = textStr;
+
+    if (isSelected) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -92,7 +101,11 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    RCSelect *select = self.dataSource[indexPath.row];
+    RCSelect *select = nil;
+    if (indexPath.row > 0) {
+        select = self.dataSource[indexPath.row - 1];
+    }
+
     [self.delegate selectViewController:self didSelectObject:select];
 }
 

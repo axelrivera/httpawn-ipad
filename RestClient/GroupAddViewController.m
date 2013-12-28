@@ -125,11 +125,14 @@
 
 - (void)selectViewController:(SelectViewController *)controller didSelectObject:(RCSelect *)object
 {
-    RCGroup *group = [[RestClientData sharedData] groupWithIdentifier:object.selectValue];
-    self.currentGroup = group;
+    if (object) {
+        RCGroup *group = [[RestClientData sharedData] groupWithIdentifier:object.selectValue];
+        self.currentGroup = group;
+    } else {
+        self.currentGroup = nil;
+    }
     
     [self.tableView reloadData];
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -171,7 +174,7 @@
             cell.textLabel.text = @"Add To Existing Group";
             
             if (self.currentGroup == nil) {
-                cell.detailTextLabel.text = @"Select Group";
+                cell.detailTextLabel.text = @"None";
             } else {
                 cell.detailTextLabel.text = self.currentGroup.groupName;
             }
