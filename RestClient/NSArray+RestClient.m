@@ -8,14 +8,6 @@
 
 #import "NSArray+RestClient.h"
 
-NSString * const RCRequestMethodGet = @"GET";
-NSString * const RCRequestMethodPost = @"POST";
-NSString * const RCRequestMethodPut = @"PUT";
-NSString * const RCRequestMethodDelete = @"DELETE";
-NSString * const RCRequestMethodHead = @"HEAD";
-NSString * const RCRequestMethodTrace = @"TRACE";
-NSString * const RCRequestMethodPatch = @"PATCH";
-
 @implementation NSArray (RestClient)
 
 + (NSArray *)availableHTTPActions

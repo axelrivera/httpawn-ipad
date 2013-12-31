@@ -15,6 +15,8 @@
 @property (copy, nonatomic, readonly) NSString *identifier;
 @property (copy, nonatomic) NSString *groupName;
 
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+
 - (void)addRequest:(RCRequest *)request;
 - (void)insertRequest:(RCRequest *)request atIndex:(NSInteger)index;
 - (void)removeRequestAtIndex:(NSInteger)index;

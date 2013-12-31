@@ -28,6 +28,25 @@
     return self;
 }
 
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
+{
+    self = [self init];
+    if (self) {
+        _groupName = [dictionary[@"name"] copy];
+
+        NSArray *requestsRaw = dictionary[@"requests"];
+        if (requestsRaw) {
+            NSMutableArray *requests = [@[] mutableCopy];
+            for (NSDictionary *dictionary in requestsRaw) {
+                RCRequest *request = [[RCRequest alloc] initWithDictionary:dictionary];
+                [requests addObject:request];
+            }
+            _groupRequests = requests;
+        }
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super init];

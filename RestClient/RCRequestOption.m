@@ -25,6 +25,21 @@
     return self;
 }
 
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
+{
+    self = [self init];
+    if (self) {
+        _objectName = [dictionary[@"name"] copy];
+        _objectValue = [dictionary[@"value"] copy];
+
+        NSNumber *onNumber = dictionary[@"enabled"];
+        if (onNumber) {
+            _on = [onNumber boolValue];
+        }
+    }
+    return self;
+}
+
 #pragma mark - NSCoding Methods
 
 - (instancetype)initWithCoder:(NSCoder *)coder

@@ -13,6 +13,14 @@
 #import "RCResponse.h"
 #import "RCRequestOption.h"
 
+FOUNDATION_EXPORT NSString * const RCRequestMethodGet;
+FOUNDATION_EXPORT NSString * const RCRequestMethodPost;
+FOUNDATION_EXPORT NSString * const RCRequestMethodPut;
+FOUNDATION_EXPORT NSString * const RCRequestMethodDelete;
+FOUNDATION_EXPORT NSString * const RCRequestMethodHead;
+FOUNDATION_EXPORT NSString * const RCRequestMethodTrace;
+FOUNDATION_EXPORT NSString * const RCRequestMethodPatch;
+
 typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 
 @class AFHTTPRequestOperationManager;
@@ -34,6 +42,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 @property (strong, nonatomic) NSString *basicAuthUsername;
 @property (strong, nonatomic) NSString *basicAuthPassword;
 
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (instancetype)initWithMethod:(NSString *)method URLString:(NSString *)URLString;
 
 - (NSArray *)availableHeaders;
@@ -49,5 +58,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 - (BOOL)isEqualToRequest:(RCRequest *)request;
 
 - (void)sanitize;
+
++ (NSString *)requestMethodForString:(NSString *)string;
 
 @end

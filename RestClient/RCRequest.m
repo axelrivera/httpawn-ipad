@@ -10,6 +10,14 @@
 
 #import <AFHTTPRequestOperationManager.h>
 
+NSString * const RCRequestMethodGet = @"GET";
+NSString * const RCRequestMethodPost = @"POST";
+NSString * const RCRequestMethodPut = @"PUT";
+NSString * const RCRequestMethodDelete = @"DELETE";
+NSString * const RCRequestMethodHead = @"HEAD";
+NSString * const RCRequestMethodTrace = @"TRACE";
+NSString * const RCRequestMethodPatch = @"PATCH";
+
 @interface RCRequest ()
 
 @end
@@ -31,12 +39,47 @@
         _headers = @[];
         _parameters = @[];
         _response = nil;
-        _manager = [AFHTTPRequestOperationManager manager];
-        _manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         _followRedirects = YES;
         _enableAuth = NO;
         _basicAuthUsername = nil;
         _basicAuthPassword = nil;
+
+        _manager = [AFHTTPRequestOperationManager manager];
+        _manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        [_manager.operationQueue setMaxConcurrentOperationCount:1];
+    }
+    return self;
+}
+
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
+{
+    self = [self init];
+    if (self) {
+        _requestName = [dictionary[@"name"] copy];
+        _requestDescription = [dictionary[@"description"] copy];
+        _requestMethod = [[self class] requestMethodForString:[dictionary[@"method"] uppercaseString]];
+        _URLString = [dictionary[@"url"] copy];
+
+        NSArray *headersRaw = dictionary[@"headers"];
+        if (headersRaw) {
+            NSMutableArray *headers = [@[] mutableCopy];
+            for (NSDictionary *dictionary in headersRaw) {
+                RCRequestOption *option = [[RCRequestOption alloc] initWithDictionary:dictionary];
+                [headers addObject:option];
+            }
+            _headers = [[NSArray alloc] initWithArray:headers];
+        }
+
+        NSArray *parametersRaw = dictionary[@"parameters"];
+        if (parametersRaw) {
+            NSMutableArray *parameters = [@[] mutableCopy];
+            for (NSDictionary *dictionary in parametersRaw) {
+                RCRequestOption *option = [[RCRequestOption alloc] initWithDictionary:dictionary];
+                [parameters addObject:option];
+            }
+            _parameters = [[NSArray alloc] initWithArray:parameters];
+        }
+
     }
     return self;
 }
@@ -45,7 +88,6 @@
 {
     self = [self init];
     if (self) {
-        [_manager.operationQueue setMaxConcurrentOperationCount:1];
         _requestMethod = method;
         _URLString = [URLString copy];
     }
@@ -317,6 +359,30 @@
     self.parentGroup = nil;
     self.requestName = nil;
     self.requestDescription = nil;
+}
+
++ (NSString *)requestMethodForString:(NSString *)string
+{
+    NSString *method = nil;
+    if ([string isEqualToString:RCRequestMethodGet]) {
+        method = RCRequestMethodGet;
+    } else if ([string isEqualToString:RCRequestMethodPost]) {
+        method = RCRequestMethodPost;
+    } else if ([string isEqualToString:RCRequestMethodPut]) {
+        method = RCRequestMethodPut;
+    } else if ([string isEqualToString:RCRequestMethodDelete]) {
+        method = RCRequestMethodDelete;
+    } else if ([string isEqualToString:RCRequestMethodHead]) {
+        method = RCRequestMethodHead;
+    } else if ([string isEqualToString:RCRequestMethodTrace]) {
+        method = RCRequestMethodTrace;
+    } else if ([string isEqualToString:RCRequestMethodPatch]) {
+        method = RCRequestMethodPatch;
+    } else {
+        method = RCRequestMethodGet;
+    }
+
+    return method;
 }
 
 @end

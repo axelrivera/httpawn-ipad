@@ -14,6 +14,8 @@
 @property (copy, nonatomic) NSString *objectValue;
 @property (assign, nonatomic, getter = isOn) BOOL on;
 
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+
 - (NSString *)stringValue;
 
 - (BOOL)isEqualToRequestOption:(RCRequestOption *)requestOption;
