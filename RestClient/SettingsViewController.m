@@ -16,7 +16,7 @@
 
 @implementation SettingsViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"SettingsViewController" bundle:nil];
     if (self) {

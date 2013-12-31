@@ -16,6 +16,6 @@
 @property (strong, nonatomic) RCRequest *request;
 @property (copy) void(^completionBlock)(void);
 
-- (id)initWithRequest:(RCRequest *)request;
+- (instancetype)initWithRequest:(RCRequest *)request;
 
 @end

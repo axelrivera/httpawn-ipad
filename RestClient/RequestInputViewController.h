@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, RequestInputType) {
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (assign, nonatomic) RequestInputType inputType;
 
-- (id)initWithType:(RequestInputType)inputType dataSource:(NSArray *)dataSource;
+- (instancetype)initWithType:(RequestInputType)inputType dataSource:(NSArray *)dataSource;
 
 @end
 

@@ -17,6 +17,6 @@
 
 @property (strong, nonatomic) RCRequest *request;
 
-- (id)initWithRequest:(RCRequest *)request;
+- (instancetype)initWithRequest:(RCRequest *)request;
 
 @end

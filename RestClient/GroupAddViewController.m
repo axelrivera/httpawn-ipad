@@ -16,7 +16,7 @@
 
 @implementation GroupAddViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"GroupAddViewController" bundle:nil];
     if (self) {
@@ -25,7 +25,7 @@
     return self;
 }
 
-- (id)initWithCurrentGroup:(RCGroup *)currentGroup
+- (instancetype)initWithCurrentGroup:(RCGroup *)currentGroup
 {
     self = [self init];
     if (self) {

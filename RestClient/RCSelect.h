@@ -14,6 +14,6 @@
 @property (copy, nonatomic) NSString *selectValue;
 @property (assign, nonatomic, getter = isSelected) BOOL selected;
 
-- (id)initWithName:(NSString *)name value:(NSString *)value;
+- (instancetype)initWithName:(NSString *)name value:(NSString *)value;
 
 @end

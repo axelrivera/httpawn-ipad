@@ -14,7 +14,7 @@
 
 @implementation RCRequestOption
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -27,7 +27,7 @@
 
 #pragma mark - NSCoding Methods
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super init];
     if (self) {
@@ -45,7 +45,7 @@
     [coder encodeBool:self.isOn forKey:@"RCRequestOptionOn"];
 }
 
-- (id)copyWithZone:(NSZone *)zone
+- (instancetype)copyWithZone:(NSZone *)zone
 {
     RCRequestOption *myOption = [[RCRequestOption alloc] init];
     myOption.objectName = self.objectName;

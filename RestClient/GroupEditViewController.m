@@ -14,7 +14,7 @@
 
 @implementation GroupEditViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"GroupEditViewController" bundle:nil];
     if (self) {
@@ -25,7 +25,7 @@
     return self;
 }
 
-- (id)initWithType:(GroupEditType)type groupObject:(RCGroup *)groupObject
+- (instancetype)initWithType:(GroupEditType)type groupObject:(RCGroup *)groupObject
 {
     self = [self init];
     if (self) {

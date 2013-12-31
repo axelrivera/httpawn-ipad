@@ -15,7 +15,7 @@
 //- (NSString *)XMLStringWithEncoding:(NSStringEncoding)encoding;
 //- (NSString *)formattedXMLStringWithEncoding:(NSStringEncoding)encoding;
 
-- (id)JSONObject;
+- (instancetype)JSONObject;
 - (NSString *)JSONStringWithEncoding:(NSStringEncoding)encoding;
 - (NSString *)formattedJSONStringWithEncoding:(NSStringEncoding)encoding;
 

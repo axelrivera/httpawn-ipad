@@ -12,7 +12,7 @@
 
 @implementation RCPredefinedHeader
 
-- (id)initWithDictionary:(NSDictionary *)dictionary
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
     if (self) {

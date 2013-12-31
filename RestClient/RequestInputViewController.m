@@ -31,12 +31,12 @@
 
 @implementation RequestInputViewController
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithType:RequestInputTypeHeaders dataSource:@[]];
 }
 
-- (id)initWithType:(RequestInputType)inputType dataSource:(NSArray *)dataSource
+- (instancetype)initWithType:(RequestInputType)inputType dataSource:(NSArray *)dataSource
 {
     self = [super initWithNibName:@"RequestInputViewController" bundle:nil];
     if (self) {

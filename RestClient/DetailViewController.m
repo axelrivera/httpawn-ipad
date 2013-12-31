@@ -47,7 +47,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 @implementation DetailViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"DetailViewController" bundle:nil];
     if (self) {

@@ -37,7 +37,7 @@
 //    return string;
 //}
 
-- (id)JSONObject
+- (instancetype)JSONObject
 {
     id object = nil;
     if (self) {

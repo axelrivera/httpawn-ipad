@@ -14,7 +14,7 @@
 
 @implementation SelectViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"SelectViewController" bundle:nil];
     if (self) {
@@ -23,7 +23,7 @@
     return self;
 }
 
-- (id)initWithDataSource:(NSArray *)dataSource
+- (instancetype)initWithDataSource:(NSArray *)dataSource
 {
     self = [self init];
     if (self) {

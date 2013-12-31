@@ -12,7 +12,7 @@
 
 @implementation RCResponse
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -30,7 +30,7 @@
 
 #pragma mark - NSCoding Methods
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super init];
     if (self) {

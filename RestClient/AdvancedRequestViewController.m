@@ -14,7 +14,7 @@
 
 @implementation AdvancedRequestViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"AdvancedRequestViewController" bundle:nil];
     if (self) {
@@ -24,7 +24,7 @@
     return self;
 }
 
-- (id)initWithRequest:(RCRequest *)request
+- (instancetype)initWithRequest:(RCRequest *)request
 {
     self = [self init];
     if (self) {

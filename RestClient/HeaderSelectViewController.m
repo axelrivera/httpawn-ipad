@@ -19,7 +19,7 @@
 
 @implementation HeaderSelectViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"HeaderSelectViewController" bundle:nil];
     if (self) {

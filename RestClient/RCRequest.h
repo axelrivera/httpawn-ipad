@@ -34,7 +34,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 @property (strong, nonatomic) NSString *basicAuthUsername;
 @property (strong, nonatomic) NSString *basicAuthPassword;
 
-- (id)initWithMethod:(NSString *)method URLString:(NSString *)URLString;
+- (instancetype)initWithMethod:(NSString *)method URLString:(NSString *)URLString;
 
 - (NSArray *)availableHeaders;
 - (NSDictionary *)availableHeadersDictionary;

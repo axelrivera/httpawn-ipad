@@ -13,7 +13,7 @@
 @property (copy, nonatomic) NSString *headerName;
 @property (strong, nonatomic) NSArray *headerValues;
 
-- (id)initWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 + (NSArray *)allPredefinedHeaders;
 

@@ -23,6 +23,6 @@ typedef NS_ENUM(NSInteger, RequestInputCellType) {
 
 @property (strong, nonatomic) RCRequestOption *requestOption;
 
-- (id)initWithType:(RequestInputCellType)inputType reuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithType:(RequestInputCellType)inputType reuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

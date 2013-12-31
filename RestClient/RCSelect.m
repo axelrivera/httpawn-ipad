@@ -10,7 +10,7 @@
 
 @implementation RCSelect
 
-- (id)initWithName:(NSString *)name value:(NSString *)value
+- (instancetype)initWithName:(NSString *)name value:(NSString *)value
 {
     self = [super init];
     if (self) {
@@ -21,7 +21,7 @@
     return self;
 }
 
-- (id)copyWithZone:(NSZone *)zone
+- (instancetype)copyWithZone:(NSZone *)zone
 {
     RCSelect *mySelect = [[RCSelect alloc] init];
     mySelect.selectName = self.selectName;

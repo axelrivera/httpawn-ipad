@@ -20,7 +20,7 @@
 
 @property (strong, nonatomic) RCGroup *currentGroup;
 
-- (id)initWithCurrentGroup:(RCGroup *)currentGroup;
+- (instancetype)initWithCurrentGroup:(RCGroup *)currentGroup;
 
 @end
 

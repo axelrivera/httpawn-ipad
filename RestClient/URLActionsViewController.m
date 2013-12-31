@@ -14,7 +14,7 @@
 
 @implementation URLActionsViewController
 
-- (id)initWithCurrentAction:(NSString *)currentAction
+- (instancetype)initWithCurrentAction:(NSString *)currentAction
 {
     self = [super initWithNibName:@"URLActionsViewController" bundle:nil];
     if (self) {

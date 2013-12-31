@@ -25,7 +25,7 @@
 
 @implementation MainViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"MainViewController" bundle:nil];
     if (self) {

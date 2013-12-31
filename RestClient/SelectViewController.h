@@ -17,7 +17,7 @@
 @property (strong, nonatomic) NSArray *dataSource;
 @property (copy, nonatomic) NSString *identifier;
 
-- (id)initWithDataSource:(NSArray *)dataSource;
+- (instancetype)initWithDataSource:(NSArray *)dataSource;
 
 @end
 

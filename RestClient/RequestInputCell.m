@@ -16,7 +16,7 @@
 
 @implementation RequestInputCell
 
-- (id)initWithType:(RequestInputCellType)inputType reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithType:(RequestInputCellType)inputType reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {

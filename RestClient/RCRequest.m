@@ -16,7 +16,7 @@
 
 @implementation RCRequest
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -41,7 +41,7 @@
     return self;
 }
 
-- (id)initWithMethod:(NSString *)method URLString:(NSString *)URLString
+- (instancetype)initWithMethod:(NSString *)method URLString:(NSString *)URLString
 {
     self = [self init];
     if (self) {
@@ -54,7 +54,7 @@
 
 #pragma mark - NSCoding Methods
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super init];
     if (self) {
@@ -96,7 +96,7 @@
 
 #pragma mark - NSCopying Methods
 
-- (id)copyWithZone:(NSZone *)zone
+- (instancetype)copyWithZone:(NSZone *)zone
 {
     RCRequest *myRequest = [[RCRequest alloc] initWithMethod:self.requestMethod URLString:self.URLString];
     myRequest.requestName = self.requestName;

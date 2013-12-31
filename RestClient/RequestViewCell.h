@@ -17,7 +17,7 @@
 
 @property (strong, nonatomic) RCRequest *request;
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 - (void)setRequest:(RCRequest *)request ignoreName:(BOOL)ignoreName;
 

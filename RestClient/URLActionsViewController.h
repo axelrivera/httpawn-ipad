@@ -17,7 +17,7 @@
 @property (strong, nonatomic) NSArray *dataSource;
 @property (strong, nonatomic) NSString *currentURLAction;
 
-- (id)initWithCurrentAction:(NSString *)action;
+- (instancetype)initWithCurrentAction:(NSString *)action;
 
 @end
 

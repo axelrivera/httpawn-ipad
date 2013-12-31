@@ -17,7 +17,7 @@
 
 @implementation GroupRequestsViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithNibName:@"GroupRequestsViewController" bundle:nil];
     if (self) {
@@ -26,7 +26,7 @@
     return self;
 }
 
-- (id)initWithGroup:(RCGroup *)group
+- (instancetype)initWithGroup:(RCGroup *)group
 {
     self = [self init];
     if (self) {

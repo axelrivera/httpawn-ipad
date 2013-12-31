@@ -17,7 +17,7 @@
 
 @implementation RCGroup
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -28,7 +28,7 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super init];
     if (self) {

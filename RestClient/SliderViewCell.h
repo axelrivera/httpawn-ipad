@@ -25,6 +25,6 @@
 @property (strong, nonatomic) UILabel *minLabel;
 @property (strong, nonatomic) UILabel *maxLabel;
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

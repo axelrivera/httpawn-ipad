@@ -15,7 +15,7 @@
 @property (weak, nonatomic) id <GroupRequestsViewControllerDelegate> delegate;
 @property (strong, nonatomic) RCGroup *group;
 
-- (id)initWithGroup:(RCGroup *)group;
+- (instancetype)initWithGroup:(RCGroup *)group;
 
 @end
 
