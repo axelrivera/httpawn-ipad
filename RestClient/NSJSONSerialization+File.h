@@ -11,5 +11,7 @@
 @interface NSJSONSerialization (File)
 
 + (id)rc_JSONObjectWithContentsOfFile:(NSString *)file;
++ (id)rc_JSONObjectWithContentsOfURL:(NSURL *)URL;
++ (NSString *)rc_PrettyPrintedJSONStringWithDictionary:(NSDictionary *)dictionary;
 
 @end

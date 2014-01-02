@@ -52,6 +52,8 @@
 		16A1CD40184D99FA001F89AB /* prettify.js in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3B184D985B001F89AB /* prettify.js */; };
 		16A1CD41184D99FA001F89AB /* vkbeautify.js in Resources */ = {isa = PBXBuildFile; fileRef = 16A1CD3C184D985B001F89AB /* vkbeautify.js */; };
 		16A1CD5B184FF27A001F89AB /* RCSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A1CD5A184FF27A001F89AB /* RCSettings.m */; };
+		16A3DA8118736B710076FCF1 /* httpawn_document_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 16A3DA7F18736B710076FCF1 /* httpawn_document_large.png */; };
+		16A3DA8218736B710076FCF1 /* httpawn_document_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 16A3DA8018736B710076FCF1 /* httpawn_document_small.png */; };
 		16A4E71D1832F68F0037E810 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E71C1832F68F0037E810 /* Foundation.framework */; };
 		16A4E71F1832F68F0037E810 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E71E1832F68F0037E810 /* CoreGraphics.framework */; };
 		16A4E7211832F68F0037E810 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A4E7201832F68F0037E810 /* UIKit.framework */; };
@@ -167,6 +169,8 @@
 		16A1CD3C184D985B001F89AB /* vkbeautify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = vkbeautify.js; sourceTree = "<group>"; };
 		16A1CD59184FF27A001F89AB /* RCSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettings.h; sourceTree = "<group>"; };
 		16A1CD5A184FF27A001F89AB /* RCSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettings.m; sourceTree = "<group>"; };
+		16A3DA7F18736B710076FCF1 /* httpawn_document_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = httpawn_document_large.png; sourceTree = "<group>"; };
+		16A3DA8018736B710076FCF1 /* httpawn_document_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = httpawn_document_small.png; sourceTree = "<group>"; };
 		16A4E7191832F68F0037E810 /* HTTPawn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HTTPawn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16A4E71C1832F68F0037E810 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		16A4E71E1832F68F0037E810 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -397,6 +401,8 @@
 		16A4E7231832F6900037E810 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				16A3DA7F18736B710076FCF1 /* httpawn_document_large.png */,
+				16A3DA8018736B710076FCF1 /* httpawn_document_small.png */,
 				16A1CD38184D985B001F89AB /* Resources */,
 				16A4E7241832F6900037E810 /* RestClient-Info.plist */,
 				16A4E7251832F6900037E810 /* InfoPlist.strings */,
@@ -597,6 +603,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16A3DA8218736B710076FCF1 /* httpawn_document_small.png in Resources */,
 				16A1CD40184D99FA001F89AB /* prettify.js in Resources */,
 				16A1CD41184D99FA001F89AB /* vkbeautify.js in Resources */,
 				1670F22918379144000CC10D /* RequestInputViewController.xib in Resources */,
@@ -608,6 +615,7 @@
 				167DDDA0184C4CD40012651D /* SettingsViewController.xib in Resources */,
 				16348D4B186DE62100A7F75B /* iTunesArtwork@2x in Resources */,
 				1628BF0D186A2D8A00C025FF /* HeaderSelectViewController.xib in Resources */,
+				16A3DA8118736B710076FCF1 /* httpawn_document_large.png in Resources */,
 				164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */,
 				16A1CD3D184D985B001F89AB /* prettify.css in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,

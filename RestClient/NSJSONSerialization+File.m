@@ -17,4 +17,24 @@
     return JSON;
 }
 
++ (id)rc_JSONObjectWithContentsOfURL:(NSURL *)URL
+{
+    NSData *data = [[NSData alloc] initWithContentsOfURL:URL];
+    id JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+    return JSON;
+}
+
++ (NSString *)rc_PrettyPrintedJSONStringWithDictionary:(NSDictionary *)dictionary
+{
+    if (dictionary == nil) {
+        dictionary = @{};
+    }
+
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:NULL];
+    NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return string;
+}
+
 @end

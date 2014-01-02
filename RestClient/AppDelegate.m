@@ -12,6 +12,7 @@
 
 #import "MainViewController.h"
 #import "DetailViewController.h"
+#import "NSJSONSerialization+File.h"
 
 @interface AppDelegate ()
 
@@ -44,6 +45,31 @@
     [self.window setRootViewController:self.splitViewController];
 
     [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    if (url) {
+        NSDictionary *dictionary = [NSJSONSerialization rc_JSONObjectWithContentsOfURL:url];
+        DLog(@"Import JSON File!!");
+        DLog(@"%@", dictionary);
+
+        if (dictionary) {
+            RCGroup *group = [[RCGroup alloc] initWithDictionary:dictionary];
+            if (group) {
+                [[RestClientData sharedData].groups addObject:group];
+                NSDictionary *userInfo = userInfo = @{ kRCGroupKey : group };;
+                [[NSNotificationCenter defaultCenter] postNotificationName:GroupDidUpdateNotification
+                                                                    object:nil
+                                                                  userInfo:userInfo];
+            }
+        }
+    }
+
     return YES;
 }
 
