@@ -10,6 +10,8 @@
 
 @interface GroupEditViewController () <UITextFieldDelegate, UIAlertViewDelegate>
 
+- (NSArray *)currentDataSource;
+
 @end
 
 @implementation GroupEditViewController
@@ -54,7 +56,9 @@
                                                                                               action:@selector(dismissAction:)];
     }
 
-    self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 37.0)];
+    self.dataSource = [self currentDataSource];
+
+    self.nameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 400.0, 37.0)];
     self.nameTextField.placeholder = @"Enter Group Name";
     self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -64,6 +68,40 @@
 
     if (self.editType == GroupEditTypeModify) {
         self.nameTextField.text = self.groupObject.groupName;
+
+        self.usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0,
+                                                                               0.0,
+                                                                               400.0,
+                                                                               37.0)];
+        self.usernameTextField.placeholder = @"Enter Username";
+        self.usernameTextField.contentVerticalAlignment = UIViewContentModeCenter;
+        self.usernameTextField.font = [UIFont systemFontOfSize:15.0];
+        self.usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        self.usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+
+        self.passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0,
+                                                                               0.0,
+                                                                               400.0,
+                                                                               37.0)];
+        self.passwordTextField.placeholder = @"Enter Password";
+        self.passwordTextField.contentVerticalAlignment = UIViewContentModeCenter;
+        self.passwordTextField.font = [UIFont systemFontOfSize:15.0];
+        self.passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        self.passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.passwordTextField.secureTextEntry = YES;
+        self.passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+
+        self.authenticationSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+
+        self.redirectSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+
+        if (self.groupObject) {
+            self.usernameTextField.text = self.groupObject.metadata.basicAuthUsername;
+            self.passwordTextField.text = self.groupObject.metadata.basicAuthPassword;
+            self.authenticationSwitch.on = self.groupObject.metadata.enableAuth;
+            self.redirectSwitch.on = self.self.groupObject.metadata.followRedirects;
+        }
     }
 }
 
@@ -96,6 +134,13 @@
 
     self.groupObject.groupName = self.nameTextField.text;
 
+    if (self.editType == GroupEditTypeModify) {
+        self.groupObject.metadata.enableAuth = self.authenticationSwitch.on;
+        self.groupObject.metadata.basicAuthUsername = self.usernameTextField.text;
+        self.groupObject.metadata.basicAuthPassword = self.passwordTextField.text;
+        self.groupObject.metadata.followRedirects = self.redirectSwitch.on;
+    }
+
     [self.delegate groupEditViewController:self didFinishWithType:self.editType object:self.groupObject];
 }
 
@@ -104,20 +149,70 @@
     [self.delegate groupEditViewControllerDidCancel:self];
 }
 
+#pragma mark - Private Methods
+
+- (NSArray *)currentDataSource
+{
+    NSMutableArray *array = [@[] mutableCopy];
+
+    NSMutableArray *rows = [@[] mutableCopy];
+
+    NSDictionary *dictionary = nil;
+
+    dictionary = @{ @"text" : @"Name", @"identifier" : @"name", @"type" : @"accessory" };
+    [rows addObject:dictionary];
+
+    dictionary = @{ @"rows" : rows };
+    [array addObject:dictionary];
+
+    if (self.editType == GroupEditTypeModify) {
+        rows = [@[] mutableCopy];
+
+        dictionary = @{ @"text" : @"Enable Authentication", @"identifier" : @"enable_auth", @"type" : @"accessory" };
+        [rows addObject:dictionary];
+
+        dictionary = @{ @"text" : @"Username", @"identifier" : @"username", @"type" : @"accessory" };
+        [rows addObject:dictionary];
+
+        dictionary = @{ @"text" : @"Password", @"identifier" : @"password", @"type" : @"accessory" };
+        [rows addObject:dictionary];
+
+        dictionary = @{ @"header" : @"Basic Authentication",
+                        @"footer" : @"Passwords are saved in clear text.",
+                        @"rows" : rows };
+
+        [array addObject:dictionary];
+
+        rows = [@[] mutableCopy];
+
+        dictionary = @{ @"text" : @"Follow Redirects", @"identifier" : @"redirect", @"type" : @"accessory" };
+        [rows addObject:dictionary];
+
+        dictionary = @{ @"header" : @"Other", @"rows" : rows };
+        [array addObject:dictionary];
+
+        rows = [@[] mutableCopy];
+
+        dictionary = @{ @"text" : @"Delete Group", @"identifier" : @"delete" };
+        [rows addObject:dictionary];
+
+        dictionary = @{ @"rows" : rows };
+        [array addObject:dictionary];
+    }
+
+    return array;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sections = 1;
-    if (self.editType == GroupEditTypeModify) {
-        sections++;
-    }
-    return sections;
+    return [self.dataSource count];;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return [self.dataSource[section][@"rows"] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -125,7 +220,9 @@
     static NSString *CellIdentifier = @"Cell";
     static NSString *DeleteIdentifier = @"DeleteCell";
 
-    if (self.editType == GroupEditTypeModify && indexPath.section == 1) {
+    NSDictionary *dictionary = self.dataSource[indexPath.section][@"rows"][indexPath.row];
+
+    if ([dictionary[@"identifier"] isEqualToString:@"delete"]) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DeleteIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DeleteIdentifier];
@@ -134,25 +231,45 @@
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         }
 
-        cell.textLabel.text = @"Delete Group";
+        NSString *textStr = dictionary[@"text"];
 
+        cell.textLabel.text = textStr;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+
+        return cell;
+    }
+
+    if ([dictionary[@"type"] isEqualToString:@"accessory"]) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+
+        NSString *textStr = dictionary[@"text"];
+        id accessoryView = nil;
+
+        NSString *identifier = dictionary[@"identifier"];
+        if ([identifier isEqualToString:@"name"]) {
+            accessoryView = self.nameTextField;
+        } else if ([identifier isEqualToString:@"enable_auth"]) {
+            accessoryView = self.authenticationSwitch;
+        } else if ([identifier isEqualToString:@"username"]) {
+            accessoryView = self.usernameTextField;
+        } else if ([identifier isEqualToString:@"password"]) {
+            accessoryView = self.passwordTextField;
+        } else if ([identifier isEqualToString:@"redirect"]) {
+            accessoryView = self.redirectSwitch;
+        }
+
+        cell.textLabel.text = textStr;
+        cell.accessoryView = accessoryView;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
     }
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-
-    cell.textLabel.text = @"Name";
-    cell.accessoryView = self.nameTextField;
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    return cell;
+    return nil;
 }
 
 #pragma mark - Table view delegate
@@ -161,7 +278,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (self.editType == GroupEditTypeModify && indexPath.section == 1) {
+    NSDictionary *dictionary = self.dataSource[indexPath.section][@"rows"][indexPath.row];
+
+    if ([dictionary[@"identifier"] isEqualToString:@"delete"]) {
         NSString *message = [NSString stringWithFormat:@"Are you sure you want to delete the group \"%@\"? This action can't be undone.",
                            self.groupObject.groupName];
 
@@ -172,6 +291,16 @@
                                                   otherButtonTitles:@"Continue", nil];
         [alertView show];
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return self.dataSource[section][@"header"];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return self.dataSource[section][@"footer"];
 }
 
 #pragma mark - UIAlertViewDelegate Methods

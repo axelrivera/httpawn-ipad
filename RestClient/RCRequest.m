@@ -28,8 +28,9 @@ NSString * const RCRequestMethodPatch = @"PATCH";
 {
     self = [super init];
     if (self) {
-        NSString *URLString = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
-        
+        //NSString *URLString = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
+        NSString *URLString = @"http://httpawn-sharingan.fwd.wf";
+
         _parentGroup = nil;
         _identifier = [[NSString stringWithUUID] copy];
         _requestName = nil;
@@ -39,14 +40,12 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         _headers = @[];
         _parameters = @[];
         _response = nil;
-        _followRedirects = YES;
-        _enableAuth = NO;
-        _basicAuthUsername = nil;
-        _basicAuthPassword = nil;
 
         _manager = [AFHTTPRequestOperationManager manager];
         _manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [_manager.operationQueue setMaxConcurrentOperationCount:1];
+
+        _metadata = [[RCMeta alloc] init];
     }
     return self;
 }
@@ -108,10 +107,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         _URLString = [[coder decodeObjectForKey:@"RCRequestURLString"] copy];
         _headers = [coder decodeObjectForKey:@"RCRequestHeaders"];
         _parameters = [coder decodeObjectForKey:@"RCRequestParameters"];
-        _followRedirects = [coder decodeBoolForKey:@"RCRequestFollowRedirects"];
-        _enableAuth = [coder decodeBoolForKey:@"RCRequestEnableAuth"];
-        _basicAuthUsername = [coder decodeObjectForKey:@"RCRequestBasicAuthUsername"];
-        _basicAuthPassword = [coder decodeObjectForKey:@"RCRequestBasicAuthPassword"];
+        _metadata = [coder decodeObjectForKey:@"RCRequestMetadata"];
 
         _response = nil;
         _manager = [AFHTTPRequestOperationManager manager];
@@ -130,10 +126,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     [coder encodeObject:self.URLString forKey:@"RCRequestURLString"];
     [coder encodeObject:self.headers forKey:@"RCRequestHeaders"];
     [coder encodeObject:self.parameters forKey:@"RCRequestParameters"];
-    [coder encodeBool:self.followRedirects forKey:@"RCRequestFollowRedirects"];
-    [coder encodeBool:self.enableAuth forKey:@"RCRequestEnableAuth"];
-    [coder encodeObject:self.basicAuthUsername forKey:@"RCRequestBasicAuthUsername"];
-    [coder encodeObject:self.basicAuthPassword forKey:@"RCRequestBasicAuthPassword"];
+    [coder encodeObject:self.metadata forKey:@"RCRequestMetadata"];
 }
 
 #pragma mark - NSCopying Methods
@@ -146,10 +139,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     myRequest.parentGroup = self.parentGroup;
     myRequest.headers = [[NSArray alloc] initWithArray:self.headers copyItems:YES];
     myRequest.parameters = [[NSArray alloc] initWithArray:self.parameters copyItems:YES];
-    myRequest.followRedirects = self.followRedirects;
-    myRequest.enableAuth = self.enableAuth;
-    myRequest.basicAuthUsername = self.basicAuthUsername;
-    myRequest.basicAuthPassword = self.basicAuthPassword;
+    myRequest.metadata = self.metadata;
     myRequest.response = nil;
     
     return myRequest;
@@ -269,10 +259,22 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         }
     };
 
-    if (self.enableAuth) {
+    if (self.metadata.enableAuth || (self.parentGroup && self.parentGroup.metadata.enableAuth)) {
         [self.manager.requestSerializer clearAuthorizationHeader];
-        [self.manager.requestSerializer setAuthorizationHeaderFieldWithUsername:self.basicAuthUsername
-                                                                       password:self.basicAuthPassword];
+
+        NSString *username = @"";
+        NSString *password = @"";
+
+        if (self.metadata.enableAuth) {
+            username = self.metadata.basicAuthUsername;
+            password = self.metadata.basicAuthPassword;
+        } else {
+            username = self.parentGroup.metadata.basicAuthUsername;
+            username = self.parentGroup.metadata.basicAuthPassword;
+        }
+
+        [self.manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username
+                                                                       password:password];
     }
 
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];
@@ -292,7 +294,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
                                                                               success:successBlock
                                                                               failure:failureBlock];
 
-    if (!self.followRedirects) {
+    if (!self.metadata.followRedirects || (self.parentGroup && !self.parentGroup.metadata.followRedirects)) {
         DLog(@"Should Ignore Redirect!");
         [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection,
                                                             NSURLRequest *request,

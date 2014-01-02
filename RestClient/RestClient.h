@@ -18,6 +18,7 @@
 #import "NSArray+RestClient.h"
 #import "NSString+RestClient.h"
 #import "RCSelect.h"
+#import "RCMeta.h"
 #import "RCGroup.h"
 #import "RCRequest.h"
 #import "RestClientData.h"

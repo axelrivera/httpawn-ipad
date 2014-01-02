@@ -69,10 +69,10 @@
     self.redirectSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
 
     if (self.request) {
-        self.usernameTextField.text = self.request.basicAuthUsername;
-        self.passwordTextField.text = self.request.basicAuthPassword;
-        self.authenticationSwitch.on = self.request.enableAuth;
-        self.redirectSwitch.on = self.request.followRedirects;
+        self.usernameTextField.text = self.request.metadata.basicAuthUsername;
+        self.passwordTextField.text = self.request.metadata.basicAuthPassword;
+        self.authenticationSwitch.on = self.request.metadata.enableAuth;
+        self.redirectSwitch.on = self.request.metadata.followRedirects;
     }
 }
 
@@ -89,10 +89,10 @@
     [self.view endEditing:YES];
 
     if (self.request) {
-        self.request.enableAuth = self.authenticationSwitch.on;
-        self.request.basicAuthUsername = self.usernameTextField.text;
-        self.request.basicAuthPassword = self.passwordTextField.text;
-        self.request.followRedirects = self.redirectSwitch.on;
+        self.request.metadata.enableAuth = self.authenticationSwitch.on;
+        self.request.metadata.basicAuthUsername = self.usernameTextField.text;
+        self.request.metadata.basicAuthPassword = self.passwordTextField.text;
+        self.request.metadata.followRedirects = self.redirectSwitch.on;
     }
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -174,6 +174,8 @@
     NSString *title = nil;
     if (section == 0) {
         title = @"Passwords are saved in clear text.";
+    } else {
+        title = @"Request options will override Group options.";
     }
     return title;
 }

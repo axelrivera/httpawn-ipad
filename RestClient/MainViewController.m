@@ -17,7 +17,6 @@
 
 @property (strong, nonatomic) UIBarButtonItem *addGroupItem;
 @property (strong, nonatomic) UIBarButtonItem *clearHistoryItem;
-@property (strong, nonatomic) UIPopoverController *myPopoverController;
 
 - (NSArray *)dataSource;
 
@@ -42,8 +41,6 @@
     self.preferredContentSize = CGSizeMake(320.0, 600.0);
 
     [self.navigationController setToolbarHidden:NO animated:NO];
-
-    self.myPopoverController = nil;
 
     self.addGroupItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                       target:self
@@ -175,21 +172,14 @@
 
 - (void)addGroupAction:(id)sender
 {
-    if (self.myPopoverController) {
-        [self.myPopoverController dismissPopoverAnimated:YES];
-        self.myPopoverController = nil;
-    }
-
     GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeCreate
                                                                             groupObject:nil];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
-    [self.myPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem
-                                     permittedArrowDirections:UIPopoverArrowDirectionAny
-                                                     animated:YES];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
     
 }
 
@@ -244,9 +234,8 @@
     }
     
     [self.tableView reloadData];
-    
-    [self.myPopoverController dismissPopoverAnimated:YES];
-    self.myPopoverController = nil;
+
+    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)groupEditViewController:(GroupEditViewController *)controller shouldDeleteGroupObject:(RCGroup *)object
@@ -263,14 +252,12 @@
 
     [self.delegate shouldUpdateRequest:nil requestType:-1];
 
-    [self.myPopoverController dismissPopoverAnimated:YES];
-    self.myPopoverController = nil;
+    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)groupEditViewControllerDidCancel:(GroupEditViewController *)controller
 {
-    [self.myPopoverController dismissPopoverAnimated:YES];
-    self.myPopoverController = nil;
+    [controller.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)groupRequestsViewController:(GroupRequestsViewController *)controller didSelectRequest:(RCRequest *)request
@@ -336,25 +323,15 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.myPopoverController) {
-        [self.myPopoverController dismissPopoverAnimated:YES];
-        self.myPopoverController = nil;
-    }
-
     RCGroup *groupObject = [self dataSource][indexPath.row];
     GroupEditViewController *controller = [[GroupEditViewController alloc] initWithType:GroupEditTypeModify
                                                                             groupObject:groupObject];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-    CGRect rect = [tableView rectForRowAtIndexPath:indexPath];
-
-    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
-    [self.myPopoverController presentPopoverFromRect:rect
-                                              inView:tableView
-                            permittedArrowDirections:UIPopoverArrowDirectionLeft
-                                            animated:YES];
+    [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

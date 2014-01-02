@@ -24,6 +24,7 @@
         _identifier = [[NSString stringWithUUID] copy];
         _groupName = @"";
         _groupRequests = [@[] mutableCopy];
+        _metadata = [[RCMeta alloc] init];
     }
     return self;
 }
@@ -54,6 +55,7 @@
         _identifier = [coder decodeObjectForKey:@"RCGroupIdentifier"];
         _groupName = [coder decodeObjectForKey:@"RCGroupName"];
         _groupRequests = [coder decodeObjectForKey:@"RCGroupGroupRequests"];
+        _metadata = [coder decodeObjectForKey:@"RCGroupMetadata"];
     }
     return self;
 }
@@ -63,6 +65,7 @@
     [coder encodeObject:self.identifier forKey:@"RCGroupIdentifier"];
     [coder encodeObject:self.groupName forKey:@"RCGroupName"];
     [coder encodeObject:self.groupRequests forKey:@"RCGroupGroupRequests"];
+    [coder encodeObject:self.metadata forKey:@"RCGroupMetadata"];
 }
 
 #pragma mark - Public Methods
