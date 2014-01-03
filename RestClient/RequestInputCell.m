@@ -137,30 +137,16 @@
 
 #pragma mark - UITextFieldDelegate Methods
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    NSString *resultStr = nil;
-
-    if ([string length] > 0) {
-        resultStr = [textField.text stringByAppendingString:string];
-    } else {
-        NSInteger len = [textField.text length];
-        if (len > 1) {
-            resultStr = [textField.text substringWithRange:NSMakeRange(0, len - 1)];
-        } else {
-            resultStr = @"";
-        }
-    }
-
     if (self.requestOption) {
         if (textField == self.nameTextField) {
-            self.requestOption.objectName = resultStr;
+            self.requestOption.objectName = textField.text;
         } else if (textField == self.valueTextField) {
-            self.requestOption.objectValue = resultStr;
+            self.requestOption.objectValue = textField.text;
         }
     }
 
-    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

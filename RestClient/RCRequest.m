@@ -207,6 +207,8 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     void (^successBlock)(AFHTTPRequestOperation*, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         NSTimeInterval endTime = CFAbsoluteTimeGetCurrent();
 
+        DLog(@"Content Length: %lld", operation.response.expectedContentLength);
+
         NSString *statusString = [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode];
         DLog(@"Response: %ld (%@)", (long)operation.response.statusCode, statusString);
         DLog(@"URL: %@", [operation.response.URL absoluteString]);

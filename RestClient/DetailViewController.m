@@ -244,9 +244,13 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
     [[RestClientData sharedData] addRequestToHistory:self.request];
 
+
+    [self.webView loadHTMLString:@"" baseURL:nil];
+    self.segmentedControl.selectedSegmentIndex = RequestSegmentIndexBody;
+    self.segmentedControl.enabled = NO;
+
     [self.request runWithCompletion:^(RCResponse *response, NSError *error) {
         self.headerView.statusLabel.text = [NSString stringWithFormat:@"Response Time: %@", [response responseTimeString]];
-        self.segmentedControl.selectedSegmentIndex = RequestSegmentIndexBody;
         [self segmentedControlChanged:self.segmentedControl];
         self.segmentedControl.enabled = YES;
     }];
