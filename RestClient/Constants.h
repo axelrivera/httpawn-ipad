@@ -28,6 +28,7 @@
 #define HistoryDidUpdateNotification @"HistoryDidUpdateNotification"
 #define GroupDidUpdateNotification @"GroupDidUpdateNotification"
 #define GroupShouldUpdateRequestsNotification @"GroupShouldUpdateRequestsNotification"
+#define GroupRequestDetailsUpdatedNotification @"GroupRequestDetailsUpdatedNotification"
 
 // UserDictionary Keys
 

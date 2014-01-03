@@ -26,5 +26,6 @@ typedef NS_ENUM(NSInteger, RequestSegmentIndex) {
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 
 @property (strong, nonatomic) RCRequest *request;
+@property (strong, nonatomic) RCRequest *groupRequest;
 
 @end

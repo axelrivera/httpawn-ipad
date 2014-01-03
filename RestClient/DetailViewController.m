@@ -9,6 +9,7 @@
 #import "DetailViewController.h"
 
 #import <UIView+AutoLayout.h>
+#import <JDStatusBarNotification.h>
 
 #import "UIViewController+Layout.h"
 #import "RequestHeaderView.h"
@@ -37,6 +38,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)showHeaders;
 - (void)sendRequest;
 - (void)showPreview;
+- (void)saveRequest;
 - (void)addToGroup;
 - (void)showAdvanced;
 
@@ -104,6 +106,11 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
     [self.segmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
     self.segmentedControl.enabled = NO;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(requestDetailsUpdated:)
+                                                 name:GroupRequestDetailsUpdatedNotification
+                                               object:nil];
 }
 
 - (void)viewDidLayoutSubviews
@@ -138,23 +145,30 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:GroupRequestDetailsUpdatedNotification
+                                                  object:nil];
+}
+
 #pragma mark - Private Methods
 
 - (void)updateSubtitle
 {
     NSString *subtitle = nil;
-    if (self.request) {
-        if (!IsEmpty(self.request.requestName)) {
-            subtitle = self.request.requestName;
-        } else if (!IsEmpty(self.request.URLString)) {
-            subtitle = self.request.URLString;
-        } else {
-            subtitle = @"Enter Your Request Information";
-        }
+    if (self.groupRequest == nil) {
+        subtitle = self.request.URLString;
     } else {
-        subtitle = @"Enter Your Request Information";
-    }
+        NSString *requestStr = nil;
+        if (!IsEmpty(self.request.requestName)) {
+            requestStr = self.request.requestName;
+        } else {
+            requestStr = self.request.URLString;
+        }
 
+        subtitle = [NSString stringWithFormat:@"%@ (%@)", self.groupRequest.parentGroup.groupName, requestStr];
+    }
     self.titleView.detailTextLabel.text = subtitle;
 }
 
@@ -214,7 +228,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     
     [self.view endEditing:YES];
     
-    NSString *URLString = [self.request.URLString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *URLString = [self.headerView.URLTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if (IsEmpty(URLString)) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"HTTPawn"
@@ -227,10 +241,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     }
 
     self.headerView.statusLabel.text = @"Sending request...";
-    
-    self.request.URLString = self.headerView.URLTextField.text;
-    self.request.requestMethod = [self.headerView.URLActionButton titleForState:UIControlStateNormal];
-    
+
     [[RestClientData sharedData] addRequestToHistory:self.request];
 
     [self.request runWithCompletion:^(RCResponse *response, NSError *error) {
@@ -251,6 +262,24 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self.navigationController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)saveRequest
+{
+    [self.view endEditing:YES];
+
+    if (self.groupRequest) {
+        [self.groupRequest saveDataFromRequest:self.request];
+        [JDStatusBarNotification showWithStatus:@"Request Saved..." dismissAfter:2.0 styleName:JDStatusBarStyleSuccess];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupShouldUpdateRequestsNotification
+                                                            object:nil
+                                                          userInfo:@{ kRCGroupKey : self.groupRequest.parentGroup }];
+    } else {
+        [JDStatusBarNotification showWithStatus:@"Error Saving Request..."
+                                   dismissAfter:2.0
+                                      styleName:JDStatusBarStyleError];
+    }
 }
 
 - (void)addToGroup
@@ -282,8 +311,11 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 {
     [self.view endEditing:YES];
 
+    [self.headerView setHeaderViewType:RequestHeaderViewTypeSingle];
+
     self.request = [[RCRequest alloc] init];
-    
+    self.groupRequest = nil;
+
     self.headerView.URLTextField.text = self.request.URLString;
     [self.headerView.URLActionButton setTitle:self.request.requestMethod forState:UIControlStateNormal];
     [self.webView loadHTMLString:@"" baseURL:nil];
@@ -357,6 +389,16 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)requestDetailsUpdated:(NSNotification *)notification
+{
+    RCRequest *request = notification.userInfo[kRCRequestKey];
+    if (request && [request isEqual:self.groupRequest]) {
+        self.request.requestName = request.requestName;
+        self.request.requestDescription = request.requestDescription;
+        [self updateSubtitle];
+    }
+}
+
 #pragma mark - RequestHeaderViewDelegate Methods
 
 - (void)requestHeaderView:(RequestHeaderView *)headerView didSelectButtonType:(RequestHeaderViewButtonType)buttonType
@@ -377,6 +419,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
         case RequestHeaderViewButtonTypePreview:
             [self showPreview];
             break;
+        case RequestHeaderViewButtonTypeSave:
+            [self saveRequest];
+            break;
         case RequestHeaderViewButtonTypeGroup:
             [self addToGroup];
             break;
@@ -396,6 +441,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)URLActionsController:(URLActionsViewController *)controller didSelectAction:(NSString *)action
 {
     [self.headerView.URLActionButton setTitle:action forState:UIControlStateNormal];
+    self.request.requestMethod = action;
     [self.URLActionsController dismissPopoverAnimated:YES];
 }
 
@@ -412,11 +458,12 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
         if (!IsEmpty(requestDesription)) {
             self.request.requestDescription = requestDesription;
         }
-        
-        RCRequest *request = [self.request copy];
-        [group addRequest:request];
-        self.request = request;
-        
+
+        [self.headerView setHeaderViewType:RequestHeaderViewTypeGrouped];
+
+        self.groupRequest = [self.request copy];
+        [group addRequest:self.groupRequest];
+
         if (![[RestClientData sharedData] containsGroup:group]) {
             [[RestClientData sharedData].groups addObject:group];
             [self notifyRequestChange:group];
@@ -446,7 +493,6 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
         self.request.headers = objects;
     } else {
         self.request.parameters = objects;
-        [self notifyRequestChange:self.request.parentGroup];
     }
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -455,11 +501,17 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)shouldUpdateRequest:(RCRequest *)request requestType:(RCRequestType)requestType
 {
     if (requestType == RCRequestTypeGroup) {
-        self.request = request;
+        self.request = [request copy];
+        self.groupRequest = request;
+        [self.headerView setHeaderViewType:RequestHeaderViewTypeGrouped];
     } else if (requestType == RCRequestTypeHistory) {
         self.request = [request copy];
+        self.groupRequest = nil;
+        [self.headerView setHeaderViewType:RequestHeaderViewTypeSingle];
     } else {
         self.request = [[RCRequest alloc] init];
+        self.groupRequest = nil;
+        [self.headerView setHeaderViewType:RequestHeaderViewTypeSingle];
     }
 
     self.headerView.statusLabel.text = @"Waiting to send request...";;
@@ -501,9 +553,8 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == self.headerView.URLTextField) {
-        self.request.URLString = textField.text;
+        self.request.URLString = self.headerView.URLTextField.text;
         [self updateSubtitle];
-        [self notifyRequestChange:self.request.parentGroup];
     }
 }
 

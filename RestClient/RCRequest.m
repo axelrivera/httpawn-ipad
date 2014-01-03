@@ -28,8 +28,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
 {
     self = [super init];
     if (self) {
-        //NSString *URLString = @"http://staging.lottry.co/api/v1/games.json?location_id=ny";
-        NSString *URLString = @"http://httpawn-sharingan.fwd.wf";
+        NSString *URLString = @"http://localhost:3000";
 
         _parentGroup = nil;
         _identifier = [[NSString stringWithUUID] copy];
@@ -361,6 +360,15 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     self.parentGroup = nil;
     self.requestName = nil;
     self.requestDescription = nil;
+}
+
+- (void)saveDataFromRequest:(RCRequest *)request
+{
+    self.URLString = request.URLString;
+    self.requestMethod = request.requestMethod;
+    self.headers = [[NSArray alloc] initWithArray:request.headers copyItems:YES];
+    self.parameters = [[NSArray alloc] initWithArray:request.parameters copyItems:YES];
+    self.metadata = self.metadata;
 }
 
 + (NSString *)requestMethodForString:(NSString *)string

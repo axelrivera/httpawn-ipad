@@ -55,6 +55,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 - (BOOL)isEqualToRequest:(RCRequest *)request;
 
 - (void)sanitize;
+- (void)saveDataFromRequest:(RCRequest *)request;
 
 + (NSString *)requestMethodForString:(NSString *)string;
 

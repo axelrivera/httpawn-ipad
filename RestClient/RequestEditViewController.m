@@ -100,6 +100,10 @@
         self.completionBlock();
     }
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:GroupRequestDetailsUpdatedNotification
+                                                        object:nil
+                                                      userInfo:@{ kRCRequestKey : self.request }];;
+
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 

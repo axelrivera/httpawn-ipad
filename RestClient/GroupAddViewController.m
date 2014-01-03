@@ -237,6 +237,8 @@
             return;
         }
 
+        [self.view endEditing:YES];
+
         SelectViewController *controller = [[SelectViewController alloc] initWithDataSource:groups];
         controller.delegate = self;
         

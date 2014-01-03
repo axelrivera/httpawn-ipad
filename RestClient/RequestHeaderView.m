@@ -18,9 +18,12 @@
 @property (strong, nonatomic, readwrite) UIButton *headersButton;
 @property (strong, nonatomic, readwrite) UIButton *sendButton;
 @property (strong, nonatomic, readwrite) UIButton *previewButton;
+@property (strong, nonatomic, readwrite) UIButton *saveButton;
 @property (strong, nonatomic, readwrite) UIButton *groupButton;
 
 @property (strong, nonatomic) UIView *bottomLine;
+
+- (void)setupSaveButton;
 
 @end
 
@@ -33,6 +36,8 @@
         self.opaque = NO;
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
+
+        _headerViewType = RequestHeaderViewTypeSingle;
 
         SEL buttonSelector = @selector(buttonAction:);
 
@@ -135,6 +140,7 @@
 - (void)updateConstraints
 {
     [self autoSetDimension:ALDimensionHeight toSize:[[self class] viewHeight]];
+
     [self.bottomLine autoSetDimension:ALDimensionHeight toSize:0.5];
     [self.bottomLine autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0];
     [self.bottomLine autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0.0];
@@ -150,7 +156,7 @@
     [self.URLActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
 
     [self.sendButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:20.0];
-    [self.sendButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLTextField];
+    [self.sendButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.URLActionButton];
 
     [self.headersButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.URLTextField withOffset:10.0];
     [self.headersButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.URLTextField];
@@ -161,7 +167,15 @@
     [self.previewButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.parametersButton withOffset:20.0];
     [self.previewButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
-    [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];
+    if (self.headerViewType == RequestHeaderViewTypeSingle) {
+        [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];
+    } else {
+        [self.saveButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.previewButton withOffset:20.0];
+        [self.saveButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
+
+        [self.groupButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.saveButton withOffset:20.0];
+    }
+
     [self.groupButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.headersButton];
 
     [self.advancedButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.groupButton withOffset:20.0];
@@ -181,6 +195,35 @@
 - (CGSize)intrinsicContentSize
 {
     return CGSizeMake([[self class] viewHeight], UIViewNoIntrinsicMetric);
+}
+
+- (void)setHeaderViewType:(RequestHeaderViewType)headerViewType
+{
+    _headerViewType = headerViewType;
+
+    [self autoRemoveConstraintsAffectingViewAndSubviews];
+
+    if (self.saveButton) {
+        [self.saveButton removeFromSuperview];
+        self.saveButton = nil;
+    }
+
+    if (headerViewType == RequestHeaderViewTypeGrouped) {
+        [self setupSaveButton];
+    }
+
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)setupSaveButton
+{
+    _saveButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    _saveButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    _saveButton.tag = RequestHeaderViewButtonTypeSave;
+    [_saveButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self addSubview:_saveButton];
 }
 
 #pragma mark - Selector Methods
