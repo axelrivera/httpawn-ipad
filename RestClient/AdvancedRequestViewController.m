@@ -68,11 +68,35 @@
 
     self.redirectSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
 
+    NSArray *parameterItems = @[ RCMetaParameterEncodingDefaultTitle,
+                                 RCMetaParameterEncodingFormTitle,
+                                 RCMetaParameterEncodingJSONTitle ];
+
+    self.parameterSegmentedControl = [[UISegmentedControl alloc] initWithItems:parameterItems];
+    [self.parameterSegmentedControl setWidth:100.0 forSegmentAtIndex:0];
+    [self.parameterSegmentedControl setWidth:100.0 forSegmentAtIndex:1];
+    [self.parameterSegmentedControl setWidth:100.0 forSegmentAtIndex:2];
+    [self.parameterSegmentedControl addTarget:self
+                                       action:@selector(parameterChanged:)
+                             forControlEvents:UIControlEventValueChanged];
+
     if (self.request) {
         self.usernameTextField.text = self.request.metadata.basicAuthUsername;
         self.passwordTextField.text = self.request.metadata.basicAuthPassword;
         self.authenticationSwitch.on = self.request.metadata.enableAuth;
         self.redirectSwitch.on = self.request.metadata.followRedirects;
+
+        NSInteger index = -1;
+        if ([self.request.metadata.parameterEncoding isEqualToString:RCMetaParameterEncodingDefaultString]) {
+            index = 0;
+        } else if ([self.request.metadata.parameterEncoding isEqualToString:RCMetaParameterEncodingFormString]) {
+            index = 1;
+        } else  if ([self.request.metadata.parameterEncoding isEqualToString:RCMetaParameterEncodingJSONString]){
+            index = 2;
+        }
+
+        self.parameterSegmentedControl.selectedSegmentIndex = index;
+        [self parameterChanged:self.parameterSegmentedControl];
     }
 }
 
@@ -93,9 +117,25 @@
         self.request.metadata.basicAuthUsername = self.usernameTextField.text;
         self.request.metadata.basicAuthPassword = self.passwordTextField.text;
         self.request.metadata.followRedirects = self.redirectSwitch.on;
+
+        BOOL useJSONParameterEncoding = NO;
+        if (self.parameterSegmentedControl.selectedSegmentIndex == 1) {
+            useJSONParameterEncoding = YES;
+        }
     }
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)parameterChanged:(UISegmentedControl *)segmentedControl
+{
+    if (segmentedControl.selectedSegmentIndex == 0) {
+        self.request.metadata.parameterEncoding = RCMetaParameterEncodingDefaultString;
+    } else if (segmentedControl.selectedSegmentIndex == 1) {
+        self.request.metadata.parameterEncoding = RCMetaParameterEncodingFormString;
+    } else if (segmentedControl.selectedSegmentIndex == 2) {
+        self.request.metadata.parameterEncoding = RCMetaParameterEncodingJSONString;
+    }
 }
 
 #pragma mark - Table view data source
@@ -111,7 +151,7 @@
     if (section == 0) {
         rows = 3;
     } else if (section == 1) {
-        rows = 1;
+        rows = 2;
     }
     return rows;
 }
@@ -139,8 +179,13 @@
             accessoryView = self.passwordTextField;
         }
     } else if (indexPath.section == 1) {
-        textStr = @"Follow Redirects";
-        accessoryView = self.redirectSwitch;
+        if (indexPath.row == 0) {
+            textStr = @"Follow Redirects";
+            accessoryView = self.redirectSwitch;
+        } else {
+            textStr = @"Parameter Encoding";
+            accessoryView = self.parameterSegmentedControl;
+        }
     }
 
     cell.textLabel.text = textStr;

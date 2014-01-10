@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 @property (strong, nonatomic) UITextField *passwordTextField;
 @property (strong, nonatomic) UISwitch *authenticationSwitch;
 @property (strong, nonatomic) UISwitch *redirectSwitch;
+@property (strong, nonatomic) UISegmentedControl *parameterSegmentedControl;
 
 @property (assign, nonatomic) GroupEditType editType;
 @property (strong, nonatomic) RCGroup *groupObject;

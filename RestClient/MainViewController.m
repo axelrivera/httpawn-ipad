@@ -205,7 +205,13 @@
 - (void)historyUpdated:(NSNotification *)notification
 {
     if (self.segmentedControl.selectedSegmentIndex == RCRequestTypeHistory) {
-        [self.tableView reloadData];
+        if (self.isViewLoaded) {
+            [self.tableView insertRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:0 inSection:0] ]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else {
+            [self.tableView reloadData];
+        }
+
 
         if (IsEmpty([RestClientData sharedData].history)) {
             self.clearHistoryItem.enabled = NO;
@@ -386,7 +392,7 @@
 {
     if (buttonIndex == 1) {
         [[RestClientData sharedData].history removeAllObjects];
-        [self.tableView reloadData];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         self.clearHistoryItem.enabled = NO;
     }
 }

@@ -10,7 +10,8 @@
 
 typedef NS_ENUM(NSInteger, RequestInputType) {
     RequestInputTypeHeaders,
-    RequestInputTypeParameters
+    RequestInputTypeParameters,
+    RequestInputTypeJSONParameters
 };
 
 @protocol RequestInputViewControllerDelegate;
@@ -21,7 +22,10 @@ typedef NS_ENUM(NSInteger, RequestInputType) {
 
 @property (weak, nonatomic) id <RequestInputViewControllerDelegate> delegate;
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UITableView *tableView;
+
+@property (strong, nonatomic) UITableView *JSONTableView;
+@property (strong, nonatomic) UITextView *JSONTextView;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (assign, nonatomic) RequestInputType inputType;

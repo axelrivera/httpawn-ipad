@@ -167,7 +167,7 @@
 
 - (NSString *)rawString
 {
-    return self.bodyString;
+    return IsEmpty(self.bodyString) ? @"" : self.bodyString;
 }
 
 @end

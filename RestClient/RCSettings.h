@@ -18,10 +18,10 @@
 
 #define kRCSettingsDefaultEnableCookiesValue YES
 #define kRCSettingsDefaultTimeoutIntervalValue 30.0
-#define kRCSettingsDefaultAllowInvalidSSLValue YES
+#define kRCSettingsDefaultAllowInvalidSSLValue NO
 #define kRCSettingsDefaultUsePrettyPrintResponseValue YES
-#define kRCSettingsDefaultApplySyntaxHighlightingValue YES
-#define kRCSettingsDefaultIncludeLineNumbersValue YES
+#define kRCSettingsDefaultApplySyntaxHighlightingValue NO
+#define kRCSettingsDefaultIncludeLineNumbersValue NO
 
 #define kRCSettingsTimeoutIntervalMinValue 2.0
 #define kRCSettingsTimeoutIntervalMaxValue 180.0

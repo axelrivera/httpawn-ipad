@@ -102,6 +102,24 @@
             self.authenticationSwitch.on = self.groupObject.metadata.enableAuth;
             self.redirectSwitch.on = self.self.groupObject.metadata.followRedirects;
         }
+
+        NSArray *parameterItems = @[ @"Form", @"JSON" ];
+        self.parameterSegmentedControl = [[UISegmentedControl alloc] initWithItems:parameterItems];
+        [self.parameterSegmentedControl setWidth:100.0 forSegmentAtIndex:0];
+        [self.parameterSegmentedControl setWidth:100.0 forSegmentAtIndex:1];
+        [self.parameterSegmentedControl addTarget:self
+                                           action:@selector(parameterChanged:)
+                                 forControlEvents:UIControlEventValueChanged];
+
+        NSInteger index = -1;
+        if ([self.groupObject.metadata.parameterEncoding isEqualToString:RCMetaParameterEncodingFormString]) {
+            index = 0;
+        } else if ([self.groupObject.metadata.parameterEncoding isEqualToString:RCMetaParameterEncodingJSONString]) {
+            index = 1;
+        }
+
+        self.parameterSegmentedControl.selectedSegmentIndex = index;
+        [self parameterChanged:self.parameterSegmentedControl];
     }
 }
 
@@ -149,6 +167,15 @@
     [self.delegate groupEditViewControllerDidCancel:self];
 }
 
+- (void)parameterChanged:(UISegmentedControl *)segmentedControl
+{
+    if (segmentedControl.selectedSegmentIndex == 0) {
+        self.groupObject.metadata.parameterEncoding = RCMetaParameterEncodingFormString;
+    } else {
+        self.groupObject.metadata.parameterEncoding = RCMetaParameterEncodingJSONString;
+    }
+}
+
 #pragma mark - Private Methods
 
 - (NSArray *)currentDataSource
@@ -186,6 +213,9 @@
         rows = [@[] mutableCopy];
 
         dictionary = @{ @"text" : @"Follow Redirects", @"identifier" : @"redirect", @"type" : @"accessory" };
+        [rows addObject:dictionary];
+
+        dictionary = @{ @"text" : @"Parameter Encoding", @"identifier" : @"parameter_encoding", @"type" : @"accessory" };
         [rows addObject:dictionary];
 
         dictionary = @{ @"header" : @"Other", @"rows" : rows };
@@ -260,6 +290,8 @@
             accessoryView = self.passwordTextField;
         } else if ([identifier isEqualToString:@"redirect"]) {
             accessoryView = self.redirectSwitch;
+        } else if ([identifier isEqualToString:@"parameter_encoding"]) {
+            accessoryView = self.parameterSegmentedControl;
         }
 
         cell.textLabel.text = textStr;

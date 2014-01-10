@@ -28,7 +28,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
 {
     self = [super init];
     if (self) {
-        NSString *URLString = @"http://localhost:3000";
+        NSString *URLString = @"https://httpawn-ssl.riveradev.com";
 
         _parentGroup = nil;
         _identifier = [[NSString stringWithUUID] copy];
@@ -242,7 +242,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         myResponse.headersDictionary = [operation.response allHeaderFields];
         myResponse.responseStringEncoding = operation.responseStringEncoding;
         myResponse.responseTime = (endTime - startTime) * 1000.0;
-        
+
         if ([error localizedRecoverySuggestion]) {
             myResponse.responseString = [error localizedRecoverySuggestion];
         } else {
@@ -254,13 +254,20 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         myResponse.responseData = [myResponse.responseString dataUsingEncoding:myResponse.responseStringEncoding];
         
         self.response = myResponse;
-        
+
         if (completion) {
             completion(self.response, error);
         }
     };
 
-    if (self.metadata.enableAuth || (self.parentGroup && self.parentGroup.metadata.enableAuth)) {
+    if ([[self parameterEncoding] isEqualToString:RCMetaParameterEncodingJSONString]) {
+        AFJSONRequestSerializer *serializer = [AFJSONRequestSerializer serializer];
+        self.manager.requestSerializer = serializer;
+    } else {
+        self.manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    }
+
+    if ([self enableAuth]) {
         [self.manager.requestSerializer clearAuthorizationHeader];
 
         NSString *username = @"";
@@ -278,8 +285,10 @@ NSString * const RCRequestMethodPatch = @"PATCH";
                                                                        password:password];
     }
 
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy defaultPolicy];
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     [securityPolicy setAllowInvalidCertificates:[[RCSettings defaultSettings] allowInvalidSSL]];
+
+    DLog(@"Allow Invalid SSL: %d", [[RCSettings defaultSettings] allowInvalidSSL]);
 
     self.manager.securityPolicy = securityPolicy;
     
@@ -294,8 +303,9 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     AFHTTPRequestOperation *operation = [self.manager HTTPRequestOperationWithRequest:myRequest
                                                                               success:successBlock
                                                                               failure:failureBlock];
+    operation.shouldUseCredentialStorage = NO;
 
-    if (!self.metadata.followRedirects || (self.parentGroup && !self.parentGroup.metadata.followRedirects)) {
+    if (![self followRedirects]) {
         DLog(@"Should Ignore Redirect!");
         [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection,
                                                             NSURLRequest *request,
@@ -371,6 +381,32 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     self.headers = [[NSArray alloc] initWithArray:request.headers copyItems:YES];
     self.parameters = [[NSArray alloc] initWithArray:request.parameters copyItems:YES];
     self.metadata = self.metadata;
+}
+
+- (BOOL)enableAuth
+{
+    return self.metadata.enableAuth || (self.parentGroup && self.parentGroup.metadata.enableAuth);
+}
+
+- (BOOL)followRedirects
+{
+    return self.metadata.followRedirects || (self.parentGroup && self.parentGroup.metadata.followRedirects);
+}
+
+- (NSString *)parameterEncoding
+{
+    NSString *parameterEncoding = nil;
+    if ([self.metadata.parameterEncoding isEqualToString:RCMetaParameterEncodingDefaultString]) {
+        if (self.parentGroup) {
+            parameterEncoding = self.parentGroup.metadata.parameterEncoding;
+        } else {
+            parameterEncoding = RCMetaParameterEncodingFormString;
+        }
+    } else {
+        parameterEncoding = self.metadata.parameterEncoding;
+    }
+
+    return parameterEncoding;
 }
 
 + (NSString *)requestMethodForString:(NSString *)string

@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UITextField *passwordTextField;
 @property (strong, nonatomic) UISwitch *authenticationSwitch;
 @property (strong, nonatomic) UISwitch *redirectSwitch;
+@property (strong, nonatomic) UISegmentedControl *parameterSegmentedControl;
 
 @property (strong, nonatomic) RCRequest *request;
 

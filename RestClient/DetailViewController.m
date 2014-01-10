@@ -198,7 +198,12 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 {
     [self.view endEditing:YES];
 
-    RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:RequestInputTypeParameters
+    RequestInputType inputType = RequestInputTypeParameters;
+    if ([self.request.parameterEncoding isEqualToString:RCMetaParameterEncodingJSONString]) {
+        inputType = RequestInputTypeJSONParameters;
+    }
+
+    RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:inputType
                                                                                    dataSource:self.request.parameters];
     controller.delegate = self;
 
@@ -364,20 +369,15 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)segmentedControlChanged:(UISegmentedControl *)segmentedControl
 {
     if (self.request.response) {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            NSString *text = nil;
-            if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody ) {
-                text = [self.request.response formattedHTMLBodyString];
-            } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexHeaders) {
-                text = [self.request.response headerString];
-            } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexRaw) {
-                text = [self.request.response formattedRawBodyString];
-            }
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.webView loadHTMLString:text baseURL:[[NSBundle mainBundle] resourceURL]];
-            });
-        });
+        NSString *text = nil;
+        if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexBody ) {
+            text = [self.request.response formattedHTMLBodyString];
+        } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexHeaders) {
+            text = [self.request.response headerString];
+        } else if (segmentedControl.selectedSegmentIndex == RequestSegmentIndexRaw) {
+            text = [self.request.response formattedRawBodyString];
+        }
+        [self.webView loadHTMLString:text baseURL:[[NSBundle mainBundle] resourceURL]];
     }
 }
 

@@ -25,7 +25,7 @@
     NSNumber *prettyPrint = [NSNumber numberWithBool:[[RCSettings defaultSettings] usePrettyPrintResponse]];
     NSNumber *applySyntaxHighlighting = [NSNumber numberWithBool:[[RCSettings defaultSettings] applySyntaxHighlighting]];
     NSNumber *includeLineNumbers = [NSNumber numberWithBool:[[RCSettings defaultSettings] includeLineNumbers]];
-    
+
     NSMutableDictionary *dictionary = [@{ kRCPrettyPrintKey : prettyPrint,
                                           kRCSHKey : applySyntaxHighlighting,
                                           kRCLineNumbersKey : includeLineNumbers,

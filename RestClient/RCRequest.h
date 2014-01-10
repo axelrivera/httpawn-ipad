@@ -35,6 +35,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 @property (copy, nonatomic) NSString *URLString;
 @property (strong, nonatomic) NSArray *headers;
 @property (strong, nonatomic) NSArray *parameters;
+@property (strong, nonatomic) NSString *JSONParameters;
 @property (strong, nonatomic) RCResponse *response;
 @property (strong, nonatomic, readonly) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) RCMeta *metadata;
@@ -56,6 +57,10 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 
 - (void)sanitize;
 - (void)saveDataFromRequest:(RCRequest *)request;
+
+- (BOOL)enableAuth;
+- (BOOL)followRedirects;
+- (NSString *)parameterEncoding;
 
 + (NSString *)requestMethodForString:(NSString *)string;
 
