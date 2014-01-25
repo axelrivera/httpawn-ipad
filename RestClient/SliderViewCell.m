@@ -71,7 +71,7 @@
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSliderCellPaddingLeft];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kSliderCellPaddingRight];
 
-    [self.slider autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.slider autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     [self.slider autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSliderCellPaddingLeft];
     [self.slider autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kSliderCellPaddingRight];
 

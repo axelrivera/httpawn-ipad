@@ -83,7 +83,7 @@
         [self.inputButton autoSetDimension:ALDimensionHeight toSize:22.0];
         [self.inputButton autoSetDimension:ALDimensionWidth toSize:22.0];
         [self.inputButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:10.0];
-        [self.inputButton autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+        [self.inputButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.nameTextField autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.inputButton withOffset:10.0];
     } else {
         [self.nameTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:10.0];
@@ -91,11 +91,11 @@
 
     [self.activeSwitch autoSetDimension:ALDimensionWidth toSize:self.activeSwitch.bounds.size.width];
     [self.activeSwitch autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10.0];
-    [self.activeSwitch autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.activeSwitch autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
     [self.nameTextField autoSetDimension:ALDimensionHeight toSize:37.0];
     [self.nameTextField autoSetDimension:ALDimensionWidth toSize:180.0];
-    [self.nameTextField autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.nameTextField autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
     [self.valueTextField autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.nameTextField];
     [self.valueTextField autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.nameTextField withOffset:10.0];
@@ -104,7 +104,7 @@
                               ofView:self.activeSwitch
                           withOffset:-10.0
                             relation:NSLayoutRelationEqual];
-    [self.valueTextField autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.valueTextField autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
     [super updateConstraints];
 }

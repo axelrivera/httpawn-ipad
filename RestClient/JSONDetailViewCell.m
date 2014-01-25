@@ -61,7 +61,7 @@
     [self.descriptionLabel autoSetDimension:ALDimensionHeight toSize:kJSONDetailViewCellRow2Height];
 
     [self.button autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kJSONDetailViewCellPaddingRight];
-    [self.button autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.button autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kJSONDetailViewCellPaddingTop];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kJSONDetailViewCellPaddingLeft];

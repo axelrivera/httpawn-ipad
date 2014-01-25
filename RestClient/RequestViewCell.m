@@ -51,7 +51,7 @@
 - (void)updateConstraints
 {
     [self.methodView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15.0];
-    [self.methodView autoCenterInSuperviewAlongAxis:ALAxisHorizontal];
+    [self.methodView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10.0];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:10.0];

@@ -291,7 +291,7 @@
     [self.headerView addSubview:self.segmentedControl];
 
     [self.segmentedControl autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10.0];
-    [self.segmentedControl autoCenterInSuperviewAlongAxis:ALAxisVertical];
+    [self.segmentedControl autoAlignAxisToSuperviewAxis:ALAxisVertical];
 
     self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.headerLabel.translatesAutoresizingMaskIntoConstraints = NO;
