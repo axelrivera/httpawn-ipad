@@ -298,7 +298,8 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     
     NSMutableURLRequest *myRequest = [self.manager.requestSerializer requestWithMethod:self.requestMethod
                                                                              URLString:self.URLString
-                                                                            parameters:parameters];
+                                                                            parameters:parameters
+                                                                                 error:NULL];
     myRequest.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
     myRequest.HTTPShouldHandleCookies = [[RCSettings defaultSettings] enableCookies];
