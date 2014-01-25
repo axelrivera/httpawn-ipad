@@ -11,12 +11,15 @@
 #import "UIViewController+Layout.h"
 #import <UIView+AutoLayout.h>
 #import "HeaderSelectViewController.h"
+#import "JSONObjectViewController.h"
 #import "RCRequestOption.h"
 #import "RequestInputCell.h"
+#import "NSJSONSerialization+File.h"
 
 #define kRequestInputHeaderViewHeight 84.0
 
-@interface RequestInputViewController () <UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate>
+@interface RequestInputViewController ()
+<UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate, JSONObjectViewControllerDelegate>
 
 @property (strong, nonatomic) UIPopoverController *myPopoverController;
 
@@ -69,6 +72,7 @@
         }
 
         _myPopoverController = nil;
+        _JSONParameters = nil;
     }
     return self;
 }
@@ -321,6 +325,15 @@
     }
 }
 
+#pragma mark - UIViewControllerDelegate Methods
+
+- (void)JSONObjectViewController:(JSONObjectViewController *)controller didFinishWithObject:(RCJSONObject *)object
+{
+    DLog(@"JSON Object:");
+    DLog(@"%@", [object rootDictionary]);
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark - Selector Methods
 
 - (void)addAction:(id)sender
@@ -360,7 +373,10 @@
 
 - (void)dismissAction:(id)sender
 {
-    [self.delegate requestInputViewController:self didFinishWithInputType:self.inputType objects:self.dataSource];
+    [self.delegate requestInputViewController:self
+                       didFinishWithInputType:self.inputType
+                                      objects:self.dataSource
+                               JSONParameters:self.JSONParameters];
 }
 
 - (void)headerAction:(id)sender
@@ -523,7 +539,7 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JSONCellIdentifier];
             }
 
-            cell.textLabel.text = @"Object";
+            cell.textLabel.text = @"Root Object";
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
@@ -568,6 +584,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    if (tableView == self.JSONTableView) {
+        if (indexPath.row == 0) {
+            JSONObjectViewController *controller = [[JSONObjectViewController alloc] initWithContainerObject:self.JSONParameters];
+            controller.delegate = self;
+
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

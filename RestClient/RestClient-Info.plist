@@ -6,10 +6,30 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array>
+				<string>httpawn_document_large.png</string>
+				<string>httpawn_document_small.png</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>HTTPawn File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.riveralabs.httpawn.httpawn</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.riveralabs.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>me.axelrivera.httpawn-ipad</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -35,46 +55,26 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>CFBundleDocumentTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeIconFiles</key>
-            <array>
-                <string>httpawn_document_large.png</string>
-                <string>httpawn_document_small.png</string>
-            </array>
-            <key>CFBundleTypeName</key>
-            <string>HTTPawn File</string>
-            <key>CFBundleTypeRole</key>
-            <string>Viewer</string>
-            <key>LSHandlerRank</key>
-            <string>Owner</string>
-            <key>LSItemContentTypes</key>
-            <array>
-                <string>com.riveralabs.httpawn.httpawn</string>
-            </array>
-        </dict>
-    </array>
-    <key>UTExportedTypeDeclarations</key>
-    <array>
-        <dict>
-            <key>UTTypeConformsTo</key>
-            <array>
-                <string>public.plain-text</string>
-                <string>public.text</string>
-            </array>
-            <key>UTTypeDescription</key>
-            <string>HTTPawn File</string>
-            <key>UTTypeIdentifier</key>
-            <string>com.riveralabs.httpawn.httpawn</string>
-            <key>UTTypeTagSpecification</key>
-            <dict>
-                <key>public.filename-extension</key>
-                <string>httpawn</string>
-                <key>public.mime-type</key>
-                <string>riveralabs/x-httpawn</string>
-            </dict>
-        </dict>
-    </array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+				<string>public.text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>HTTPawn File</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.riveralabs.httpawn.httpawn</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>httpawn</string>
+				<key>public.mime-type</key>
+				<string>riveralabs/x-httpawn</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

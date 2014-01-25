@@ -24,6 +24,7 @@ FOUNDATION_EXPORT NSString * const RCRequestMethodPatch;
 typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 
 @class AFHTTPRequestOperationManager;
+@class RCJSONObject;
 
 @interface RCRequest : NSObject <NSCoding, NSCopying>
 
@@ -35,7 +36,7 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 @property (copy, nonatomic) NSString *URLString;
 @property (strong, nonatomic) NSArray *headers;
 @property (strong, nonatomic) NSArray *parameters;
-@property (strong, nonatomic) NSString *JSONParameters;
+@property (strong, nonatomic) RCJSONObject *JSONParameters;
 @property (strong, nonatomic) RCResponse *response;
 @property (strong, nonatomic, readonly) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) RCMeta *metadata;

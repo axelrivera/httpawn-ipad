@@ -38,6 +38,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         _URLString = [URLString copy];
         _headers = @[];
         _parameters = @[];
+        _JSONParameters = [RCJSONObject rootObject];
         _response = nil;
 
         _manager = [AFHTTPRequestOperationManager manager];
@@ -106,6 +107,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
         _URLString = [[coder decodeObjectForKey:@"RCRequestURLString"] copy];
         _headers = [coder decodeObjectForKey:@"RCRequestHeaders"];
         _parameters = [coder decodeObjectForKey:@"RCRequestParameters"];
+        _JSONParameters = [coder decodeObjectForKey:@"RCRequestJSONParameters"];
         _metadata = [coder decodeObjectForKey:@"RCRequestMetadata"];
 
         _response = nil;
@@ -125,6 +127,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     [coder encodeObject:self.URLString forKey:@"RCRequestURLString"];
     [coder encodeObject:self.headers forKey:@"RCRequestHeaders"];
     [coder encodeObject:self.parameters forKey:@"RCRequestParameters"];
+    [coder encodeObject:self.JSONParameters forKey:@"RCRequestJSONParameters"];
     [coder encodeObject:self.metadata forKey:@"RCRequestMetadata"];
 }
 
@@ -138,6 +141,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     myRequest.parentGroup = self.parentGroup;
     myRequest.headers = [[NSArray alloc] initWithArray:self.headers copyItems:YES];
     myRequest.parameters = [[NSArray alloc] initWithArray:self.parameters copyItems:YES];
+    myRequest.JSONParameters = self.JSONParameters;
     myRequest.metadata = self.metadata;
     myRequest.response = nil;
     

@@ -26,6 +26,7 @@
 		1645FB0218491AE000D19990 /* RCSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0118491AE000D19990 /* RCSelect.m */; };
 		1645FB0618491BB500D19990 /* SelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0418491BB500D19990 /* SelectViewController.m */; };
 		1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1645FB0518491BB500D19990 /* SelectViewController.xib */; };
+		164754ED18942F2A007DD9E4 /* JSONDetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164754EC18942F2A007DD9E4 /* JSONDetailViewCell.m */; };
 		164A3379184A3C9C000DCB3B /* RequestEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164A3377184A3C9C000DCB3B /* RequestEditViewController.m */; };
 		164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */; };
 		16520286183B124400FB4D37 /* RCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520281183B124400FB4D37 /* RCRequest.m */; };
@@ -74,6 +75,10 @@
 		16A4E77618331C4B0037E810 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16A4E77418331C4B0037E810 /* MainViewController.xib */; };
 		16B635BB183DC58A00176848 /* RestClientData.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B635BA183DC58A00176848 /* RestClientData.m */; };
 		16C0A1DD18761AFC002C98D5 /* RCMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C0A1DC18761AFC002C98D5 /* RCMeta.m */; };
+		16C0A1E0187FBF7F002C98D5 /* RCJSONObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C0A1DF187FBF7F002C98D5 /* RCJSONObject.m */; };
+		16C0A1E4187FC2B3002C98D5 /* JSONObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C0A1E2187FC2B3002C98D5 /* JSONObjectViewController.m */; };
+		16C0A1E5187FC2B3002C98D5 /* JSONObjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16C0A1E3187FC2B3002C98D5 /* JSONObjectViewController.xib */; };
+		16C0A1E818802B9F002C98D5 /* JSONValueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C0A1E718802B9F002C98D5 /* JSONValueViewController.m */; };
 		16CF225918539F2B00D09CCF /* SliderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CF225818539F2B00D09CCF /* SliderViewCell.m */; };
 		16CF225C1853A30600D09CCF /* UIColor+RestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CF225B1853A30600D09CCF /* UIColor+RestClient.m */; };
 		16CF225F1853B53100D09CCF /* TitleNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CF225E1853B53100D09CCF /* TitleNavigationView.m */; };
@@ -127,6 +132,8 @@
 		1645FB0318491BB500D19990 /* SelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectViewController.h; sourceTree = "<group>"; };
 		1645FB0418491BB500D19990 /* SelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectViewController.m; sourceTree = "<group>"; };
 		1645FB0518491BB500D19990 /* SelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectViewController.xib; sourceTree = "<group>"; };
+		164754EB18942F2A007DD9E4 /* JSONDetailViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONDetailViewCell.h; sourceTree = "<group>"; };
+		164754EC18942F2A007DD9E4 /* JSONDetailViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONDetailViewCell.m; sourceTree = "<group>"; };
 		164A3376184A3C9C000DCB3B /* RequestEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestEditViewController.h; sourceTree = "<group>"; };
 		164A3377184A3C9C000DCB3B /* RequestEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEditViewController.m; sourceTree = "<group>"; };
 		164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestEditViewController.xib; sourceTree = "<group>"; };
@@ -204,6 +211,13 @@
 		16B635BA183DC58A00176848 /* RestClientData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestClientData.m; sourceTree = "<group>"; };
 		16C0A1DB18761AFC002C98D5 /* RCMeta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMeta.h; sourceTree = "<group>"; };
 		16C0A1DC18761AFC002C98D5 /* RCMeta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMeta.m; sourceTree = "<group>"; };
+		16C0A1DE187FBF7F002C98D5 /* RCJSONObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCJSONObject.h; sourceTree = "<group>"; };
+		16C0A1DF187FBF7F002C98D5 /* RCJSONObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCJSONObject.m; sourceTree = "<group>"; };
+		16C0A1E1187FC2B3002C98D5 /* JSONObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONObjectViewController.h; sourceTree = "<group>"; };
+		16C0A1E2187FC2B3002C98D5 /* JSONObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONObjectViewController.m; sourceTree = "<group>"; };
+		16C0A1E3187FC2B3002C98D5 /* JSONObjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JSONObjectViewController.xib; sourceTree = "<group>"; };
+		16C0A1E618802B9F002C98D5 /* JSONValueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONValueViewController.h; sourceTree = "<group>"; };
+		16C0A1E718802B9F002C98D5 /* JSONValueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONValueViewController.m; sourceTree = "<group>"; };
 		16CF225718539F2B00D09CCF /* SliderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderViewCell.h; sourceTree = "<group>"; };
 		16CF225818539F2B00D09CCF /* SliderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderViewCell.m; sourceTree = "<group>"; };
 		16CF225A1853A30600D09CCF /* UIColor+RestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RestClient.h"; sourceTree = "<group>"; };
@@ -285,6 +299,10 @@
 				167DDD9D184C4CD40012651D /* SettingsViewController.m */,
 				1628BF09186A2D8A00C025FF /* HeaderSelectViewController.h */,
 				1628BF0A186A2D8A00C025FF /* HeaderSelectViewController.m */,
+				16C0A1E1187FC2B3002C98D5 /* JSONObjectViewController.h */,
+				16C0A1E2187FC2B3002C98D5 /* JSONObjectViewController.m */,
+				16C0A1E618802B9F002C98D5 /* JSONValueViewController.h */,
+				16C0A1E718802B9F002C98D5 /* JSONValueViewController.m */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -307,6 +325,8 @@
 				1645FAF51848F15E00D19990 /* RequestViewCell.m */,
 				16CF225718539F2B00D09CCF /* SliderViewCell.h */,
 				16CF225818539F2B00D09CCF /* SliderViewCell.m */,
+				164754EB18942F2A007DD9E4 /* JSONDetailViewCell.h */,
+				164754EC18942F2A007DD9E4 /* JSONDetailViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -330,6 +350,8 @@
 				1628BF04186A20A100C025FF /* RCPredefinedHeader.m */,
 				16C0A1DB18761AFC002C98D5 /* RCMeta.h */,
 				16C0A1DC18761AFC002C98D5 /* RCMeta.m */,
+				16C0A1DE187FBF7F002C98D5 /* RCJSONObject.h */,
+				16C0A1DF187FBF7F002C98D5 /* RCJSONObject.m */,
 			);
 			name = "Models + Data";
 			sourceTree = "<group>";
@@ -438,6 +460,7 @@
 		16A4E7501832F88B0037E810 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				16C0A1E3187FC2B3002C98D5 /* JSONObjectViewController.xib */,
 				1628BF0B186A2D8A00C025FF /* HeaderSelectViewController.xib */,
 				167DDD9E184C4CD40012651D /* SettingsViewController.xib */,
 				167DDD99184BA0E50012651D /* AdvancedRequestViewController.xib */,
@@ -580,6 +603,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Axel Rivera";
 				TargetAttributes = {
+					16A4E7181832F68F0037E810 = {
+						DevelopmentTeam = C2Q5BUZ3MX;
+					};
 					16A4E7331832F6900037E810 = {
 						TestTargetID = 16A4E7181832F68F0037E810;
 					};
@@ -621,6 +647,7 @@
 				16348D4B186DE62100A7F75B /* iTunesArtwork@2x in Resources */,
 				1628BF0D186A2D8A00C025FF /* HeaderSelectViewController.xib in Resources */,
 				16A3DA8118736B710076FCF1 /* httpawn_document_large.png in Resources */,
+				16C0A1E5187FC2B3002C98D5 /* JSONObjectViewController.xib in Resources */,
 				164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */,
 				16A1CD3D184D985B001F89AB /* prettify.css in Resources */,
 				1670F23318379A5E000CC10D /* URLActionsViewController.xib in Resources */,
@@ -704,9 +731,11 @@
 				16D9AB5E1840506D009D5EDF /* PreviewViewController.m in Sources */,
 				16520287183B124400FB4D37 /* RCRequestOption.m in Sources */,
 				16C0A1DD18761AFC002C98D5 /* RCMeta.m in Sources */,
+				16C0A1E0187FBF7F002C98D5 /* RCJSONObject.m in Sources */,
 				16CF225918539F2B00D09CCF /* SliderViewCell.m in Sources */,
 				1628BF05186A20A100C025FF /* RCPredefinedHeader.m in Sources */,
 				1670F23218379A5E000CC10D /* URLActionsViewController.m in Sources */,
+				164754ED18942F2A007DD9E4 /* JSONDetailViewCell.m in Sources */,
 				16520286183B124400FB4D37 /* RCRequest.m in Sources */,
 				1670F24A183ADCA4000CC10D /* GroupEditViewController.m in Sources */,
 				16A4E77518331C4B0037E810 /* MainViewController.m in Sources */,
@@ -718,10 +747,12 @@
 				16A4E771183309350037E810 /* UIViewController+Layout.m in Sources */,
 				16A4E76D1833042D0037E810 /* RequestHeaderView.m in Sources */,
 				16CF225F1853B53100D09CCF /* TitleNavigationView.m in Sources */,
+				16C0A1E818802B9F002C98D5 /* JSONValueViewController.m in Sources */,
 				16520294183B16D500FB4D37 /* NSString+RestClient.m in Sources */,
 				1645FAED1848D97400D19990 /* NSString+UUID.m in Sources */,
 				16520288183B124400FB4D37 /* RCResponse.m in Sources */,
 				16B635BB183DC58A00176848 /* RestClientData.m in Sources */,
+				16C0A1E4187FC2B3002C98D5 /* JSONObjectViewController.m in Sources */,
 				16A4E75E1832FA1A0037E810 /* DetailViewController.m in Sources */,
 				1628BF0C186A2D8A00C025FF /* HeaderSelectViewController.m in Sources */,
 			);
@@ -765,6 +796,75 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		164754E818941467007DD9E4 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = AdHoc;
+		};
+		164754E918941467007DD9E4 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 046C0FB9138A47B68786F9EF /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RestClient/RestClient-Prefix.pch";
+				INFOPLIST_FILE = "RestClient/RestClient-Info.plist";
+				PRODUCT_NAME = HTTPawn;
+				PROVISIONING_PROFILE = "80B509D9-07A5-487A-AE75-F72A68E0D338";
+				WRAPPER_EXTENSION = app;
+			};
+			name = AdHoc;
+		};
+		164754EA18941467007DD9E4 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/RestClient.app/RestClient";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RestClient/RestClient-Prefix.pch";
+				INFOPLIST_FILE = "RestClientTests/RestClientTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = AdHoc;
+		};
 		16A4E7431832F6900037E810 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -782,7 +882,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -822,7 +922,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -845,10 +945,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestClient/RestClient-Prefix.pch";
 				INFOPLIST_FILE = "RestClient/RestClient-Info.plist";
 				PRODUCT_NAME = HTTPawn;
+				PROVISIONING_PROFILE = "60B9DAB3-BB85-4630-BB23-553D590FF9D5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -859,10 +961,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RestClient/RestClient-Prefix.pch";
 				INFOPLIST_FILE = "RestClient/RestClient-Info.plist";
 				PRODUCT_NAME = HTTPawn;
+				PROVISIONING_PROFILE = "50F1B033-05B1-44F5-AB05-83C09E2C63F7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -917,6 +1021,7 @@
 			buildConfigurations = (
 				16A4E7431832F6900037E810 /* Debug */,
 				16A4E7441832F6900037E810 /* Release */,
+				164754E818941467007DD9E4 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -926,6 +1031,7 @@
 			buildConfigurations = (
 				16A4E7461832F6900037E810 /* Debug */,
 				16A4E7471832F6900037E810 /* Release */,
+				164754E918941467007DD9E4 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -935,6 +1041,7 @@
 			buildConfigurations = (
 				16A4E7491832F6900037E810 /* Debug */,
 				16A4E74A1832F6900037E810 /* Release */,
+				164754EA18941467007DD9E4 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, RequestInputType) {
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (assign, nonatomic) RequestInputType inputType;
+@property (strong, nonatomic) RCJSONObject *JSONParameters;
 
 - (instancetype)initWithType:(RequestInputType)inputType dataSource:(NSArray *)dataSource;
 
@@ -38,6 +39,7 @@ typedef NS_ENUM(NSInteger, RequestInputType) {
 
 - (void)requestInputViewController:(RequestInputViewController *)controller
             didFinishWithInputType:(RequestInputType)inputType
-                           objects:(NSArray *)objects;
+                           objects:(NSArray *)objects
+                    JSONParameters:(RCJSONObject *)JSONParameters;
 
 @end

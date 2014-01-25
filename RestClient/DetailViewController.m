@@ -205,6 +205,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
     RequestInputViewController *controller = [[RequestInputViewController alloc] initWithType:inputType
                                                                                    dataSource:self.request.parameters];
+    controller.JSONParameters = self.request.JSONParameters;
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -490,6 +491,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)requestInputViewController:(RequestInputViewController *)controller
             didFinishWithInputType:(RequestInputType)inputType
                            objects:(NSArray *)objects
+                    JSONParameters:(RCJSONObject *)JSONParameters
 {
     [controller.view endEditing:YES];
 
@@ -497,6 +499,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
         self.request.headers = objects;
     } else {
         self.request.parameters = objects;
+        self.request.JSONParameters = JSONParameters;
     }
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
