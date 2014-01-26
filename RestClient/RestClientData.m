@@ -16,6 +16,7 @@
     if (self) {
         _groups = [@[] mutableCopy];
         _history = [@[] mutableCopy];
+        _recentHosts = [@[] mutableCopy];
     }
     return self;
 }
@@ -26,6 +27,7 @@
     if (self) {
         _groups = [coder decodeObjectForKey:@"RestClientDataGroups"];
         _history = [coder decodeObjectForKey:@"RestClientDataHistory"];
+        _recentHosts = [coder decodeObjectForKey:@"RestClientDataRecentHosts"];
     }
     return self;
 }
@@ -34,6 +36,7 @@
 {
     [coder encodeObject:self.groups forKey:@"RestClientDataGroups"];
     [coder encodeObject:self.history forKey:@"RestClientDataHistory"];
+    [coder encodeObject:self.recentHosts forKey:@"RestClientDataRecentHosts"];
 }
 
 #pragma - Public Methods
@@ -44,6 +47,7 @@
     if (data) {
         self.groups = data.groups;
         self.history = data.history;
+        self.recentHosts = data.recentHosts;
     }
 }
 
@@ -107,6 +111,42 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:HistoryDidUpdateNotification
                                                         object:nil
                                                       userInfo:@{ kRCRequestKey: tmpRequest }];
+}
+
+- (void)addRecentHost:(NSString *)host
+{
+    if (IsEmpty(host)) {
+        return;
+    }
+
+    if (self.recentHosts == nil || [self.recentHosts isEqual:[NSNull null]]) {
+        self.recentHosts = [@[] mutableCopy];
+    }
+
+    BOOL found = NO;
+    BOOL index = -1;
+    if ([self.recentHosts count] > 0) {
+        NSInteger totalHosts = [self.recentHosts count];
+        for (NSInteger i = 0; i < totalHosts; i++) {
+            NSString *string = self.recentHosts[i];
+            if ([string isEqualToString:host]) {
+                found = YES;
+                index = i;
+                break;
+            }
+        }
+    }
+
+    if (found) {
+        [self.recentHosts removeObjectAtIndex:index];
+    }
+
+    [self.recentHosts insertObject:host atIndex:0];
+
+    if ([self.recentHosts count] > kMaximumRecentHosts) {
+        NSInteger length = [self.recentHosts count] - kMaximumRecentHosts;
+        [self.recentHosts removeObjectsInRange:NSMakeRange(kMaximumRecentHosts, length)];
+    }
 }
 
 #pragma mark - Singleton Methods

@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, RequestHeaderViewType) {
 
 typedef NS_ENUM(NSInteger, RequestHeaderViewButtonType) {
     RequestHeaderViewButtonTypeURLAction = 100,
+    RequestHeaderViewButtonTypeRecent,
     RequestHeaderViewButtonTypeParameters,
     RequestHeaderViewButtonTypeHeaders,
     RequestHeaderViewButtonTypeSend,
@@ -25,6 +26,10 @@ typedef NS_ENUM(NSInteger, RequestHeaderViewButtonType) {
     RequestHeaderViewButtonTypeReset
 };
 
+@interface HeaderTextField : UITextField
+
+@end
+
 @protocol RequestHeaderViewDelegate;
 
 @interface RequestHeaderView : UIView
@@ -33,7 +38,8 @@ typedef NS_ENUM(NSInteger, RequestHeaderViewButtonType) {
 
 @property (assign, nonatomic) RequestHeaderViewType headerViewType;
 
-@property (strong, nonatomic, readonly) UITextField *URLTextField;
+@property (strong, nonatomic, readonly) HeaderTextField *URLTextField;
+@property (strong, nonatomic, readonly) UIButton *URLRecentButton;
 @property (strong, nonatomic, readonly) UIButton *URLActionButton;
 @property (strong, nonatomic, readonly) UIButton *sendButton;
 @property (strong, nonatomic, readonly) UIButton *headersButton;

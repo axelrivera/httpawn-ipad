@@ -27,6 +27,7 @@
 		1645FB0618491BB500D19990 /* SelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1645FB0418491BB500D19990 /* SelectViewController.m */; };
 		1645FB0718491BB500D19990 /* SelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1645FB0518491BB500D19990 /* SelectViewController.xib */; };
 		164754ED18942F2A007DD9E4 /* JSONDetailViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164754EC18942F2A007DD9E4 /* JSONDetailViewCell.m */; };
+		164754F01895A3EC007DD9E4 /* SelectRecentHostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164754EF1895A3EC007DD9E4 /* SelectRecentHostViewController.m */; };
 		164A3379184A3C9C000DCB3B /* RequestEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 164A3377184A3C9C000DCB3B /* RequestEditViewController.m */; };
 		164A337A184A3C9C000DCB3B /* RequestEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */; };
 		16520286183B124400FB4D37 /* RCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 16520281183B124400FB4D37 /* RCRequest.m */; };
@@ -134,6 +135,8 @@
 		1645FB0518491BB500D19990 /* SelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectViewController.xib; sourceTree = "<group>"; };
 		164754EB18942F2A007DD9E4 /* JSONDetailViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONDetailViewCell.h; sourceTree = "<group>"; };
 		164754EC18942F2A007DD9E4 /* JSONDetailViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONDetailViewCell.m; sourceTree = "<group>"; };
+		164754EE1895A3EC007DD9E4 /* SelectRecentHostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectRecentHostViewController.h; sourceTree = "<group>"; };
+		164754EF1895A3EC007DD9E4 /* SelectRecentHostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectRecentHostViewController.m; sourceTree = "<group>"; };
 		164A3376184A3C9C000DCB3B /* RequestEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestEditViewController.h; sourceTree = "<group>"; };
 		164A3377184A3C9C000DCB3B /* RequestEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEditViewController.m; sourceTree = "<group>"; };
 		164A3378184A3C9C000DCB3B /* RequestEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestEditViewController.xib; sourceTree = "<group>"; };
@@ -289,6 +292,8 @@
 				1670F22618379144000CC10D /* RequestInputViewController.m */,
 				1670F22F18379A5E000CC10D /* URLActionsViewController.h */,
 				1670F23018379A5E000CC10D /* URLActionsViewController.m */,
+				164754EE1895A3EC007DD9E4 /* SelectRecentHostViewController.h */,
+				164754EF1895A3EC007DD9E4 /* SelectRecentHostViewController.m */,
 				16D9AB5B1840506D009D5EDF /* PreviewViewController.h */,
 				16D9AB5C1840506D009D5EDF /* PreviewViewController.m */,
 				1600A04B18443EC70089CA98 /* GroupAddViewController.h */,
@@ -743,6 +748,7 @@
 				1645FAF91848F27C00D19990 /* RequestMethodView.m in Sources */,
 				168DADFE185E3485001A9AA2 /* NSNumberFormatter+RestClient.m in Sources */,
 				1670F246183ADB90000CC10D /* RCGroup.m in Sources */,
+				164754F01895A3EC007DD9E4 /* SelectRecentHostViewController.m in Sources */,
 				164A3379184A3C9C000DCB3B /* RequestEditViewController.m in Sources */,
 				16A4E771183309350037E810 /* UIViewController+Layout.m in Sources */,
 				16A4E76D1833042D0037E810 /* RequestHeaderView.m in Sources */,

@@ -16,6 +16,7 @@
 #import "TitleNavigationView.h"
 
 #import "URLActionsViewController.h"
+#import "SelectRecentHostViewController.h"
 #import "RequestInputViewController.h"
 #import "PreviewViewController.h"
 #import "GroupAddViewController.h"
@@ -25,11 +26,11 @@
 
 @interface DetailViewController ()
 <RequestHeaderViewDelegate, URLActionsViewControllerDelegate, RequestInputViewControllerDelegate,
-GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
+GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate>
 
 @property (strong, nonatomic) TitleNavigationView *titleView;
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
-@property (strong, nonatomic) UIPopoverController *URLActionsController;
+@property (strong, nonatomic) UIPopoverController *myPopoverController;
 
 - (void)updateSubtitle;
 
@@ -172,11 +173,35 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     self.titleView.detailTextLabel.text = subtitle;
 }
 
+- (void)showRecentHosts
+{
+    if ([self.myPopoverController isPopoverVisible]) {
+        [self.myPopoverController dismissPopoverAnimated:YES];
+        self.myPopoverController = nil;
+        return;
+    }
+
+    SelectRecentHostViewController *controller = [[SelectRecentHostViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+
+    controller.completionBlock = ^(NSString *string){
+        self.request.URLString = self.headerView.URLTextField.text = string;
+        [self updateSubtitle];
+        [self.myPopoverController dismissPopoverAnimated:YES];
+    };
+
+    [self.myPopoverController presentPopoverFromRect:self.headerView.URLTextField.rightView.frame
+                                              inView:self.headerView.URLTextField
+                            permittedArrowDirections:UIPopoverArrowDirectionAny
+                                            animated:YES];
+}
+
 - (void)showURLActions
 {
-    if ([self.URLActionsController isPopoverVisible]) {
-        [self.URLActionsController dismissPopoverAnimated:YES];
-        self.URLActionsController = nil;
+    if ([self.myPopoverController isPopoverVisible]) {
+        [self.myPopoverController dismissPopoverAnimated:YES];
+        self.myPopoverController = nil;
         return;
     }
 
@@ -187,8 +212,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:actionsController];
 
-    self.URLActionsController = [[UIPopoverController alloc] initWithContentViewController:navController];
-    [self.URLActionsController presentPopoverFromRect:self.headerView.URLActionButton.frame
+    self.myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+    self.myPopoverController.delegate = self;
+    [self.myPopoverController presentPopoverFromRect:self.headerView.URLActionButton.frame
                                                inView:self.headerView
                              permittedArrowDirections:UIPopoverArrowDirectionAny
                                              animated:YES];
@@ -409,6 +435,9 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 - (void)requestHeaderView:(RequestHeaderView *)headerView didSelectButtonType:(RequestHeaderViewButtonType)buttonType
 {
     switch (buttonType) {
+        case RequestHeaderViewButtonTypeRecent:
+            [self showRecentHosts];
+            break;
         case RequestHeaderViewButtonTypeURLAction:
             [self showURLActions];
             break;
@@ -447,7 +476,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 {
     [self.headerView.URLActionButton setTitle:action forState:UIControlStateNormal];
     self.request.requestMethod = action;
-    [self.URLActionsController dismissPopoverAnimated:YES];
+    [self.myPopoverController dismissPopoverAnimated:YES];
 }
 
 - (void)groupAddViewController:(GroupAddViewController *)controller
@@ -561,6 +590,7 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 {
     if (textField == self.headerView.URLTextField) {
         self.request.URLString = self.headerView.URLTextField.text;
+        [[RestClientData sharedData] addRecentHost:self.request.URLString];
         [self updateSubtitle];
     }
 }
@@ -579,6 +609,13 @@ GroupAddViewControllerDelegate, UITextFieldDelegate, UIActionSheetDelegate>
     if (buttonIndex == 0) {
 
     }
+}
+
+#pragma mark - UIPopoverControllerDelegate Methods
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.myPopoverController = nil;
 }
 
 @end

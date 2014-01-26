@@ -10,9 +10,30 @@
 
 #import <UIView+AutoLayout.h>
 
+@implementation HeaderTextField
+
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
+{
+    CGRect rect = CGRectMake(CGRectGetWidth(bounds) - (22.0 + 10.0),
+                             (CGRectGetHeight(bounds) / 2.0) - (22.0 / 2.0),
+                             22.0,
+                             22.0);
+    return rect;
+}
+
+- (CGRect)textRectForBounds:(CGRect)bounds
+{
+    CGRect rect = [super textRectForBounds:bounds];
+    rect.size.width -= 10.0;
+    return rect;
+}
+
+@end
+
 @interface RequestHeaderView ()
 
-@property (strong, nonatomic, readwrite) UITextField *URLTextField;
+@property (strong, nonatomic, readwrite) HeaderTextField *URLTextField;
+@property (strong, nonatomic, readwrite) UIButton *URLRecentButton;
 @property (strong, nonatomic, readwrite) UIButton *URLActionButton;
 @property (strong, nonatomic, readwrite) UIButton *parametersButton;
 @property (strong, nonatomic, readwrite) UIButton *headersButton;
@@ -47,7 +68,16 @@
 
         [self addSubview:_bottomLine];
 
-        _URLTextField = [[UITextField alloc] initWithFrame:CGRectZero];
+        _URLRecentButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _URLRecentButton.frame = CGRectMake(0.0, 0.0, 22.0, 22.0);
+        _URLRecentButton.tintColor = [UIColor lightGrayColor];
+        [_URLRecentButton setImage:[UIImage imageNamed:@"clock"] forState:UIControlStateNormal];
+        [_URLRecentButton setImage:[UIImage imageNamed:@"clock-selected"] forState:UIControlStateHighlighted];
+        [_URLRecentButton setImage:[UIImage imageNamed:@"clock-selected"] forState:UIControlStateSelected];
+        _URLRecentButton.tag = RequestHeaderViewButtonTypeRecent;
+        [_URLRecentButton addTarget:self action:buttonSelector forControlEvents:UIControlEventTouchUpInside];
+
+        _URLTextField = [[HeaderTextField alloc] initWithFrame:CGRectZero];
         _URLTextField.borderStyle = UITextBorderStyleRoundedRect;
         _URLTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _URLTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -56,6 +86,9 @@
         _URLTextField.placeholder = @"http://example.com";
         _URLTextField.text = @"";
         _URLTextField.keyboardType = UIKeyboardTypeURL;
+
+        _URLTextField.rightView = _URLRecentButton;
+        _URLTextField.rightViewMode = UITextFieldViewModeUnlessEditing;
 
         [self addSubview:_URLTextField];
 
@@ -147,7 +180,7 @@
     [self.bottomLine autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0.5];
 
     [self.URLTextField autoSetDimension:ALDimensionHeight toSize:37.0];
-    [self.URLTextField autoSetDimension:ALDimensionWidth toSize:400.0];
+    [self.URLTextField autoSetDimension:ALDimensionWidth toSize:450.0];
     [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15.0];
     [self.URLTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.0];
 

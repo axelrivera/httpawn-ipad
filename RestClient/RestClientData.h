@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) NSMutableArray *history;
+@property (strong, nonatomic) NSMutableArray *recentHosts;
 
 - (void)loadData;
 - (void)saveData;
@@ -21,6 +22,7 @@
 - (BOOL)containsGroup:(RCGroup *)group;
 
 - (void)addRequestToHistory:(RCRequest *)request;
+- (void)addRecentHost:(NSString *)host;
 
 + (RestClientData *)sharedData;
 
