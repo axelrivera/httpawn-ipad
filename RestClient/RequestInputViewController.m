@@ -329,8 +329,13 @@
 
 - (void)JSONObjectViewController:(JSONObjectViewController *)controller didFinishWithObject:(RCJSONObject *)object
 {
+    NSDictionary *dictionary = [object rootDictionary];
+
     DLog(@"JSON Object:");
-    DLog(@"%@", [object rootDictionary]);
+    DLog(@"%@", dictionary);
+
+    self.JSONTextView.text = [NSJSONSerialization rc_prettyPrintedJSONStringWithDictionary:dictionary];
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -539,7 +544,7 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:JSONCellIdentifier];
             }
 
-            cell.textLabel.text = @"Root Object";
+            cell.textLabel.text = @"Object";
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 

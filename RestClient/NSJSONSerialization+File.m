@@ -24,7 +24,7 @@
     return JSON;
 }
 
-+ (NSString *)rc_PrettyPrintedJSONStringWithDictionary:(NSDictionary *)dictionary
++ (NSString *)rc_prettyPrintedJSONStringWithDictionary:(NSDictionary *)dictionary
 {
     if (dictionary == nil) {
         dictionary = @{};

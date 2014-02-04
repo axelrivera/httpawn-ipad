@@ -38,7 +38,7 @@
         _object = object;
 
         if (object.parentObject == nil) {
-            self.title = @"Root Object";
+            self.title = @"Object";
         } else {
             NSString *typeStr = nil;
             if (object.objectType == RCJSONObjectTypeObject) {
@@ -166,13 +166,18 @@
     }
 
     if (self.object.objectType == RCJSONObjectTypeArray &&
-        ([sender tag] == RCJSONObjectTypeObject || [sender tag] == RCJSONObjectTypeArray))
+        ([sender tag] == RCJSONObjectTypeObject || [sender tag] == RCJSONObjectTypeArray || [sender tag] == RCJSONObjectTypeNull))
     {
         RCJSONObject *object = [[RCJSONObject alloc] init];
         object.objectType = [sender tag];
         object.objectKey = nil;
-        object.objectValue = [@[] mutableCopy];
         object.parentObject = self.object;
+        
+        if ([sender tag] == RCJSONObjectTypeObject || [sender tag] == RCJSONObjectTypeArray) {
+            object.objectValue = [@[] mutableCopy];
+        } else {
+            object.objectValue = [NSNull null];
+        }
 
         [self.object.objectValue addObject:object];
         [self.tableView reloadData];
@@ -206,8 +211,10 @@
         RCJSONObject *object = [self.object.objectValue objectAtIndex:[sender tag]];
         JSONDetailViewCell *cell = (JSONDetailViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         CGRect rect = [window convertRect:cell.button.frame fromWindow:window];
-
-        JSONValueViewController *controller = [[JSONValueViewController alloc] initWithObject:object];
+    
+        NSString *tmpKey = [NSString stringWithFormat:@"Item[%d]", [sender tag]];
+    
+        JSONValueViewController *controller = [[JSONValueViewController alloc] initWithObject:object temporaryKey:tmpKey];
         controller.delegate = self;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 
@@ -256,6 +263,16 @@
 {
     [self.myPopoverController dismissPopoverAnimated:YES];
     self.myPopoverController = nil;
+}
+
+- (void)JSONValueViewControllerShouldDeleteObject:(RCJSONObject *)object
+{
+    if ([self.object isContainer]) {
+        [self.object.objectValue removeObject:object];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.myPopoverController dismissPopoverAnimated:YES];
+        self.myPopoverController = nil;
+    }
 }
 
 #pragma mark - UITableViewDataSource Methods

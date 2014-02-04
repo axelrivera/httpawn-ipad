@@ -12,6 +12,6 @@
 
 + (id)rc_JSONObjectWithContentsOfFile:(NSString *)file;
 + (id)rc_JSONObjectWithContentsOfURL:(NSURL *)URL;
-+ (NSString *)rc_PrettyPrintedJSONStringWithDictionary:(NSDictionary *)dictionary;
++ (NSString *)rc_prettyPrintedJSONStringWithDictionary:(NSDictionary *)dictionary;
 
 @end
