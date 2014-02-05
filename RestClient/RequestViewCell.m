@@ -79,7 +79,7 @@
 
     if (request) {
         if (ignoreName || IsEmpty(request.requestName)) {
-            self.titleLabel.text = [request fullURLString];
+            self.titleLabel.text = [request absoluteURLString];
             self.titleLabel.font = [UIFont systemFontOfSize:13.0];
             self.titleLabel.numberOfLines = 2.0;
             self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;

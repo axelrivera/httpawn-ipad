@@ -8,7 +8,7 @@
 
 #import "GroupEditViewController.h"
 
-@interface GroupEditViewController () <UITextFieldDelegate, UIAlertViewDelegate>
+@interface GroupEditViewController () <UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
 - (NSArray *)currentDataSource;
 
@@ -43,12 +43,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.editType == GroupEditTypeCreate) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create"
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(saveAction:)];
 
-    NSString *rightStr = self.editType == GroupEditTypeCreate ? @"Create" : @"Save";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rightStr
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(saveAction:)];
+    } else {
+        UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(saveAction:)];
+        
+        UIBarButtonItem *actionsItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                     target:self
+                                                                                     action:@selector(showActions:)];
+        
+        self.navigationItem.rightBarButtonItems = @[ saveItem, actionsItem ];
+    }
 
     if ([self.delegate respondsToSelector:@selector(groupEditViewControllerDidCancel:)]) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -68,6 +81,17 @@
 
     if (self.editType == GroupEditTypeModify) {
         self.nameTextField.text = self.groupObject.groupName;
+        
+        self.baseURLTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0,
+                                                                              0.0,
+                                                                              400.0,
+                                                                              37.0)];
+        self.baseURLTextField.placeholder = @"http://www.example.com";
+        self.baseURLTextField.contentVerticalAlignment = UIViewContentModeCenter;
+        self.baseURLTextField.font = [UIFont systemFontOfSize:15.0];
+        self.baseURLTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        self.baseURLTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        self.baseURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
         self.usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0.0,
                                                                                0.0,
@@ -162,6 +186,16 @@
     [self.delegate groupEditViewController:self didFinishWithType:self.editType object:self.groupObject];
 }
 
+- (void)showActions:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:@"Delete"
+                                                    otherButtonTitles:@"Duplicate", nil];
+    [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItems[1] animated:YES];
+}
+
 - (void)dismissAction:(id)sender
 {
     [self.delegate groupEditViewControllerDidCancel:self];
@@ -180,57 +214,62 @@
 
 - (NSArray *)currentDataSource
 {
-    NSMutableArray *array = [@[] mutableCopy];
+    NSMutableArray *sections = [@[] mutableCopy];
 
     NSMutableArray *rows = [@[] mutableCopy];
 
-    NSDictionary *dictionary = nil;
+    NSDictionary *sectionDictionary = nil;
+    NSDictionary *rowDictionary = nil;
+    
+    // Name Section
+    
+    rowDictionary = @{ @"text" : @"Name", @"identifier" : @"name", @"type" : @"accessory" };
+    [rows addObject:rowDictionary];
 
-    dictionary = @{ @"text" : @"Name", @"identifier" : @"name", @"type" : @"accessory" };
-    [rows addObject:dictionary];
-
-    dictionary = @{ @"rows" : rows };
-    [array addObject:dictionary];
+    sectionDictionary = @{ @"rows" : rows };
+    [sections addObject:sectionDictionary];
 
     if (self.editType == GroupEditTypeModify) {
+        // Group Settings
+        
+        rows = [@[] mutableCopy];
+        
+        rowDictionary = @{ @"text" : @"Base URL", @"identifier" : @"base_url", @"type" : @"accessory" };
+        [rows addObject:rowDictionary];
+        
+        rowDictionary = @{ @"text" : @"Follow Redirects", @"identifier" : @"redirect", @"type" : @"accessory" };
+        [rows addObject:rowDictionary];
+        
+        rowDictionary = @{ @"text" : @"Parameter Encoding", @"identifier" : @"parameter_encoding", @"type" : @"accessory" };
+        [rows addObject:rowDictionary];
+        
+        sectionDictionary = @{ @"header" : @"Group Settings",
+                               @"footer" : @"The Base URL will be ignored if the request has a valid URL.",
+                               @"rows" : rows };
+        
+        [sections addObject:sectionDictionary];
+        
+        // Auth Section
+        
         rows = [@[] mutableCopy];
 
-        dictionary = @{ @"text" : @"Enable Authentication", @"identifier" : @"enable_auth", @"type" : @"accessory" };
-        [rows addObject:dictionary];
+        rowDictionary = @{ @"text" : @"Enable Authentication", @"identifier" : @"enable_auth", @"type" : @"accessory" };
+        [rows addObject:rowDictionary];
 
-        dictionary = @{ @"text" : @"Username", @"identifier" : @"username", @"type" : @"accessory" };
-        [rows addObject:dictionary];
+        rowDictionary = @{ @"text" : @"Username", @"identifier" : @"username", @"type" : @"accessory" };
+        [rows addObject:rowDictionary];
 
-        dictionary = @{ @"text" : @"Password", @"identifier" : @"password", @"type" : @"accessory" };
-        [rows addObject:dictionary];
+        rowDictionary = @{ @"text" : @"Password", @"identifier" : @"password", @"type" : @"accessory" };
+        [rows addObject:rowDictionary];
 
-        dictionary = @{ @"header" : @"Basic Authentication",
-                        @"footer" : @"Passwords are saved in clear text.",
-                        @"rows" : rows };
-
-        [array addObject:dictionary];
-
-        rows = [@[] mutableCopy];
-
-        dictionary = @{ @"text" : @"Follow Redirects", @"identifier" : @"redirect", @"type" : @"accessory" };
-        [rows addObject:dictionary];
-
-        dictionary = @{ @"text" : @"Parameter Encoding", @"identifier" : @"parameter_encoding", @"type" : @"accessory" };
-        [rows addObject:dictionary];
-
-        dictionary = @{ @"header" : @"Other", @"rows" : rows };
-        [array addObject:dictionary];
-
-        rows = [@[] mutableCopy];
-
-        dictionary = @{ @"text" : @"Delete Group", @"identifier" : @"delete" };
-        [rows addObject:dictionary];
-
-        dictionary = @{ @"rows" : rows };
-        [array addObject:dictionary];
+        sectionDictionary = @{ @"header" : @"Basic Authentication",
+                               @"footer" : @"Passwords are saved in clear text.",
+                               @"rows" : rows };
+        
+        [sections addObject:sectionDictionary];
     }
 
-    return array;
+    return sections;
 }
 
 #pragma mark - Table view data source
@@ -248,27 +287,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    static NSString *DeleteIdentifier = @"DeleteCell";
 
     NSDictionary *dictionary = self.dataSource[indexPath.section][@"rows"][indexPath.row];
-
-    if ([dictionary[@"identifier"] isEqualToString:@"delete"]) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DeleteIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:DeleteIdentifier];
-            cell.textLabel.textColor = [UIColor redColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.font = [UIFont systemFontOfSize:17.0];
-        }
-
-        NSString *textStr = dictionary[@"text"];
-
-        cell.textLabel.text = textStr;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-
-        return cell;
-    }
+    NSString *identifier = dictionary[@"identifier"];
 
     if ([dictionary[@"type"] isEqualToString:@"accessory"]) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -279,9 +300,10 @@
         NSString *textStr = dictionary[@"text"];
         id accessoryView = nil;
 
-        NSString *identifier = dictionary[@"identifier"];
         if ([identifier isEqualToString:@"name"]) {
             accessoryView = self.nameTextField;
+        } else if ([identifier isEqualToString:@"base_url"]) {
+            accessoryView = self.baseURLTextField;
         } else if ([identifier isEqualToString:@"enable_auth"]) {
             accessoryView = self.authenticationSwitch;
         } else if ([identifier isEqualToString:@"username"]) {
@@ -309,20 +331,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    NSDictionary *dictionary = self.dataSource[indexPath.section][@"rows"][indexPath.row];
-
-    if ([dictionary[@"identifier"] isEqualToString:@"delete"]) {
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to delete the group \"%@\"? This action can't be undone.",
-                           self.groupObject.groupName];
-
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Delete Group"
-                                                            message:message
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"Continue", nil];
-        [alertView show];
-    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -343,6 +351,23 @@
         if ([self.delegate respondsToSelector:@selector(groupEditViewController:shouldDeleteGroupObject:)]) {
             [self.delegate groupEditViewController:self shouldDeleteGroupObject:self.groupObject];
         }
+    }
+}
+
+#pragma mark - UIActionSheetDelegate Methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to delete the group \"%@\"? This action can't be undone.",
+                             self.groupObject.groupName];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Delete Group"
+                                                            message:message
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Continue", nil];
+        [alertView show];
     }
 }
 

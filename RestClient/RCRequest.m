@@ -181,7 +181,7 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     return [self.parameters dictionaryOfAvailableObjects];
 }
 
-- (NSString *)fullURLString
+- (NSString *)absoluteURLString
 {
     NSArray *availableParameters = [self availableParameters];
     NSMutableArray *parameters = [@[] mutableCopy];
@@ -199,6 +199,25 @@ NSString * const RCRequestMethodPatch = @"PATCH";
     }
 
     return str;
+}
+
+- (NSString *)requestURLString
+{
+    NSString *string = @"";
+    
+    NSURL *URL = [NSURL URLWithString:self.URLString];
+    if (URL) {
+        string = self.URLString;
+    } else {
+        if (self.parentGroup && !IsEmpty(self.parentGroup.baseURLString)) {
+            NSURL *parentURL = [NSURL URLWithString:self.parentGroup.baseURLString];
+            if (parentURL) {
+                NSURL *tmpURL = [parentURL URLByAppendingPathComponent:self.URLString];
+                string = tmpURL.absoluteString;
+            }
+        }
+    }
+    return string;
 }
 
 - (void)runWithCompletion:(RCRequestObjectResponse)completion

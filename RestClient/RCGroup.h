@@ -14,6 +14,7 @@
 
 @property (copy, nonatomic, readonly) NSString *identifier;
 @property (copy, nonatomic) NSString *groupName;
+@property (copy, nonatomic) NSString *baseURLString;
 @property (strong, nonatomic) RCMeta *metadata;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;

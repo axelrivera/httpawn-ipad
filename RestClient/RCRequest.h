@@ -50,7 +50,8 @@ typedef void (^RCRequestObjectResponse)(RCResponse *response, NSError *error);
 - (NSArray *)availableParameters;
 - (NSDictionary *)availableParametersDictionary;
 
-- (NSString *)fullURLString;
+- (NSString *)absoluteURLString;
+- (NSString *)requestURLString;
 
 - (void)runWithCompletion:(RCRequestObjectResponse)completion;
 

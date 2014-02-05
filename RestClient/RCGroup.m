@@ -23,6 +23,7 @@
     if (self) {
         _identifier = [[NSString stringWithUUID] copy];
         _groupName = @"";
+        _baseURLString = @"";
         _groupRequests = [@[] mutableCopy];
         _metadata = [[RCMeta alloc] init];
     }
@@ -54,6 +55,7 @@
     if (self) {
         _identifier = [coder decodeObjectForKey:@"RCGroupIdentifier"];
         _groupName = [coder decodeObjectForKey:@"RCGroupName"];
+        _baseURLString = [coder decodeObjectForKey:@"RCGroupBaseURLString"];
         _groupRequests = [coder decodeObjectForKey:@"RCGroupGroupRequests"];
         _metadata = [coder decodeObjectForKey:@"RCGroupMetadata"];
     }
@@ -64,6 +66,7 @@
 {
     [coder encodeObject:self.identifier forKey:@"RCGroupIdentifier"];
     [coder encodeObject:self.groupName forKey:@"RCGroupName"];
+    [coder encodeObject:self.baseURLString forKey:@"RCGroupBaseURLString"];
     [coder encodeObject:self.groupRequests forKey:@"RCGroupGroupRequests"];
     [coder encodeObject:self.metadata forKey:@"RCGroupMetadata"];
 }

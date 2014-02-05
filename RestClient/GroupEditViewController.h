@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, GroupEditType) {
 @property (weak, nonatomic) id <GroupEditViewControllerDelegate> delegate;
 
 @property (strong, nonatomic) UITextField *nameTextField;
+@property (strong, nonatomic) UITextField *baseURLTextField;
 @property (strong, nonatomic) UITextField *usernameTextField;
 @property (strong, nonatomic) UITextField *passwordTextField;
 @property (strong, nonatomic) UISwitch *authenticationSwitch;
